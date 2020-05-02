@@ -1,0 +1,4 @@
+pyhcl==0.4.4
+regex==2020.4.4
+argparse
+

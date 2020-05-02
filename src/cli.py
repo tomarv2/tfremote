@@ -13,6 +13,7 @@ import subprocess
 import logging
 import shutil
 import time
+from typing import List
 from distutils.version import StrictVersion as V
 
 MIN_TERRAFORM_V = '0.12.0'
@@ -50,6 +51,17 @@ def valid_terraform_version(min_supported_ver):
         log.error("Installed terraform version: {}, is not supported by the tf wrapper script. \
         \nTerraform version must be >= {}" .format(detected_ver, min_supported_ver))
         return False
+
+
+def create_command(arguments_entered: List[str]) -> str:
+    cloud_providers = ['aws', 'azure', 'gcp']
+    print("arguments_entered: ", arguments_entered)
+    if '-cloud' in arguments_entered:
+        arguments_entered.remove('-cloud')
+    for i in cloud_providers:
+        if i in arguments_entered:
+            arguments_entered.remove(i)
+    return ' '.join(arguments_entered)
 
 
 class TerraformWrapper:
@@ -173,9 +185,9 @@ class TerraformWrapper:
                 self.s3_path = self._build_tf_state_path()
                 self.configure_aws()
                 set_remote_backend_status = self._set_remote_backend()
-                log.info("set_remote_backend_status: {}" .format(set_remote_backend_status))
+                log.info("Remote State backend is already configured: {}" .format(set_remote_backend_status))
                 if set_remote_backend_status:
-                    cmd = "terraform {}" .format(' '.join(sys.argv[3:]))
+                    cmd = "terraform {}" .format(create_command(sys.argv[1:]))
                     log.info("AWS command: {}" .format(cmd))
                     ret_code = self._run_cmd(cmd)
                     if ret_code == 0:
@@ -184,14 +196,14 @@ class TerraformWrapper:
                         exit(1)
                 else:
                     raise Exception("\nThere was an error setting the remote backend for AWS; aborting")
-            elif vars(self.args)['cloud'] == "azure":
+            elif vars(self.args)['cloud'].lower() == "azure":
                 self._parse_vars()
                 self.azure_path = self._build_tf_state_path()
                 self.configure_azure()
                 set_remote_backend_status = self._set_remote_backend()
                 log.info("set_remote_backend_status: {}" .format(set_remote_backend_status))
                 if set_remote_backend_status:
-                    cmd = "terraform {}".format(' '.join(sys.argv[3:]))
+                    cmd = "terraform {}" .format(create_command(sys.argv[1:]))
                     log.info("AZURE command: {}" .format(cmd))
                     ret_code = self._run_cmd(cmd)
                     if ret_code == 0:
@@ -207,7 +219,7 @@ class TerraformWrapper:
                 set_remote_backend_status = self._set_remote_backend()
                 log.info("set_remote_backend_status: {}" .format(set_remote_backend_status))
                 if set_remote_backend_status:
-                    cmd = "terraform {}".format(' '.join(sys.argv[3:]))
+                    cmd = "terraform {}".format(create_command(sys.argv[1:]))
                     log.info("GCLOUD command: {}" .format(cmd))
                     ret_code = self._run_cmd(cmd)
                     if ret_code == 0:
@@ -252,7 +264,7 @@ class TerraformWrapper:
                 else:
                     return False
 
-        elif vars(self.args)['cloud'] == "azure":
+        elif vars(self.args)['cloud'].lower() == "azure":
             current_tf_state = {"backend": {}}
             current_tf_state["backend"]["config"] = {}
             current_tf_state["backend"]["config"]["storage_account_name"] = None
@@ -435,3 +447,6 @@ def entrypoint():
 
 if __name__ == "__main__":
     entrypoint()
+
+# if __name__ == "__main__":
+#     main()

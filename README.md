@@ -1,13 +1,12 @@
-# Terraform remote state management for AWS, Azure, GCP
+# Terraform remote state management for AWS, Azure, and GCP
 
-A Python package to manage Terraform remote state across AWS, Azure, and GCP.
+A Python package to manage Terraform remote state across AWS, Azure, GCP, and AliCloud(in progress).
 
 To install package run: `pip install tfremote`
 
-
 ## Google slides
-https://docs.google.com/presentation/d/1ZX_56ChDopA3qDVMVRvdH8z6pvi6IO9WwKwUtsN78nY
 
+https://docs.google.com/presentation/d/1ZX_56ChDopA3qDVMVRvdH8z6pvi6IO9WwKwUtsN78nY
 
 ## Environment setup
 
@@ -16,14 +15,15 @@ https://docs.google.com/presentation/d/1ZX_56ChDopA3qDVMVRvdH8z6pvi6IO9WwKwUtsN7
 - Terraform 0.12.0 and above (download: https://www.terraform.io/downloads.html)
 
 
-Default loglevel is `WARNING`, to change it using:
-`export TF_LOG_LEVEL`
+Default log level is `WARNING`, to change:
+
+`export TF_LOG_LEVEL` to any of these: `'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'`
 
 ## Setup environment variables
 
 ### AWS
 
-s3 bucket for remotestate should reside in `us-west-2` (best practice is to have it versioned)
+s3 bucket for remote state should reside in `us-west-2` (best practice is to have it versioned)
 
 Set these env variables:
 
@@ -36,7 +36,9 @@ export PATH=$PATH:/usr/local/bin/
 
 ### Azure
 
-Run remote_state.sh script located under `Azure` -> `_scripts` -> `remote_state.sh` (fill in the required information)
+To create storage for remote state there is handy script.
+
+Run `remote_state.sh` scripts located under `scripts` (fill in the required information)
 
 Set these env variables:
 
@@ -60,11 +62,31 @@ export TF_GCLOUD_CRENDETIALS=<path to service account .json credentials file>
 
 ## How to use
 
-Once environment variables are configured run for the cloud provider, run:
+Once environment variables are configured, run:
 
+### For AWS:
 ```
-tfremote -cloud aws plan -var-file ../custom.tfvars
+tfremote -cloud aws plan -var-file ../custom.tfvars 
+
+or 
+
+tfremote plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
 ```
 
-## NOTE: 
-The module have been tested with python 3.8
+### For Azure:
+```
+tfremote plan -var-file ../custom.tfvars -cloud azure 
+
+or
+
+tfremote plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
+```
+
+### For GCloud:
+```
+tfremote plan -var-file ../custom.tfvars -cloud gcloud 
+
+or
+
+tfremote plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe' 
+```

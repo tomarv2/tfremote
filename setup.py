@@ -1,7 +1,8 @@
 import os
+import shutil
 from setuptools import find_packages, setup
 
-VERSION = "0.0.1.dev5"
+VERSION = "0.0.1.dev20"
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -30,19 +31,26 @@ setup(
     author='Varun Tomar',
     author_email='varuntomar2019@gmail.com',
     python_requires=">=3.6",
-    py_modules=['tfremote'],
+    packages=find_packages(),       # THIS OR BELOW
+    # packages=['src'],             # THIS OR ABOVE
+    # py_modules=['cli'],           # only if one module exists
+    # zip_save=False,
+    #include_package_data=True,     # only if you need to include MANIFEST.in
     install_requires=install_requires,
     url="https://github.com/tomarv2/tfremote",
-    # packages=['tfremote'],
-    # zip_save=False,
-    # include_package_data=True,
     classifiers=[  # Optional
         'Programming Language :: Python :: 3.6',
         'Operating System :: OS Independent',
     ],
-    entry_points={
-        'console_scripts': [
-            'tfremote=tfremote:entrypoint'
-        ],
-    }
+    entry_points='''
+        [console_scripts]
+        tfremote = src.cli:entrypoint
+    '''
 )
+
+# try:
+#     shutil.rmtree('build')
+#     shutil.rmtree('dist')
+#     shutil.rmtree('tfremote.egg-info')
+# except:
+#     pass
