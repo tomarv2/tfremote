@@ -4,7 +4,7 @@ tested on:
 - AWS
 - Azure
 - GCP
-AliCloud is in-progress
+- AliCloud in-progress
 
 It needs to variables teamid and prjid to structure files in storage
 '''
