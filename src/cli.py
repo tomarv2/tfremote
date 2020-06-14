@@ -447,6 +447,3 @@ def entrypoint():
 
 if __name__ == "__main__":
     entrypoint()
-
-# if __name__ == "__main__":
-#     main()
