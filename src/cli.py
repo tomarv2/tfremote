@@ -1,8 +1,14 @@
-#!/usr/bin/env python
-#
-# allows team collaboration on Terraform deployments by managing centralized remote states:
-# works in AWS, Azure and GCP based on teamid and prjid
-#
+'''
+This package allows multiple team to collaborate on Terraform deployments by managing centralized remote states:
+tested on:
+- AWS
+- Azure
+- GCP
+AliCloud is in-progress
+
+It needs to variables teamid and prjid to structure files in storage
+'''
+
 import hcl
 import re
 import argparse
@@ -11,8 +17,6 @@ import json
 import os
 import subprocess
 import logging
-import shutil
-import time
 from typing import List
 from distutils.version import StrictVersion as V
 
