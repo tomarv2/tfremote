@@ -8,8 +8,6 @@ from src.common import run_command
 import logging
 logger = logging.getLogger(__name__)
 
-MIN_TERRAFORM_V = '0.12.0'
-
 
 class TerraformGcloudWrapper:
     title = "Gcloud State Plugin"
