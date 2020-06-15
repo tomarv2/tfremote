@@ -56,7 +56,7 @@ class TerraformGcloudWrapper:
         self.gcloud_path = run_command.build_tf_state_path(self.required_vars, self.var_data)
         self.configure()
         set_remote_backend_status = self.set_remote_backend()
-        logger.info("set_remote_backend_status1: {}".format(set_remote_backend_status))
+        logger.info("set_remote_backend_status: {}".format(set_remote_backend_status))
         if set_remote_backend_status:
             cmd = "terraform {}" .format(run_command.create_command(sys.argv[1:]))
             logger.info("GCLOUD command: {}".format(cmd))
@@ -90,9 +90,10 @@ class TerraformGcloudWrapper:
                 if os.path.isfile(".terraform/terraform.tfstate"):
                     os.unlink(".terraform/terraform.tfstate")
                     logger.debug("removed .terraform/terraform.tfstate")
+                gcloud_path = self.gcloud_path.rsplit('/', 1)[0]
                 cmd = "terraform init -backend-config=\"bucket={}\" -backend-config=\"credentials={}\" " \
                       "-backend-config=\"prefix={}\"".format(self.gcloud_bucket_name, self.gcloud_credentials,
-                                                             self.gcloud_path)
+                                                             gcloud_path)
                 logger.debug("init command: {}".format(cmd))
                 ret_code = run_command.run_cmd(cmd)
                 if ret_code == 0:
