@@ -84,7 +84,7 @@ class TerraformAWSWrapper:
         current_tf_state["backend"]["config"] = {}
         current_tf_state["backend"]["config"]["bucket"] = None
         current_tf_state["backend"]["config"]["key"] = None
-        if run_command.build_remote_backend_tf_file():
+        if run_command.build_remote_backend_tf_file('s3'):
             if os.path.isfile(".terraform/terraform.tfstate"):
                 with open(".terraform/terraform.tfstate") as fh:
                     current_tf_state = json.load(fh)

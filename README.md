@@ -58,9 +58,9 @@ Set these env variables:
 # Google storage bucket name
 export TF_GCLOUD_BUCKET= # change it to right value
 # Folders inside the bucket
-export TF_GCLOUD_PREFIX=# change it to right value
+export TF_GCLOUD_PREFIX= # change it to right value
 # Path to google service account file
-export TF_GCLOUD_CREDENTIALS=# change it to right value
+export TF_GCLOUD_CREDENTIALS= # change it to right value
 ```
 
 ## How to use

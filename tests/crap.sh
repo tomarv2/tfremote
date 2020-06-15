@@ -1,10 +1,10 @@
-export TF_BASE_PATH=''
+export TF_BASE_PATH='/Users/varun.tomar/Documents/personal_github'
 
 export PATH_TO_PKG=$TF_BASE_PATH'/tfremote'
 export GCLOUD_BASE_DIR=$TF_BASE_PATH'/terraform/gcp/vm/base'
 export AZURE_BASE_DIR=$TF_BASE_PATH'/terraform/azure/vnet/base'
 export AWS_BASE_DIR=$TF_BASE_PATH'/terraform/AWS/security_group/base'
-export TF_VENV=demo_env02
+export TF_VENV=demo_env03
 
 # Gcloud
 $PATH_TO_PKG/tfremote.egg-info
@@ -14,7 +14,7 @@ cd $PATH_TO_PKG
 python setup.py develop
 # --
 cd $GCLOUD_BASE_DIR
-rm -fr .terraform; tf -cloud gcloud apply -var-file ../custom_files/sample.tfvars
+rm -fr .terraform; tf apply -var-file ../custom_files/sample.tfvars -cloud gcloud
 rm -fr .terraform; tf destroy -var-file ../custom_files/sample.tfvars -cloud gcloud
 deactivate $TF_VENV
 rm -fr $TF_VENV

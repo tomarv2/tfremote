@@ -77,7 +77,7 @@ class TerraformGcloudWrapper:
         current_tf_state["backend"]["config"] = {}
         current_tf_state["backend"]["config"]["bucket"] = None
         current_tf_state["backend"]["config"]["credentials"] = None
-        if run_command.build_remote_backend_tf_file():
+        if run_command.build_remote_backend_tf_file('gcs'):
             if os.path.isfile(".terraform/terraform.tfstate"):
                 with open(".terraform/terraform.tfstate") as fh:
                     current_tf_state = json.load(fh)
@@ -90,9 +90,9 @@ class TerraformGcloudWrapper:
                 if os.path.isfile(".terraform/terraform.tfstate"):
                     os.unlink(".terraform/terraform.tfstate")
                     logger.debug("removed .terraform/terraform.tfstate")
-                cmd = "terraform init -backend-config=\"bucket={}\" -backend-config=\"credentials={}\" \
-                -backend-config=\"prefix={}\"".format(
-                    self.gcloud_bucket_name, self.gcloud_credentials, self.gcloud_path)
+                cmd = "terraform init -backend-config=\"bucket={}\" -backend-config=\"credentials={}\" " \
+                      "-backend-config=\"prefix={}\"".format(self.gcloud_bucket_name, self.gcloud_credentials,
+                                                             self.gcloud_path)
                 logger.debug("init command: {}".format(cmd))
                 ret_code = run_command.run_cmd(cmd)
                 if ret_code == 0:
