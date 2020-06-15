@@ -1,6 +1,6 @@
-# Terraform remote state management for AWS, Azure, and GCP
+# Terraform remote state management for AWS, Azure, and Gcloud
 
-A Python package to manage Terraform remote state across AWS, Azure, GCP, and AliCloud(in progress).
+A Python package to manage Terraform remote state across AWS, Azure, Gcloud, and AliCloud(in progress).
 
 To install package run: `pip install tfremote`
 
@@ -48,16 +48,19 @@ export TF_AZURE_CONTAINER=tfstate # Output of remote_state.sh
 export ARM_ACCESS_KEY=xxxxxxxxxx # Output of remote_state.sh
 ```
 
-### GCP
+### Gcloud
 
 https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform
 
 Set these env variables:
 
 ```
-export TF_GCLOUD_BUCKET=XXXX # change it to right value
+# Google storage bucket name
+export TF_GCLOUD_BUCKET= # change it to right value
+# Folders inside the bucket
 export TF_GCLOUD_PREFIX=# change it to right value
-export TF_GCLOUD_CRENDETIALS=<path to service account .json credentials file>
+# Path to google service account file
+export TF_GCLOUD_CREDENTIALS=# change it to right value
 ```
 
 ## How to use
@@ -66,27 +69,27 @@ Once environment variables are configured, run:
 
 ### For AWS:
 ```
-tfremote -cloud aws plan -var-file ../custom.tfvars 
+tf -cloud aws plan -var-file ../custom.tfvars 
 
 or 
 
-tfremote plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
+tf plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
 ```
 
 ### For Azure:
 ```
-tfremote plan -var-file ../custom.tfvars -cloud azure 
+tf plan -var-file ../custom.tfvars -cloud azure 
 
 or
 
-tfremote plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
+tf plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
 ```
 
 ### For GCloud:
 ```
-tfremote plan -var-file ../custom.tfvars -cloud gcloud 
+tf plan -var-file ../custom.tfvars -cloud gcloud 
 
 or
 
-tfremote plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe' 
+tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe' 
 ```
