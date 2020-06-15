@@ -1,6 +1,6 @@
 import logging
 
-LOG_LEVEL = "DEBUG"
+LOG_LEVEL = "ERROR"
 
 
 def configure_logging():

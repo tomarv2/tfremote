@@ -95,6 +95,10 @@ class TerraformGcloudWrapper:
                       "-backend-config=\"prefix={}\"".format(self.gcloud_bucket_name, self.gcloud_credentials,
                                                              gcloud_path)
                 logger.debug("init command: {}".format(cmd))
+
+                # TODO: if 'prefix=' in cmd:
+                # verify contents of backend file
+
                 ret_code = run_command.run_cmd(cmd)
                 if ret_code == 0:
                     return True
