@@ -6,7 +6,7 @@ To install package run: `pip install tfremote`
 
 ## Google slides
 
-https://docs.google.com/presentation/d/1ZX_56ChDopA3qDVMVRvdH8z6pvi6IO9WwKwUtsN78nY
+https://docs.google.com/presentation/d/1A02cooIP49GzAJLc3RnHvOTBh898T86KYBx-c8ALPAQ/edit?usp=sharing
 
 ## Environment setup
 
