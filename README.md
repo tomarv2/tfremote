@@ -4,10 +4,6 @@ A Python package to manage Terraform remote state across AWS, Azure, Gcloud, and
 
 To install package run: `pip install tfremote`
 
-## Google slides
-
-https://docs.google.com/presentation/d/1A02cooIP49GzAJLc3RnHvOTBh898T86KYBx-c8ALPAQ/edit?usp=sharing
-
 ## Environment setup
 
 - Using virtualenv is strongly recommended
