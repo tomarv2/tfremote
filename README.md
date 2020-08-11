@@ -1,6 +1,6 @@
-# Terraform remote state management for AWS, Azure, and Gcloud
+# Terraform remotestate (aws, azure, and gcloud)
 
-A Python package to manage Terraform remote state across AWS, Azure, Gcloud, and AliCloud(in progress).
+A Python package for managing Terraform remote state for: aws, azure, gcloud, and alicloud(in progress).
 
 To install package run: `pip install tfremote`
 
