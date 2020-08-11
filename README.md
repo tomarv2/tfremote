@@ -63,7 +63,7 @@ export TF_GCLOUD_CREDENTIALS= # change it to right value
 
 Once environment variables are configured, run:
 
-### For AWS:
+### For aws:
 ```
 tf -cloud aws plan -var-file ../custom.tfvars 
 
@@ -72,7 +72,7 @@ or
 tf plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
 ```
 
-### For Azure:
+### For azure:
 ```
 tf plan -var-file ../custom.tfvars -cloud azure 
 
@@ -81,7 +81,7 @@ or
 tf plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
 ```
 
-### For GCloud:
+### For gcloud:
 ```
 tf plan -var-file ../custom.tfvars -cloud gcloud 
 
