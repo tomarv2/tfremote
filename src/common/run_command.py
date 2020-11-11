@@ -89,7 +89,7 @@ def parse_tfvar_files(args):
     """
     parse variables defined in terraform.tfvars and files defined in commandline (-var-file a.tfvars)
     """
-    results = {}
+    # results = {}
     tfvar_files = vars(args)['tfvar_files']
     if tfvar_files is None:
         logger.error("please use a tfvars file to specify the customer parameters.  eg: \"-var-file custom.tfvars\"")
@@ -98,17 +98,19 @@ def parse_tfvar_files(args):
         tfvar_files.insert(0, 'terraform.tfvars')
     for file in tfvar_files:
         with open(file) as fh:
-            for line in fh:
-                line = line.rstrip("\r\n")
-                line = re.sub("^\s+", "", line)
-                if re.search("^#", line) or re.search("^$", line):
-                    continue
-                else:
-                    match = re.split("\s*=\s*", line, maxsplit=1)
-                    key = match[0]
-                    value = re.sub("^\"|^'|\"$|'$", "", match[1])
-                    results[key] = value
-    return results
+            obj = hcl.load(fh)
+            return obj
+    #         for line in fh:
+    #             line = line.rstrip("\r\n")
+    #             line = re.sub("^\s+", "", line)
+    #             if re.search("^#", line) or re.search("^$", line):
+    #                 continue
+    #             else:
+    #                 match = re.split("\s*=\s*", line, maxsplit=1)
+    #                 key = match[0]
+    #                 value = re.sub("^\"|^'|\"$|'$", "", match[1])
+    #                 results[key] = value
+    # return results
 
 
 def parse_var_file(file):
