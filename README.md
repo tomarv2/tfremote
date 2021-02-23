@@ -1,13 +1,21 @@
-# Terraform Remote State Manager (aws, azure, and gcloud)
+# Terraform Remote State Manager
 
-A Python package for managing Terraform remote state for: aws, azure, and gcloud.
+A Python package for managing Terraform remote state for: AWS, Azure, and Gcloud(GCP).
 
-To install package run: `pip install tfremote`
+To install package run: 
+```
+pip install tfremote  --upgrade
+```
 
 ## Environment setup
 
-- Using virtualenv is strongly recommended
 - Install Python 3.6+
+
+- Using virtualenv is strongly recommended:
+```
+python3 -m venv <venv name>
+```
+
 - Terraform 0.12.0 and above (download: https://www.terraform.io/downloads.html)
 
 
