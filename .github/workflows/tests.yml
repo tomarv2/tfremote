@@ -17,7 +17,8 @@ jobs:
           pip install tox tox-gh-actions
 
       - name: Test with tox
-        run: "python -m tox"
+        run: |
+          python -m tox
         env:
           PLATFORM: ${{ matrix.platform }}
 
