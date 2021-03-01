@@ -113,3 +113,8 @@ or
 
 tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe' 
 ```
+
+## To run tox:
+
+#### Update Sphinx documentation
+tox -e docs

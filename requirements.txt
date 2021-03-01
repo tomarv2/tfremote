@@ -3,4 +3,10 @@
 argparse
 pyhcl
 regex
+flake8
+Sphinx
+tox
+black
 
+
+# flake8: noqa
