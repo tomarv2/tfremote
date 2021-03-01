@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: |
-          pip install tox tox-gh-actions
           python --verion
+          pip install tox tox-gh-actions
 
       - name: Run tox
         run: tox -e docs
