@@ -9,6 +9,11 @@ jobs:
       matrix:
         python-version: [3.8]
 
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
