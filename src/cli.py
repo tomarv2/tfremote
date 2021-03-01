@@ -16,12 +16,12 @@ import sys
 from distutils.version import StrictVersion as V
 from typing import List
 
-from src.common import pass_through_list, run_command
+from .logging import configure_logging
+from src.common import pass_through_list
+from src.common import run_command
 from src.tf_aws import plugin as aws_plugin
 from src.tf_azure import plugin as azure_plugin
 from src.tf_gcloud import plugin as gcloud_plugin
-
-from .logging import configure_logging
 
 logger = logging.getLogger(__name__)
 configure_logging()
