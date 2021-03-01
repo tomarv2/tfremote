@@ -110,6 +110,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+**envtmpdir**/
 
 # Spyder project settings
 .spyderproject
@@ -129,4 +130,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 .idea
-**envtmp**
+

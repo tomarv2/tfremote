@@ -1,0 +1,205 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src.tf_gcloud package &#8212; Tfremote 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="src.tf_azure package" href="src.tf_azure.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="src.tf_azure.html" title="src.tf_azure package"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Tfremote 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >src</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="src.html" accesskey="U">src package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src.tf_gcloud package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="src-tf-gcloud-package">
+<h1>src.tf_gcloud package<a class="headerlink" href="#src-tf-gcloud-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.tf_gcloud.plugin">
+<span id="src-tf-gcloud-plugin-module"></span><h2>src.tf_gcloud.plugin module<a class="headerlink" href="#module-src.tf_gcloud.plugin" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">src.tf_gcloud.plugin.</span></code><code class="sig-name descname"><span class="pre">TerraformGcloudWrapper</span></code><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.args">
+<code class="sig-name descname"><span class="pre">args</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.args_unknown">
+<code class="sig-name descname"><span class="pre">args_unknown</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.args_unknown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.configure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.configure_remotestate">
+<code class="sig-name descname"><span class="pre">configure_remotestate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.configure_remotestate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.description">
+<code class="sig-name descname"><span class="pre">description</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Configure</span> <span class="pre">Gcloud</span> <span class="pre">remote</span> <span class="pre">state'</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_bucket_name">
+<code class="sig-name descname"><span class="pre">gcloud_bucket_name</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_bucket_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_credentials">
+<code class="sig-name descname"><span class="pre">gcloud_credentials</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_credentials" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_path">
+<code class="sig-name descname"><span class="pre">gcloud_path</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_prefix">
+<code class="sig-name descname"><span class="pre">gcloud_prefix</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.gcloud_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.logger">
+<code class="sig-name descname"><span class="pre">logger</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.set_remote_backend">
+<code class="sig-name descname"><span class="pre">set_remote_backend</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.set_remote_backend" title="Permalink to this definition">¶</a></dt>
+<dd><p>configure the Terraform remote state if necessary
+return True if remote state was successfully configured</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.slug">
+<code class="sig-name descname"><span class="pre">slug</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'gcloud-remote-state'</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.slug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.title">
+<code class="sig-name descname"><span class="pre">title</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Gcloud</span> <span class="pre">State</span> <span class="pre">Plugin'</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.tf_gcloud.plugin.TerraformGcloudWrapper.version">
+<code class="sig-name descname"><span class="pre">version</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'0.1.0.dev1'</span></em><a class="headerlink" href="#src.tf_gcloud.plugin.TerraformGcloudWrapper.version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.tf_gcloud">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.tf_gcloud" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">src.tf_gcloud package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-src.tf_gcloud.plugin">src.tf_gcloud.plugin module</a></li>
+<li><a class="reference internal" href="#module-src.tf_gcloud">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="src.tf_azure.html"
+                        title="previous chapter">src.tf_azure package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/src.tf_gcloud.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="src.tf_azure.html" title="src.tf_azure package"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Tfremote 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >src</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="src.html" >src package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src.tf_gcloud package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.1.
+    </div>
+  </body>
+</html>
