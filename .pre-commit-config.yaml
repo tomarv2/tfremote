@@ -16,6 +16,8 @@ repos:
     hooks:
     -   id: flake8
         additional_dependencies: [flake8-typing-imports==1.1.0]
+        exclude_types:
+            - "*/__init__.py"
 
 -   repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.5.4
