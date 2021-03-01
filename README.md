@@ -25,7 +25,7 @@ pip install tfremote  --upgrade
 
 ## Environment setup
 
-- Install Python 3.6+
+- Install Python 3.8+
 
 - Using virtualenv is strongly recommended:
 ```
