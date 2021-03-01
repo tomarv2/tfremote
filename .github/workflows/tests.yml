@@ -25,11 +25,3 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
-      - repo: https://github.com/asottile/pyupgrade
-        rev: v2.10.0
-        hooks:
-          - id: pyupgrade
-        with:
-          python-version: ${{ matrix.python-version }}
-        uses: pre-commit/action@v2.0.0
