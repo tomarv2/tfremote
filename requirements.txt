@@ -1,7 +1,6 @@
 # pyhcl==0.4.4
 # regex==2020.4.4
 argparse
-black
 flake8
 pyhcl
 regex

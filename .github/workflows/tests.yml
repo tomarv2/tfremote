@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Commit files
+      - name: Run Tox
         run: |
           pip install -r requirements.txt
           tox -e docs
