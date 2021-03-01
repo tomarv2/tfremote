@@ -45,14 +45,6 @@ repos:
     hooks:
     -   id: reorder-python-imports
         exclude: (^docs/)
-#        args: [--py3-plus]
-
-#-   repo: https://github.com/thclark/pre-commit-sphinx
-#    rev: 0.0.1
-#    hooks:
-#    -   id: build-docs
-#        args: ['--cache-dir', 'docs/doctrees', '--html-dir', 'docs/build/html', '--source-dir', 'docs/source']
-#        language_version: python3
 
 -   repo: https://github.com/asottile/add-trailing-comma
     rev: v2.1.0
@@ -64,3 +56,10 @@ repos:
     rev: v2.10.0
     hooks:
     -   id: pyupgrade
+
+#-   repo: https://github.com/thclark/pre-commit-sphinx
+#    rev: 0.0.1
+#    hooks:
+#    -   id: build-docs
+#        args: ['--cache-dir', 'docs/doctrees', '--html-dir', 'docs/build/html', '--source-dir', 'docs/source']
+#        language_version: python3

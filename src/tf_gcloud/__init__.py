@@ -5,5 +5,3 @@ from ._version import __version__
 
 from src.tf_gcloud.plugin import TerraformGcloudWrapper
 plugin = TerraformGcloudWrapper()
-
-# flake8: noqa
