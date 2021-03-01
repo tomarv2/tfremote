@@ -6,7 +6,7 @@ This package allows multiple teams to collaborate on Terraform deployments by ma
 - gcloud
 - alicloud in-progress
 
-It needs to variables teamid and prjid to structure files in storage
+It needs two variables: teamid and prjid to structure files in storage
 """
 
 import re
@@ -31,6 +31,9 @@ MIN_TERRAFORM_V = '0.12.0'
 
 # verifying version of terraform installed
 def valid_terraform_version(min_supported_ver):
+    """
+    :param min_supported_ver: v12
+    """
     cmd_output = subprocess.check_output("terraform version", shell=True)
     detected_ver = re.search(r"\d+\.\d+\.\d+", cmd_output.decode('utf-8')).group(0)
     if V(detected_ver) >= V(min_supported_ver):

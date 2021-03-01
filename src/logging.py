@@ -1,8 +1,14 @@
+"""Centralized logging"""
+
 import logging
 import os
 
 
 def configure_logging():
+    """
+    Centralized logging, default log level is WARNING
+    :return: None
+    """
     l = logging.getLogger()
     if os.environ.get('TF_LOG_LEVEL'):
         level = os.environ.get('TF_LOG_LEVEL').upper()

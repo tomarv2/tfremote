@@ -1,3 +1,9 @@
+"""
+- Build remote state path
+- Parse vars
+- Create command
+"""
+
 import subprocess
 from typing import List
 
@@ -19,6 +25,10 @@ def run_cmd(cmd):
 
 
 def create_command(arguments_entered: List[str]) -> str:
+    """
+    :param arguments_entered: storage path, tfvars file
+    :return: command generated
+    """
     cloud_providers = ['aws', 'azure', 'gcloud']
     logger.debug("arguments_entered: {0}".format(arguments_entered))
     if '-cloud' in arguments_entered:
@@ -91,7 +101,9 @@ def parse_inline_vars(args):
 
 def parse_tfvar_files(args):
     """
-    parse variables defined in terraform.tfvars and files defined in command line (-var-file foo.tfvars)
+    parse variables defined in:
+     - terraform.tfvars
+     - file(s) defined in command line (-var-file foo.tfvars)
     """
     tfvar_files = vars(args)['tfvar_files']
     if tfvar_files is None:
@@ -119,9 +131,10 @@ def parse_tfvar_files(args):
 def parse_var_file(file):
     """
     parse the variables defined in .tf file
-    eg:
-    variable name {
-        foo = "bar"
+        eg:
+            variable name {
+                foo = "bar"
+
     }
     """
     results = {}
