@@ -19,6 +19,7 @@ jobs:
       - name: Run tox
         run: |
           pwd
+          ls -l
           python -m tox -e docs
           tox -e docs
 
