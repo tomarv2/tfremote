@@ -14,6 +14,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install tox tox-gh-actions
+        with:
+          python-version: ${{ matrix.python-version }}
 
       - name: Run tox
         run: |
@@ -22,6 +24,8 @@ jobs:
           python --version
           python -m tox -e docs
           tox -e docs
+        with:
+          python-version: ${{ matrix.python-version }}
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
