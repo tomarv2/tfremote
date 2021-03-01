@@ -15,7 +15,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install tox tox-gh-actions
+
+      - name: Run tox
+        run: |
+          pwd
           python -m tox -e docs
+          tox -e docs
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
