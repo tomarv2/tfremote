@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [push] #, pull_request]
 
 jobs:
   pre-commit:
@@ -42,3 +42,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_BRANCH: "test"
           PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
+
