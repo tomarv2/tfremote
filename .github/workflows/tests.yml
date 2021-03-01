@@ -3,13 +3,7 @@ name: pre-commit
 on: [push, pull_request]
 
 jobs:
-  pre-commit:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.8]
-
-  build:
+  create-doc:
     runs-on: ubuntu-latest
     strategy:
       matrix:
