@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Commit files
         run: |
+          pip install -r requirements.txt
           tox -e docs
 
       - name: Set up Python ${{ matrix.python-version }}
