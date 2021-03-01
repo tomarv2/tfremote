@@ -33,9 +33,10 @@ jobs:
       - name: Run Tox
         run: |
           python -m tox -e docs
-          echo "---------------------------
-          git status
-          echo "---------------------------
+
+      - name: Commit files
+        working-directory: .
+        run: |
           git add -A .
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
