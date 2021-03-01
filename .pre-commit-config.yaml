@@ -11,6 +11,7 @@ repos:
     -   id: name-tests-test
     -   id: requirements-txt-fixer
 
+# Flake rules: https://lintlyci.github.io/Flake8Rules/
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.4
     hooks:
