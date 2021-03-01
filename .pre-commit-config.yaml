@@ -11,12 +11,12 @@ repos:
     -   id: name-tests-test
     -   id: requirements-txt-fixer
 
-# Flake rules: https://lintlyci.github.io/Flake8Rules/
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
-    hooks:
-    -   id: flake8
-        additional_dependencies: [flake8-typing-imports==1.1.0]
+## Flake rules: https://lintlyci.github.io/Flake8Rules/
+#-   repo: https://gitlab.com/pycqa/flake8
+#    rev: 3.8.4
+#    hooks:
+#    -   id: flake8
+#        additional_dependencies: [flake8-typing-imports==1.1.0]
 
 -   repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.5.4
