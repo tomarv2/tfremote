@@ -1,23 +1,24 @@
 import os
+
 from setuptools import find_packages, setup
 
-VERSION = "0.0.3"
+VERSION = '0.0.3'
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def get_requirements(env):
     try:
-        with open("requirements-{}.txt".format(env)) as fp:
-            return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
+        with open(f'requirements-{env}.txt') as fp:
+            return [x.strip() for x in fp.read().split('\n') if not x.startswith('#')]
     except:
-        with open("requirements.txt".format(env)) as fp:
-            return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
+        with open(f'requirements.txt') as fp:
+            return [x.strip() for x in fp.read().split('\n') if not x.startswith('#')]
 
 
-install_requires = get_requirements("base")
+install_requires = get_requirements('base')
 
-with open("README.md") as f:
+with open('README.md') as f:
     long_description = f.read()
 
 setup(
@@ -26,13 +27,13 @@ setup(
     license='Apache Software License',
     description='Terraform wrapper to manage state across multiple cloud providers',
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type='text/markdown',
     author='Varun Tomar',
     author_email='varuntomar2019@gmail.com',
-    python_requires=">=3.6",
+    python_requires='>=3.6',
     packages=find_packages(),
     install_requires=install_requires,
-    url="https://github.com/tomarv2/tfremote",
+    url='https://github.com/tomarv2/tfremote',
     classifiers=[
         'Programming Language :: Python :: 3.6',
         'Operating System :: OS Independent',
@@ -40,5 +41,5 @@ setup(
     entry_points='''
         [console_scripts]
         tf = src.cli:entrypoint
-    '''
+    ''',
 )

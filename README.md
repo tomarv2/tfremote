@@ -18,7 +18,7 @@
 
 A Python package for managing Terraform remote state for: AWS, Azure, and Gcloud(GCP).
 
-To install package run: 
+To install package run:
 ```
 pip install tfremote  --upgrade
 ```
@@ -50,7 +50,7 @@ Set these env variables:
 ```
 export TF_AWS_BUCKET=<your_remote_state_bucket_name>
 export TF_AWS_PROFILE=default
-export TF_AWS_BUCKET_REGION=us-west-2 
+export TF_AWS_BUCKET_REGION=us-west-2
 export PATH=$PATH:/usr/local/bin/
 ```
 
@@ -89,16 +89,16 @@ Once environment variables are configured, run:
 
 ### For aws:
 ```
-tf -cloud aws plan -var-file ../custom.tfvars 
+tf -cloud aws plan -var-file ../custom.tfvars
 
-or 
+or
 
 tf plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
 ```
 
 ### For azure:
 ```
-tf plan -var-file ../custom.tfvars -cloud azure 
+tf plan -var-file ../custom.tfvars -cloud azure
 
 or
 
@@ -107,11 +107,11 @@ tf plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
 
 ### For gcloud:
 ```
-tf plan -var-file ../custom.tfvars -cloud gcloud 
+tf plan -var-file ../custom.tfvars -cloud gcloud
 
 or
 
-tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe' 
+tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe'
 ```
 
 ## To run tox:

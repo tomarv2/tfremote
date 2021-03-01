@@ -1,5 +1,5 @@
-from __future__ import absolute_import, print_function
+from src.tf_gcloud.plugin import TerraformGcloudWrapper
+
 from ._version import __version__
 
-from src.tf_gcloud.plugin import TerraformGcloudWrapper
 plugin = TerraformGcloudWrapper()
