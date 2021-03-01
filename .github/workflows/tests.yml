@@ -14,7 +14,7 @@ jobs:
       - name: Run Tox
         run: |
           pip install -r requirements.txt
-          tox -e docs
+          tox4 -e docs
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
