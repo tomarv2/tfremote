@@ -26,3 +26,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
+      - repo: https://github.com/thclark/pre-commit-sphinx
+        rev: 0.0.1
+        hooks:
+          - id: build-docs
+            args: ['--cache-dir', 'docs/doctrees', '--html-dir', 'docs/build/html', '--source-dir', 'docs/source']
+            language_version: python3
