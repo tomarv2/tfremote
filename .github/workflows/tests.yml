@@ -24,10 +24,8 @@ jobs:
           pip install tox tox-gh-actions
 
       - name: Run Tox
-        run: python -m tox -e docs
-
-      - name: Commit files
         run: |
+          python -m tox -e docs
           git add -A .
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
