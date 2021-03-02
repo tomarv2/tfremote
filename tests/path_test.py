@@ -1,7 +1,9 @@
-from src.common.run_command import create_command
-from src.common.run_command import build_remote_backend_tf_file
-from src.common.run_command import build_tf_state_path
-from src.common.run_command import parse_vars
+from src.common.run_command import (
+    build_remote_backend_tf_file,
+    build_tf_state_path,
+    create_command,
+    # parse_vars,
+)
 
 
 def test_create_command():
@@ -14,24 +16,18 @@ def test_create_command():
 def test_build_remote_backend_tf_file():
     storage_type = "s3"
     output = build_remote_backend_tf_file(storage_type)
-    assert output == True
+    assert True in output
 
 
 def test_build_tf_state_path():
-    required_vars = {
-        "teamid": "hello",
-        "prjid": "world"
-    }
+    required_vars = {"teamid": "hello", "prjid": "world"}
 
     var_data = {
-        'inline_vars': {},
-        'tfvars': {
-            'teamid': 'hello',
-            'prjid': 'world'
+        "inline_vars": {},
+        "tfvars": {"teamid": "hello", "prjid": "world"},
+        "variables_tf": {
+            "aws_region": "us-west-2",
         },
-        'variables_tf': {
-            'aws_region': 'us-west-2',
-        }
     }
 
     output = build_tf_state_path(required_vars, var_data)
