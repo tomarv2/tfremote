@@ -57,6 +57,8 @@ def build_remote_backend_tf_file(storage_type):
 
 
 def build_tf_state_path(required_vars, var_data):
+    print("required_vars:", required_vars)
+    print("var_data:", var_data)
     for var in required_vars:
         if var in var_data["inline_vars"]:
             required_vars[var] = var_data["inline_vars"][var]
@@ -81,6 +83,10 @@ def parse_vars(var_data, args):
     """
     var_data["inline_vars"] = parse_inline_vars(args)
     var_data["tfvars"] = parse_tfvar_files(args)
+    print("@" * 50)
+    print(var_data["inline_vars"], var_data["tfvars"])
+    logger.debug(type(args))
+    print("@" * 50)
     var_data["variables_tf"] = parse_var_file("variables.tf")
     logger.debug(
         "parsed variables: %s"
@@ -112,7 +118,7 @@ def parse_inline_vars(args):
 
 
 def parse_tfvar_files(args):
-    """
+    """x
     parse variables defined in:
      - terraform.tfvars
      - file(s) defined in command line (-var-file foo.tfvars)

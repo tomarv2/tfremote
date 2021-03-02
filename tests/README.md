@@ -1,7 +1,6 @@
 ###Run tests
 
-pytest -s # disable all capturing
-
+# disable all capturing
+pytest -s
 or
-
 python3 -m pytest -s
