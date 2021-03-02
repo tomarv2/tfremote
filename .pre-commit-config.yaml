@@ -31,12 +31,12 @@ repos:
         # F401 '._version.__version__' imported but unused
         # F841 local variable 'e' is assigned to but never used
         # W503 line break before binary operator
-        # E712 omparison to True should be 'if cond is True:' or 'if cond:'
+        # E712 comparison to True should be 'if cond is True:' or 'if cond:'
         args:
           [
             "--max-line-length=127",
             "--config=setup.cfg",
-            "--ignore=E501,E722,F541,E741,F401,F841,W503,W391",
+            "--ignore=E501,E722,F541,E741,F401,F841,W503,W391,E712",
           ]
 
   - repo: https://github.com/pre-commit/mirrors-autopep8

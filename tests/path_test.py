@@ -15,7 +15,7 @@ def test_create_command():
 def test_build_remote_backend_tf_file():
     storage_type = "s3"
     output = build_remote_backend_tf_file(storage_type)
-    assert True in output
+    assert output == True
 
 
 def test_build_tf_state_path():
