@@ -35,7 +35,7 @@ repos:
           [
             "--max-line-length=127",
             "--config=setup.cfg",
-            "--ignore=E501,E722,F541,E741,F401,F841,W503,W391"
+            "--ignore=E501,E722,F541,E741,F401,F841,W503,W391",
           ]
 
   - repo: https://github.com/pre-commit/mirrors-autopep8
