@@ -7,4 +7,3 @@ def test_create_command():
     )
     assert output == "tf plan -var-file foo.vars -var foo=var"
 
-

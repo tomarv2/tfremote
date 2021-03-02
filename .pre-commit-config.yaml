@@ -10,8 +10,6 @@ repos:
         exclude: (^docs/)
       - id: check-json
         exclude: (^docs/)
-#      - id: requirements-txt-fixer
-#        exclude: (^docs/)
       - id: check-added-large-files
         exclude: (^docs/)
 
@@ -42,11 +40,11 @@ repos:
       - id: autopep8
         exclude: (^docs/)
 
-#  - repo: https://github.com/asottile/add-trailing-comma
-#    rev: v2.1.0
-#    hooks:
-#      - id: add-trailing-comma
-#        args: [--py36-plus]
+  #  - repo: https://github.com/asottile/add-trailing-comma
+  #    rev: v2.1.0
+  #    hooks:
+  #      - id: add-trailing-comma
+  #        args: [--py36-plus]
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.10.0
