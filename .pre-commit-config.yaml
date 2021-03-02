@@ -10,11 +10,13 @@ repos:
         exclude: (^docs/)
       - id: check-yaml
         exclude: (^docs/)
-      - id: debug-statements
+      - id: check-json
         exclude: (^docs/)
       - id: name-tests-test
         exclude: (^docs/)
       - id: requirements-txt-fixer
+        exclude: (^docs/)
+      - id: check-added-large-files
         exclude: (^docs/)
 
   # Flake rules: https://lintlyci.github.io/Flake8Rules/
