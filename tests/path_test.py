@@ -1,8 +1,7 @@
-from src.common.run_command import (
+from src.common.run_command import (  # parse_vars,
     build_remote_backend_tf_file,
     build_tf_state_path,
     create_command,
-    # parse_vars,
 )
 
 
