@@ -1,29 +1,27 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
     hooks:
-    -   id: trailing-whitespace
+      - id: trailing-whitespace
         exclude: (^docs/)
-    -   id: end-of-file-fixer
+      - id: end-of-file-fixer
         exclude: (^docs/)
-    -   id: check-docstring-first
+      - id: check-docstring-first
         exclude: (^docs/)
-    -   id: check-yaml
+      - id: check-yaml
         exclude: (^docs/)
-    -   id: debug-statements
+      - id: debug-statements
         exclude: (^docs/)
-    -   id: double-quote-string-fixer
+      - id: name-tests-test
         exclude: (^docs/)
-    -   id: name-tests-test
-        exclude: (^docs/)
-    -   id: requirements-txt-fixer
+      - id: requirements-txt-fixer
         exclude: (^docs/)
 
-# Flake rules: https://lintlyci.github.io/Flake8Rules/
--   repo: https://gitlab.com/pycqa/flake8
+  # Flake rules: https://lintlyci.github.io/Flake8Rules/
+  - repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.4
     hooks:
-    -   id: flake8
+      - id: flake8
         exclude: (^docs/)
         additional_dependencies: [flake8-typing-imports==1.7.0]
         # E501 line too long
@@ -33,52 +31,52 @@ repos:
         # F401 '._version.__version__' imported but unused
         # F841 local variable 'e' is assigned to but never used
         # W503 line break before binary operator
-        args: ['--config=setup.cfg', '--ignore=E501,E722,F541,E741,F401,F841,W503']
+        args:
+          ["--config=setup.cfg", "--ignore=E501,E722,F541,E741,F401,F841,W503"]
 
--   repo: https://github.com/pre-commit/mirrors-autopep8
+  - repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.5.4
     hooks:
-    -   id: autopep8
+      - id: autopep8
         exclude: (^docs/)
 
-#-   repo: https://github.com/asottile/reorder_python_imports
-#    rev: v2.4.0
-#    hooks:
-#    -   id: reorder-python-imports
-#        exclude: (^docs/)
-
--   repo: https://github.com/asottile/add-trailing-comma
+  - repo: https://github.com/asottile/add-trailing-comma
     rev: v2.1.0
     hooks:
-    -   id: add-trailing-comma
+      - id: add-trailing-comma
         args: [--py36-plus]
 
--   repo: https://github.com/asottile/pyupgrade
+  - repo: https://github.com/asottile/pyupgrade
     rev: v2.10.0
     hooks:
-    -   id: pyupgrade
+      - id: pyupgrade
 
--   repo: https://github.com/asottile/seed-isort-config
+  - repo: https://github.com/asottile/seed-isort-config
     rev: v2.2.0
     hooks:
       - id: seed-isort-config
 
-#-   repo: https://github.com/thclark/pre-commit-sphinx
-#    rev: 0.0.1
-#    hooks:
-#    -   id: build-docs
-#        args: ['--cache-dir', 'docs/doctrees', '--html-dir', 'docs/build/html', '--source-dir', 'docs/source']
-#        language_version: python3
-
--   repo: https://github.com/timothycrosley/isort
+  - repo: https://github.com/timothycrosley/isort
     rev: "5.6.4" # Use the revision sha / tag you want to point at
     hooks:
       - id: isort # Run `isort -rc <filepath>` to autofix
         pass_filenames: true
         args: ["--profile", "black"]
 
--   repo: https://github.com/ambv/black
+  - repo: https://github.com/ambv/black
     rev: 20.8b1
     hooks:
-    - id: black
-      language_version: python3.8
+      - id: black
+        language_version: python3.8
+
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.7.0
+    hooks:
+      - id: python-use-type-annotations
+      - id: python-no-eval
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v2.2.1
+    hooks:
+      - id: prettier
+        exclude: (^docs/)

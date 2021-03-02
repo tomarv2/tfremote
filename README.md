@@ -19,6 +19,7 @@
 A Python package for managing Terraform remote state for: AWS, Azure, and Gcloud(GCP).
 
 To install package run:
+
 ```
 pip install tfremote  --upgrade
 ```
@@ -28,12 +29,12 @@ pip install tfremote  --upgrade
 - Install Python 3.8+
 
 - Using virtualenv is strongly recommended:
+
 ```
 python3 -m venv <venv name>
 ```
 
 - Terraform 0.12.0 and above (download: https://www.terraform.io/downloads.html)
-
 
 Default log level is `WARNING`, to change:
 
@@ -88,6 +89,7 @@ export TF_GCLOUD_CREDENTIALS= # change it to right value
 Once environment variables are configured, run:
 
 ### For aws:
+
 ```
 tf -cloud aws plan -var-file ../custom.tfvars
 
@@ -97,6 +99,7 @@ tf plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
 ```
 
 ### For azure:
+
 ```
 tf plan -var-file ../custom.tfvars -cloud azure
 
@@ -106,6 +109,7 @@ tf plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
 ```
 
 ### For gcloud:
+
 ```
 tf plan -var-file ../custom.tfvars -cloud gcloud
 
@@ -117,4 +121,5 @@ tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe'
 ## To run tox:
 
 #### Update Sphinx documentation
+
 tox -e docs
