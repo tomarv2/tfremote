@@ -117,4 +117,3 @@ or
 
 tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe'
 ```
-
