@@ -40,11 +40,11 @@ repos:
     -   id: autopep8
         exclude: (^docs/)
 
--   repo: https://github.com/asottile/reorder_python_imports
-    rev: v2.4.0
-    hooks:
-    -   id: reorder-python-imports
-        exclude: (^docs/)
+#-   repo: https://github.com/asottile/reorder_python_imports
+#    rev: v2.4.0
+#    hooks:
+#    -   id: reorder-python-imports
+#        exclude: (^docs/)
 
 -   repo: https://github.com/asottile/add-trailing-comma
     rev: v2.1.0
@@ -75,3 +75,9 @@ repos:
       - id: isort # Run `isort -rc <filepath>` to autofix
         pass_filenames: true
         args: ["--profile", "black"]
+
+-   repo: https://github.com/ambv/black
+    rev: 20.8b1
+    hooks:
+    - id: black
+      language_version: python3.8
