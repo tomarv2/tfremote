@@ -10,8 +10,6 @@ repos:
         exclude: (^docs/)
       - id: check-json
         exclude: (^docs/)
-      - id: name-tests-test
-        exclude: (^docs/)
       - id: requirements-txt-fixer
         exclude: (^docs/)
       - id: check-added-large-files
@@ -32,7 +30,7 @@ repos:
         # F841 local variable 'e' is assigned to but never used
         # W503 line break before binary operator
         args:
-          ["--config=setup.cfg", "--ignore=E501,E722,F541,E741,F401,F841,W503"]
+          ["--max-line-length=127", "--config=setup.cfg", "--ignore=E501,E722,F541,E741,F401,F841,W503"]
 
   - repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.5.4

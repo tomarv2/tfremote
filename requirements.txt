@@ -6,6 +6,9 @@ pyhcl
 regex
 Sphinx
 tox
-
-
+# test packages
+pytest
+pytest-env
+moto
+pytest-cov
 # flake8: noqa
