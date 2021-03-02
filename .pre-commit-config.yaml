@@ -10,8 +10,8 @@ repos:
         exclude: (^docs/)
       - id: check-json
         exclude: (^docs/)
-      - id: requirements-txt-fixer
-        exclude: (^docs/)
+#      - id: requirements-txt-fixer
+#        exclude: (^docs/)
       - id: check-added-large-files
         exclude: (^docs/)
 
@@ -31,9 +31,9 @@ repos:
         # W503 line break before binary operator
         args:
           [
-              "--max-line-length=127",
-              "--config=setup.cfg",
-              "--ignore=E501,E722,F541,E741,F401,F841,W503,W391"
+            "--max-line-length=127",
+            "--config=setup.cfg",
+            "--ignore=E501,E722,F541,E741,F401,F841,W503,W391"
           ]
 
   - repo: https://github.com/pre-commit/mirrors-autopep8
@@ -42,11 +42,11 @@ repos:
       - id: autopep8
         exclude: (^docs/)
 
-  - repo: https://github.com/asottile/add-trailing-comma
-    rev: v2.1.0
-    hooks:
-      - id: add-trailing-comma
-        args: [--py36-plus]
+#  - repo: https://github.com/asottile/add-trailing-comma
+#    rev: v2.1.0
+#    hooks:
+#      - id: add-trailing-comma
+#        args: [--py36-plus]
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.10.0
