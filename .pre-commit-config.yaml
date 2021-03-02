@@ -4,8 +4,6 @@ repos:
     hooks:
       - id: trailing-whitespace
         exclude: (^docs/)
-#      - id: end-of-file-fixer
-#        exclude: (^docs/)
       - id: check-docstring-first
         exclude: (^docs/)
       - id: check-yaml
