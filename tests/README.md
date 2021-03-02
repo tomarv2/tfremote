@@ -2,6 +2,6 @@
 
 pytest -s # disable all capturing
 
-or 
+or
 
 python3 -m pytest -s

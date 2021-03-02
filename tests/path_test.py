@@ -6,4 +6,3 @@ def test_create_command():
         ["tf", "plan", "-cloud", "aws", "-var-file", "foo.vars", "-var", "foo=var"]
     )
     assert output == "tf plan -var-file foo.vars -var foo=var"
-

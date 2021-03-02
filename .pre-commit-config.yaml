@@ -12,6 +12,10 @@ repos:
         exclude: (^docs/)
       - id: check-added-large-files
         exclude: (^docs/)
+     - id: check-ast
+       exclude: (^docs/)
+     - id: check-case-conflict
+       exclude: (^docs/)
 
   # Flake rules: https://lintlyci.github.io/Flake8Rules/
   - repo: https://gitlab.com/pycqa/flake8
