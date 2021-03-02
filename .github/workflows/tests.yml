@@ -47,6 +47,8 @@ jobs:
       - name: Generate coverage report
         run: |
           pip install pytest
+          pip install hcl
+          pip install argparse
           pip install pytest-cov
           python -m pytest --cov=./ --cov-report=xml
 
