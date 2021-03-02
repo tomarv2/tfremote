@@ -1,20 +1,21 @@
-name: Tests
+name: Code Analysis Tests
 
 on: [push] #, pull_request]
 
 jobs:
-  pre-commit:
+  analysis:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
     steps:
       - uses: actions/checkout@v2
+      - uses: pre-commit/action@v2.0.0
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - uses: pre-commit/action@v2.0.0
 
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
@@ -42,3 +43,21 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_BRANCH: "test"
           PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
+
+      - name: Generate coverage report
+        run: |
+          pip install pytest
+          pip install pytest-cov
+          python -m pytest --cov=./ --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          path_to_write_report: ./coverage/codecov_report.txt
+          verbose: true
