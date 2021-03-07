@@ -14,9 +14,9 @@ import re
 import subprocess
 import sys
 from distutils.version import StrictVersion as V
-from src.conf import REQUIRED_VARIABLES
 
 from src.common import pass_through_list, run_command
+from src.conf import REQUIRED_VARIABLES
 from src.tf_aws import plugin as aws_plugin
 from src.tf_azure import plugin as azure_plugin
 from src.tf_gcloud import plugin as gcloud_plugin

@@ -9,10 +9,10 @@ import os
 import re
 import subprocess
 from typing import List
-from src.conf import LIST_OF_VARIABLES_FILES, SUPPORTED_CLOUD_PROVIDERS
 
 import hcl
 
+from src.conf import LIST_OF_VARIABLES_FILES, SUPPORTED_CLOUD_PROVIDERS
 from src.logging import configure_logging
 
 configure_logging()

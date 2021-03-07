@@ -1,4 +1,4 @@
-name: Code Analysis Tests
+name: Code Analysis
 
 on: [push] #, pull_request]
 
@@ -28,6 +28,7 @@ jobs:
       - name: Run Tox
         run: |
           python -m tox -e docs
+          python -m tox -e tests
 
       - name: Commit files
         run: |

@@ -7,8 +7,8 @@ import sys
 
 import src.tf_aws as aws_state
 from src.common import run_command
-from src.logging import configure_logging
 from src.conf import DEFAULT_AWS_BUCKET_REGION
+from src.logging import configure_logging
 
 configure_logging()
 logger = logging.getLogger()
