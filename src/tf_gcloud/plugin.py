@@ -134,6 +134,16 @@ class TerraformGcloudWrapper:
                     os.unlink(".terraform/terraform.tfstate")
                     logger.debug("removed .terraform/terraform.tfstate")
                 gcloud_path = self.gcloud_path.rsplit("/", 1)[0]
+                if "None" in gcloud_path:
+                    logger.error(
+                        """
+     Required values missing:
+     please specify: "teamid" & "prjid"
+     values can be specified using '-vars' or '-tfvars'
+     e.g. tf -cloud gcloud plan -var='teamid=foo' -var='prjid=bar'
+     tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n"""
+                    )
+                    raise SystemExit
                 cmd = (
                     'terraform init -backend-config="bucket={}" -backend-config="credentials={}" '
                     "-backend-config"

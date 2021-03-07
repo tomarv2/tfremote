@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="https://github.com/tomarv2/tfremote/actions/workflows/unit_test.yml" alt="GitHub tag">
-        <img src="https://github.com/tomarv2/tfremote/actions/workflows/unit_test.yml/badge.svg?branch=main" /></a>
+    <a href="https://github.com/tomarv2/tfremote/actions/workflows/checks.yml" alt="Check">
+        <img src="https://github.com/tomarv2/tfremote/actions/workflows/checks.yml/badge.svg?branch=main" /></a>
     <a href="https://www.apache.org/licenses/LICENSE-2.0" alt="GitHub tag">
         <img src="https://img.shields.io/github/license/tomarv2/tfremote" /></a>
     <a href="https://github.com/tomarv2/tfremote/tags" alt="GitHub tag">
@@ -14,14 +14,26 @@
     <a href="https://twitter.com/intent/follow?screen_name=varuntomar2019" alt="follow on Twitter">
         <img src="https://img.shields.io/twitter/follow/varuntomar2019?style=social&logo=twitter"></a>
 </p>
+
 # Terraform Remote State Manager
 
-A Python package for managing Terraform remote state for: AWS, Azure, and Gcloud(GCP).
+**tf** is a python package for managing terraform remote state for: Google(GCP), AWS, and Azure.
+It sets a defined structure for all cloud providers removing the overheard of configuring and managing the path in storage buckets.
 
-To install package run:
+It works with:
+
+:point_right: Google Storage Bucket
+
+:point_right: AWS S3
+
+:point_right: Azure Storage
+
+> ❗️ **Note** Best practice is to make sure buckets are versioned.
+
+## Install package
 
 ```
-pip install tfremote  --upgrade
+pip install tfremote --upgrade
 ```
 
 ## Environment setup
@@ -57,7 +69,7 @@ Default log level is `WARNING`, to change:
 
 ### AWS
 
-> ❗️ **Important** - s3 bucket for remote state should reside in `us-west-2` (best practice is to have it versioned)
+> ❗️ **Important** - s3 bucket for remote state should reside in `us-west-2`
 
 Set below env variables:
 
@@ -65,7 +77,6 @@ Set below env variables:
 export TF_AWS_BUCKET=<your_remote_state_bucket_name>
 export TF_AWS_PROFILE=default
 export TF_AWS_BUCKET_REGION=us-west-2
-export PATH=$PATH:/usr/local/bin/
 ```
 
 ### Azure
@@ -82,7 +93,7 @@ export TF_AZURE_CONTAINER=tfstate # Output of remote_state.sh
 export ARM_ACCESS_KEY=xxxxxxxxxx # Output of remote_state.sh
 ```
 
-### Gcloud
+### GCP(Gcloud)
 
 https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform
 
@@ -99,32 +110,32 @@ export TF_GCLOUD_CREDENTIALS= # change it to right value
 
 Once environment variables are configured, run:
 
-### For aws:
+### For Gcloud:
 
 ```
-tf -cloud aws plan -var-file ../custom.tfvars
-
-or
-
-tf plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
+tf plan -var='teamid=foo' -var='prjid=bar' -cloud gcloud
 ```
 
-### For azure:
+The structure in Google Storage Bucket:
+
+![alt text](docs/images/google_tf.png)
+
+### For AWS:
 
 ```
-tf plan -var-file ../custom.tfvars -cloud azure
-
-or
-
-tf plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
+tf plan -var='teamid=foo' -var='prjid=bar' -cloud aws
 ```
 
-### For gcloud:
+The structure in AWS S3:
+
+![alt text](docs/images/aws_tf.png)
+
+### For Azure:
 
 ```
-tf plan -var-file ../custom.tfvars -cloud gcloud
-
-or
-
-tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe'
+tf plan -var='teamid=foo' -var='prjid=bar' -cloud azure
 ```
+
+The structure in Azure Storage:
+
+![alt text](docs/images/azure_tf.png)
