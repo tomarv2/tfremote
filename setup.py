@@ -8,10 +8,10 @@ ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def get_requirements(env):
-    try:
-        with open(f"requirements-{env}.txt") as fp:
-            return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
-    except:
+    # try:
+    #     with open(f"requirements-{env}.txt") as fp:
+    #         return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
+    # except:
         with open("requirements.txt") as fp:
             return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
 

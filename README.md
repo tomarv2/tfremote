@@ -40,6 +40,17 @@ Default log level is `WARNING`, to change:
 
 `export TF_LOG_LEVEL` to any of these: `'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'`
 
+> ❗️ **Important** - Two variables are required for using `tf` package:
+> - teamid
+> - prjid
+> 
+> These variables are required to set backend path in the remote storage.
+> Variables can be defined using:
+> - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
+> - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
+>
+> For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
+
 ## Setup environment variables
 
 ### AWS
@@ -78,8 +89,6 @@ Set these env variables:
 ```
 # Google storage bucket name
 export TF_GCLOUD_BUCKET= # change it to right value
-# Folders inside the bucket
-export TF_GCLOUD_PREFIX= # change it to right value
 # Path to google service account file
 export TF_GCLOUD_CREDENTIALS= # change it to right value
 ```

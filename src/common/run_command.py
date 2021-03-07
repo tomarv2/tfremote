@@ -79,9 +79,9 @@ def build_tf_state_path(required_vars, var_data):
                     )
         else:
             raise Exception(
-                "ERROR: required variables 'teamid' and 'prjid' not defined variables can be defined "
-                "using: - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'- "
-                "inside '.tfvars' file e.g.: -var-file=<tfvars file location> for more information refer "
+                "ERROR: required variables 'teamid' and 'prjid' not defined.\nVariables can be defined "
+                "using:\n- inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'\n- "
+                "inside '.tfvars' file e.g.: -var-file=<tfvars file location> \nfor more information refer "
                 "to Terraform documentation"
             )
 

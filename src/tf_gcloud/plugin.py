@@ -23,7 +23,6 @@ class TerraformGcloudWrapper:
     gcloud_path = None
     gcloud_bucket_name = None
     gcloud_credentials = None
-    gcloud_prefix = None
 
     def __init__(self):
         self.required_vars = None
@@ -52,14 +51,8 @@ class TerraformGcloudWrapper:
 
     # set google storage account details (get from env variables)
     def configure(self):
-        self.gcloud_prefix = os.getenv("TF_GCLOUD_PREFIX")
         self.gcloud_bucket_name = os.getenv("TF_GCLOUD_BUCKET")
         self.gcloud_credentials = os.getenv("TF_GCLOUD_CREDENTIALS")
-        if (self.gcloud_prefix is None) or (self.gcloud_prefix == ""):
-            logger.error(
-                "Please set the TF_GCLOUD_PREFIX environment variable",
-            )
-            exit(1)
         if (self.gcloud_bucket_name is None) or (self.gcloud_bucket_name == ""):
             logger.error(
                 "Please set the TF_GCLOUD_BUCKET environment variable",
@@ -148,7 +141,7 @@ class TerraformGcloudWrapper:
                         self.gcloud_bucket_name, self.gcloud_credentials, gcloud_path
                     )
                 )
-                logger.debug(f"init command: {cmd}")
+                logger.debug(f"Terraform init command: {cmd}")
 
                 # TODO: if 'prefix=' in cmd:
                 # verify contents of backend file
