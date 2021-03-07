@@ -41,11 +41,13 @@ Default log level is `WARNING`, to change:
 `export TF_LOG_LEVEL` to any of these: `'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'`
 
 > ❗️ **Important** - Two variables are required for using `tf` package:
+>
 > - teamid
 > - prjid
-> 
+>
 > These variables are required to set backend path in the remote storage.
 > Variables can be defined using:
+>
 > - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
 > - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
 >
