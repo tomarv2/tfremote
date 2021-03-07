@@ -1,15 +1,30 @@
-name: Code Analysis
+name: Code Test & Analysis
 
-on: [pull_request]
+#on: [push, pull_request]
+on:
+  push:
+    branches:
+      - develop
+      - main
+    paths-ignore:
+      - "LICENSE"
+      - ".gitignore"
+      - "**.md"
 
 jobs:
   analysis:
     runs-on: ubuntu-latest
+    outputs:
+      run_job: ${{ steps.check_files.outputs.run_job }}
     strategy:
       matrix:
         python-version: [3.8]
     steps:
-      - uses: actions/checkout@v2
+      - name: Error handling # https://github.com/actions/checkout/issues/317
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 2
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
@@ -30,22 +45,8 @@ jobs:
           python -m tox -e docs
           python -m tox -e tests
 
-      - name: Commit files
-        run: |
-          pwd
-          ls -la
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add -A; git commit -m "Add changes"; git push
-
-      - name: Pull requests
-        uses: vsoch/pull-request-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_BRANCH: "test"
-          PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
-
       - name: Generate coverage report
+        if: ${{ steps.vars.outputs.branch_name }} == 'main'
         run: |
           pip install pytest
           pip install hcl
@@ -54,6 +55,7 @@ jobs:
           python -m pytest --cov=./ --cov-report=xml
 
       - name: Upload coverage to Codecov
+        if: ${{ steps.vars.outputs.branch_name }} == 'main'
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -64,3 +66,65 @@ jobs:
           fail_ci_if_error: true
           path_to_write_report: ./coverage/codecov_report.txt
           verbose: true
+
+      - name: Check modified file(s)
+        id: check_files
+        run: |
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > '${{ runner.temp }}/files.txt'
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file ]]; then
+              echo "Some files changed."
+              echo "::set-output name=run_job::true"
+              break
+            else
+              echo "::set-output name=run_job::false"
+            fi
+          done < '${{ runner.temp }}/files.txt'
+
+      - name: check modified file
+        id: check_file_github_actions
+        run: |
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > '${{ runner.temp }}/github_actions_files.txt'
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file != '.github/workflows/*.yml' ]]; then
+              echo "Some files changed."
+              echo "::set-output name=run_job::true"
+              break
+            else
+              echo "::set-output name=run_job::false"
+            fi
+          done < '${{ runner.temp }}/github_actions_files.txt'
+
+      - name: Get current branch name
+        if: hashFiles('${{ runner.temp }}/files.txt') != ''
+        id: vars
+        run: |
+          echo ::set-output name=branch_name::${GITHUB_REF##*/}
+
+      - name: Commit files
+        if: ${{ steps.vars.outputs.branch_name == 'develop' && hashFiles('${{ runner.temp }}/github_actions_files.txt') == '' }}
+        run: |
+          git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A; git commit -m "Add changes"; git push
+
+      # Create a pull request from develop to main branch0
+      - name: Pull requests
+        if: ${{ steps.vars.outputs.branch_name == 'develop' && hashFiles('${{ runner.temp }}/github_actions_files.txt') == '' }}
+        uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: "main"
+          PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}

@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-VERSION = "0.0.3"
+VERSION = "0.0.5"
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -12,7 +12,7 @@ def get_requirements():
         return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
 
 
-install_requires = get_requirements("base")
+install_requires = get_requirements()
 
 with open("README.md") as f:
     long_description = f.read()
