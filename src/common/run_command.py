@@ -9,6 +9,7 @@ import os
 import re
 import subprocess
 from typing import List
+from src.conf import LIST_OF_VARIABLES_FILES, SUPPORTED_CLOUD_PROVIDERS
 
 import hcl
 
@@ -29,11 +30,10 @@ def create_command(arguments_entered: List[str]) -> str:
     :param arguments_entered: storage path, tfvars file
     :return: command generated
     """
-    cloud_providers = ["aws", "azure", "gcloud"]
     logger.debug(f"arguments_entered: {arguments_entered}")
     if "-cloud" in arguments_entered:
         arguments_entered.remove("-cloud")
-    for i in cloud_providers:
+    for i in SUPPORTED_CLOUD_PROVIDERS:
         if i in arguments_entered:
             arguments_entered.remove(i)
     return " ".join(arguments_entered)
@@ -59,26 +59,27 @@ def build_remote_backend_tf_file(storage_type):
 def build_tf_state_path(required_vars, var_data):
     logger.debug("inside build_tf_state_path function")
     for var in required_vars:
+        logger.debug("checking if required variables are provided")
+        logger.debug("checking required vars in inline vars")
         if var in var_data["inline_vars"]:
             required_vars[var] = var_data["inline_vars"][var]
         elif var_data["tfvars"] is not None:
+            logger.debug("checking required vars in tfvars")
             if var in var_data["tfvars"]:
                 required_vars[var] = var_data["tfvars"][var]
-        elif var in var_data["variables_tf"]:
-            if var_data["variables_tf"][var] != "":
-                required_vars[var] = var_data["variables_tf"][var]
-            else:
-                raise Exception("""ERROR: required variables 'teamid' and 'prjid' not defined
-                variables can be defined using:
-                - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'"
-                - inside '.tfvars' file
-                for more information refer to Terraform documentation""")
+        elif "variables_tf" in var_data:
+            logger.debug("checking required vars in variables file")
+            if var in var_data["variables_tf"]:
+                logger.debug("checking required vars in variables.tf file")
+                if var_data["variables_tf"][var] != "":
+                    required_vars[var] = var_data["variables_tf"][var]
+                else:
+                    raise Exception("ERROR: required variables 'teamid' and 'prjid' not provided")
         else:
-            raise Exception("""ERROR: required variables 'teamid' and 'prjid' not defined
-            variables can be defined using:
-            - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'"
-            - inside '.tfvars' file
-            for more information refer to Terraform documentation""")
+            raise Exception("ERROR: required variables 'teamid' and 'prjid' not defined variables can be defined "
+                            "using: - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'- "
+                            "inside '.tfvars' file e.g.: -var-file=<tfvars file location> for more information refer "
+                            "to Terraform documentation")
 
     else:
         path = "terraform/{}/{}/terraform.tfstate".format(
@@ -96,17 +97,19 @@ def parse_vars(var_data, args):
     logger.debug("inside parse_vars function")
     var_data["inline_vars"] = parse_inline_vars(args)
     var_data["tfvars"] = parse_tfvar_files(args)
-    var_data["variables_tf"] = parse_var_file("variables.tf")
-    logger.debug(
-        "parsed variables: %s"
-        % (
-            json.dumps(
-                var_data,
-                indent=2,
-                sort_keys=True,
+    for file in LIST_OF_VARIABLES_FILES:
+        if os.path.isfile(file):
+            var_data["variables_tf"] = parse_var_file(file)
+            logger.debug(
+                "parsed variables: %s"
+                % (
+                    json.dumps(
+                        var_data,
+                        indent=2,
+                        sort_keys=True,
+                    )
+                ),
             )
-        ),
-    )
 
 
 def parse_inline_vars(args):
@@ -127,7 +130,7 @@ def parse_inline_vars(args):
 
 
 def parse_tfvar_files(args):
-    """x
+    """
     parse variables defined in:
      - terraform.tfvars
      - file(s) defined in command line (-var-file foo.tfvars)
@@ -156,6 +159,8 @@ def parse_tfvar_files(args):
         #                 value = re.sub("^\"|^'|\"$|'$", "", match[1])
         #                 results[key] = value
         # return results
+    else:
+        logger.debug("no tfvars provided")
 
 
 def parse_var_file(file):

@@ -15,6 +15,7 @@ import subprocess
 import sys
 from distutils.version import StrictVersion as V
 from typing import List
+from src.conf import REQUIRED_VARIABLES
 
 from src.common import pass_through_list, run_command
 from src.tf_aws import plugin as aws_plugin
@@ -56,7 +57,7 @@ class TerraformWrapper:
     var_data = {}
     args = None
     args_unknown = None
-    required_vars = {"teamid": None, "prjid": None}
+    required_vars = REQUIRED_VARIABLES
     logger = None
 
     def __init__(self):
