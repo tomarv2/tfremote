@@ -30,9 +30,6 @@ def test_build_tf_state_path():
     }
 
     output = build_tf_state_path(required_vars, var_data)
-    print("@" * 50)
-    print(output)
-    print("@" * 50)
     assert output == "terraform/hello/world/terraform.tfstate"
 
 
@@ -59,9 +56,5 @@ def test_build_tf_state_path():
 #         }
 #     }
 #
-#     print(type(args))
-#     print("@" * 50)
 #     output = parse_vars(var_data, args)
-#     print(output)
-#     print("@" * 50)
 #     assert output == True

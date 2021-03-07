@@ -57,17 +57,29 @@ def build_remote_backend_tf_file(storage_type):
 
 
 def build_tf_state_path(required_vars, var_data):
-    print("required_vars:", required_vars)
-    print("var_data:", var_data)
+    logger.debug("inside build_tf_state_path function")
     for var in required_vars:
         if var in var_data["inline_vars"]:
             required_vars[var] = var_data["inline_vars"][var]
-        elif var in var_data["tfvars"]:
-            required_vars[var] = var_data["tfvars"][var]
+        elif var_data["tfvars"] is not None:
+            if var in var_data["tfvars"]:
+                required_vars[var] = var_data["tfvars"][var]
         elif var in var_data["variables_tf"]:
-            required_vars[var] = var_data["variables_tf"][var]
+            if var_data["variables_tf"][var] != "":
+                required_vars[var] = var_data["variables_tf"][var]
+            else:
+                raise Exception("""ERROR: required variables 'teamid' and 'prjid' not defined
+                variables can be defined using:
+                - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'"
+                - inside '.tfvars' file
+                for more information refer to Terraform documentation""")
         else:
-            raise Exception("ERROR: required var %s not defined" % var)
+            raise Exception("""ERROR: required variables 'teamid' and 'prjid' not defined
+            variables can be defined using:
+            - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'"
+            - inside '.tfvars' file
+            for more information refer to Terraform documentation""")
+
     else:
         path = "terraform/{}/{}/terraform.tfstate".format(
             required_vars["teamid"],
@@ -81,12 +93,9 @@ def parse_vars(var_data, args):
     """
     function to parse variables
     """
+    logger.debug("inside parse_vars function")
     var_data["inline_vars"] = parse_inline_vars(args)
     var_data["tfvars"] = parse_tfvar_files(args)
-    print("@" * 50)
-    print(var_data["inline_vars"], var_data["tfvars"])
-    logger.debug(type(args))
-    print("@" * 50)
     var_data["variables_tf"] = parse_var_file("variables.tf")
     logger.debug(
         "parsed variables: %s"
@@ -104,7 +113,7 @@ def parse_inline_vars(args):
     """
     parse variables defined on the command line (-var foo=bar)
     """
-    logger.debug("parsing inline variables")
+    logger.debug("inside parse_inline_vars function")
     results = {}
     if vars(args)["inline_vars"] is None:
         return results
@@ -123,29 +132,30 @@ def parse_tfvar_files(args):
      - terraform.tfvars
      - file(s) defined in command line (-var-file foo.tfvars)
     """
+    logger.debug("inside parse_tfvar_files function")
     tfvar_files = vars(args)["tfvar_files"]
-    if tfvar_files is None:
-        logger.error(
-            'Please use .tfvars file to specify the custom parameters.  eg: "-var-file custom.tfvars"',
-        )
-        exit(1)
-    if (os.path.isfile("terraform.tfvars")) and ("terraform.tfvars" not in tfvar_files):
-        tfvar_files.insert(0, "terraform.tfvars")
-    for file in tfvar_files:
-        with open(file) as fh:
-            obj = hcl.load(fh)
-            return obj
-    #         for line in fh:
-    #             line = line.rstrip("\r\n")
-    #             line = re.sub("^\s+", "", line)
-    #             if re.search("^#", line) or re.search("^$", line):
-    #                 continue
-    #             else:
-    #                 match = re.split("\s*=\s*", line, maxsplit=1)
-    #                 key = match[0]
-    #                 value = re.sub("^\"|^'|\"$|'$", "", match[1])
-    #                 results[key] = value
-    # return results
+    if tfvar_files is not None:
+        # logger.error(
+        #     'Please use .tfvars file to specify the custom parameters.  eg: "-var-file custom.tfvars"',
+        # )
+        # exit(1)
+        if (os.path.isfile("terraform.tfvars")) and ("terraform.tfvars" not in tfvar_files):
+            tfvar_files.insert(0, "terraform.tfvars")
+        for file in tfvar_files:
+            with open(file) as fh:
+                obj = hcl.load(fh)
+                return obj
+        #         for line in fh:
+        #             line = line.rstrip("\r\n")
+        #             line = re.sub("^\s+", "", line)
+        #             if re.search("^#", line) or re.search("^$", line):
+        #                 continue
+        #             else:
+        #                 match = re.split("\s*=\s*", line, maxsplit=1)
+        #                 key = match[0]
+        #                 value = re.sub("^\"|^'|\"$|'$", "", match[1])
+        #                 results[key] = value
+        # return results
 
 
 def parse_var_file(file):
@@ -157,6 +167,7 @@ def parse_var_file(file):
 
     }
     """
+    logger.debug("inside parse_var_file function")
     results = {}
     with open(file) as fh:
         data = hcl.load(fh)

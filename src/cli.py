@@ -52,16 +52,6 @@ def valid_terraform_version(min_supported_ver):
         return False
 
 
-def create_command(arguments_entered: List[str]) -> str:
-    cloud_providers = ["aws", "azure", "gcloud"]
-    if "-cloud" in arguments_entered:
-        arguments_entered.remove("-cloud")
-    for i in cloud_providers:
-        if i in arguments_entered:
-            arguments_entered.remove(i)
-    return " ".join(arguments_entered)
-
-
 class TerraformWrapper:
     var_data = {}
     args = None
@@ -77,13 +67,13 @@ class TerraformWrapper:
         parser.add_argument(
             "-cloud",
             dest="cloud",
-            help="specify the cloud provider (e.g. azure, aws, or gcloud)",
+            help="specify cloud provider (e.g. azure, aws, or gcloud)",
         )
         parser.add_argument(
             "-var-file",
             action="append",
             dest="tfvar_files",
-            help="specify a tfvars file",
+            help="specify .tfvars file",
         )
         parser.add_argument(
             "-var",
@@ -112,21 +102,24 @@ class TerraformWrapper:
         else:
             if vars(self.args)["cloud"] is None:
                 logger.error(
-                    "Please specify a cloud provider with -cloud argument(-cloud azure/aws/gcloud)",
+                    "Please specify cloud provider with -cloud argument(-cloud azure/aws/gcloud)",
                 )
                 raise SystemExit
             cloud_env = vars(self.args)["cloud"].lower()
             if cloud_env == "aws":
+                logger.debug("configuring aws")
                 aws_plugin.configure_remotestate(
                     self.required_vars,
                     self.var_data,
                 )
             elif cloud_env == "azure":
+                logger.debug("configuring azure")
                 azure_plugin.configure_remotestate(
                     self.required_vars,
                     self.var_data,
                 )
             elif cloud_env == "gcloud":
+                logger.debug("configuring gcloud")
                 gcloud_plugin.configure_remotestate(
                     self.required_vars,
                     self.var_data,

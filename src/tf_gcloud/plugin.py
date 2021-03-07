@@ -79,6 +79,7 @@ class TerraformGcloudWrapper:
         )
 
     def configure_remotestate(self, required_vars, var_data):
+        logger.debug("inside configure_remotestate")
         self.required_vars = required_vars
         self.var_data = var_data
         run_command.parse_vars(self.var_data, self.args)
@@ -113,6 +114,7 @@ class TerraformGcloudWrapper:
         configure the Terraform remote state if necessary
         return True if remote state was successfully configured
         """
+        logger.debug("inside set_remote_backend")
         current_tf_state = {"backend": {}}
         current_tf_state["backend"]["config"] = {}
         current_tf_state["backend"]["config"]["bucket"] = None
