@@ -52,7 +52,7 @@ def build_remote_backend_tf_file(storage_type):
             f.write("\n")
             f.write('terraform {\n\tbackend "%s" {\n\t}\n}\n' % storage_type)
         return True
-    except OSError as e:
+    except OSError:
         logger.error("error creating file: {}".format("remote_backend.tf"))
 
 
@@ -74,12 +74,16 @@ def build_tf_state_path(required_vars, var_data):
                 if var_data["variables_tf"][var] != "":
                     required_vars[var] = var_data["variables_tf"][var]
                 else:
-                    raise Exception("ERROR: required variables 'teamid' and 'prjid' not provided")
+                    raise Exception(
+                        "ERROR: required variables 'teamid' and 'prjid' not provided"
+                    )
         else:
-            raise Exception("ERROR: required variables 'teamid' and 'prjid' not defined variables can be defined "
-                            "using: - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'- "
-                            "inside '.tfvars' file e.g.: -var-file=<tfvars file location> for more information refer "
-                            "to Terraform documentation")
+            raise Exception(
+                "ERROR: required variables 'teamid' and 'prjid' not defined variables can be defined "
+                "using: - inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'- "
+                "inside '.tfvars' file e.g.: -var-file=<tfvars file location> for more information refer "
+                "to Terraform documentation"
+            )
 
     else:
         path = "terraform/{}/{}/terraform.tfstate".format(
@@ -142,7 +146,9 @@ def parse_tfvar_files(args):
         #     'Please use .tfvars file to specify the custom parameters.  eg: "-var-file custom.tfvars"',
         # )
         # exit(1)
-        if (os.path.isfile("terraform.tfvars")) and ("terraform.tfvars" not in tfvar_files):
+        if (os.path.isfile("terraform.tfvars")) and (
+            "terraform.tfvars" not in tfvar_files
+        ):
             tfvar_files.insert(0, "terraform.tfvars")
         for file in tfvar_files:
             with open(file) as fh:

@@ -140,9 +140,9 @@ class TerraformAWSWrapper:
                 with open(".terraform/terraform.tfstate") as fh:
                     current_tf_state = json.load(fh)
             if (
-                    ("backend" in current_tf_state)
-                    and (current_tf_state["backend"]["config"]["bucket"] == self.s3_bucket)
-                    and (current_tf_state["backend"]["config"]["key"] == self.s3_path)
+                ("backend" in current_tf_state)
+                and (current_tf_state["backend"]["config"]["bucket"] == self.s3_bucket)
+                and (current_tf_state["backend"]["config"]["key"] == self.s3_path)
             ):
                 logger.debug("No need to pull remote state")
                 return True
@@ -150,9 +150,16 @@ class TerraformAWSWrapper:
                 if os.path.isfile(".terraform/terraform.tfstate"):
                     os.unlink(".terraform/terraform.tfstate")
                     logger.debug("Removed .terraform/terraform.tfstate")
-                cmd = 'terraform init -backend-config="bucket={}" -backend-config="region={}" -backend-config=' '"key' \
-                      '={}" -backend-config="acl=bucket-owner-full-control" -backend-config="profile={}"'.format(
-                    self.s3_bucket, DEFAULT_AWS_BUCKET_REGION, self.s3_path, self.aws_profile)
+                cmd = (
+                    'terraform init -backend-config="bucket={}" -backend-config="region={}" -backend-config='
+                    '"key'
+                    '={}" -backend-config="acl=bucket-owner-full-control" -backend-config="profile={}"'.format(
+                        self.s3_bucket,
+                        DEFAULT_AWS_BUCKET_REGION,
+                        self.s3_path,
+                        self.aws_profile,
+                    )
+                )
                 logger.debug("init command: {}".format(cmd))
                 ret_code = run_command.run_cmd(cmd)
                 if ret_code == 0:

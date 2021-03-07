@@ -1,7 +1,5 @@
 import logging
 
-from src.logging import configure_logging
-
 logger = logging.getLogger(__name__)
 
 

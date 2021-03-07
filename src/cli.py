@@ -14,7 +14,6 @@ import re
 import subprocess
 import sys
 from distutils.version import StrictVersion as V
-from typing import List
 from src.conf import REQUIRED_VARIABLES
 
 from src.common import pass_through_list, run_command

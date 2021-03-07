@@ -141,10 +141,12 @@ class TerraformGcloudWrapper:
                     os.unlink(".terraform/terraform.tfstate")
                     logger.debug("removed .terraform/terraform.tfstate")
                 gcloud_path = self.gcloud_path.rsplit("/", 1)[0]
-                cmd = 'terraform init -backend-config="bucket={}" -backend-config="credentials={}" ' '-backend-config="prefix={}"'.format(
-                    self.gcloud_bucket_name,
-                    self.gcloud_credentials,
-                    gcloud_path,
+                cmd = (
+                    'terraform init -backend-config="bucket={}" -backend-config="credentials={}" '
+                    "-backend-config"
+                    '="prefix={}"'.format(
+                        self.gcloud_bucket_name, self.gcloud_credentials, gcloud_path
+                    )
                 )
                 logger.debug(f"init command: {cmd}")
 

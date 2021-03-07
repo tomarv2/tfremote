@@ -136,10 +136,14 @@ class TerraformAzureWrapper:
                 if os.path.isfile(".terraform/terraform.tfstate"):
                     os.unlink(".terraform/terraform.tfstate")
                     logger.debug("removed .terraform/terraform.tfstate")
-                cmd = 'terraform init -backend-config="storage_account_name={}" -backend-config="key={}" ' '-backend-config="container_name={}"'.format(
-                    self.azure_stg_acc_name,
-                    self.azure_path,
-                    self.azure_container_name,
+                cmd = (
+                    'terraform init -backend-config="storage_account_name={}" -backend-config="key={}" '
+                    "-backend"
+                    '-config="container_name={}"'.format(
+                        self.azure_stg_acc_name,
+                        self.azure_path,
+                        self.azure_container_name,
+                    )
                 )
                 logger.debug("init command: {}".format(cmd))
                 ret_code = run_command.run_cmd(cmd)
