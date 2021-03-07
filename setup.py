@@ -12,7 +12,7 @@ def get_requirements():
         return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
 
 
-install_requires = get_requirements("base")
+install_requires = get_requirements()
 
 with open("README.md") as f:
     long_description = f.read()
