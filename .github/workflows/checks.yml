@@ -28,6 +28,7 @@ jobs:
       - name: Run Tox
         run: |
           python -m tox -e docs
+          python -m tox -e
 
       - name: Commit files
         run: |
