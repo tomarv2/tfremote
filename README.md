@@ -55,9 +55,9 @@ Default log level is `WARNING`, to change:
 
 ### AWS
 
-s3 bucket for remote state should reside in `us-west-2` (best practice is to have it versioned)
+> ❗️ **Important** - s3 bucket for remote state should reside in `us-west-2` (best practice is to have it versioned)
 
-Set these env variables:
+Set below env variables:
 
 ```
 export TF_AWS_BUCKET=<your_remote_state_bucket_name>
@@ -70,9 +70,9 @@ export PATH=$PATH:/usr/local/bin/
 
 To create storage for remote state there is handy script.
 
-Run `remote_state.sh` scripts located under `scripts` (fill in the required information)
+Run `scripts/remote_state.sh` (fill in the required information)
 
-Set these env variables:
+Set below env variables:
 
 ```
 export TF_AZURE_STORAGE_ACCOUNT=tfstatexxxxx # Output of remote_state.sh
@@ -84,7 +84,7 @@ export ARM_ACCESS_KEY=xxxxxxxxxx # Output of remote_state.sh
 
 https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform
 
-Set these env variables:
+Set below env variables:
 
 ```
 # Google storage bucket name
