@@ -1,0 +1,239 @@
+
+
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>src package &#8212; Tfremote 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.common package" href="src.common.html" />
+    <link rel="prev" title="src" href="modules.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="src.common.html" title="src.common package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="src"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Tfremote 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" accesskey="U">src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="src-package">
+<h1>src package<a class="headerlink" href="#src-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.common.html">src.common package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common.pass_through_list">src.common.pass_through_list module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common.run_command">src.common.run_command module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.common.html#module-src.common">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.tf_aws.html">src.tf_aws package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_aws.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_aws.html#module-src.tf_aws.plugin">src.tf_aws.plugin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_aws.html#module-src.tf_aws">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.tf_azure.html">src.tf_azure package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_azure.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_azure.html#module-src.tf_azure.plugin">src.tf_azure.plugin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_azure.html#module-src.tf_azure">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.tf_gcloud.html">src.tf_gcloud package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_gcloud.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_gcloud.html#module-src.tf_gcloud.plugin">src.tf_gcloud.plugin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.tf_gcloud.html#module-src.tf_gcloud">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.cli">
+<span id="src-cli-module"></span><h2>src.cli module<a class="headerlink" href="#module-src.cli" title="Permalink to this headline">¶</a></h2>
+<p>This package allows multiple teams to collaborate on Terraform deployments by maintaining centralized remote state.</p>
+<ul class="simple">
+<li><p>aws</p></li>
+<li><p>azure</p></li>
+<li><p>gcloud</p></li>
+<li><p>alicloud in-progress</p></li>
+</ul>
+<p>It needs two variables: teamid and prjid to structure files in storage</p>
+<dl class="py class">
+<dt id="src.cli.TerraformWrapper">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">src.cli.</span></code><code class="sig-name descname"><span class="pre">TerraformWrapper</span></code><a class="headerlink" href="#src.cli.TerraformWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="src.cli.TerraformWrapper.args">
+<code class="sig-name descname"><span class="pre">args</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.cli.TerraformWrapper.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.cli.TerraformWrapper.args_unknown">
+<code class="sig-name descname"><span class="pre">args_unknown</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.cli.TerraformWrapper.args_unknown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.cli.TerraformWrapper.logger">
+<code class="sig-name descname"><span class="pre">logger</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.cli.TerraformWrapper.logger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="src.cli.TerraformWrapper.main">
+<code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.cli.TerraformWrapper.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.cli.TerraformWrapper.required_vars">
+<code class="sig-name descname"><span class="pre">required_vars</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{'prjid':</span> <span class="pre">None,</span> <span class="pre">'teamid':</span> <span class="pre">None}</span></em><a class="headerlink" href="#src.cli.TerraformWrapper.required_vars" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="src.cli.TerraformWrapper.var_data">
+<code class="sig-name descname"><span class="pre">var_data</span></code><em class="property"> <span class="pre">=</span> <span class="pre">{}</span></em><a class="headerlink" href="#src.cli.TerraformWrapper.var_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="src.cli.entrypoint">
+<code class="sig-prename descclassname"><span class="pre">src.cli.</span></code><code class="sig-name descname"><span class="pre">entrypoint</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.cli.entrypoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="src.cli.valid_terraform_version">
+<code class="sig-prename descclassname"><span class="pre">src.cli.</span></code><code class="sig-name descname"><span class="pre">valid_terraform_version</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_supported_ver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.cli.valid_terraform_version" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>min_supported_ver</strong> – v12</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.logging">
+<span id="src-logging-module"></span><h2>src.logging module<a class="headerlink" href="#module-src.logging" title="Permalink to this headline">¶</a></h2>
+<p>Centralized logging</p>
+<dl class="py function">
+<dt id="src.logging.configure_logging">
+<code class="sig-prename descclassname"><span class="pre">src.logging.</span></code><code class="sig-name descname"><span class="pre">configure_logging</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.logging.configure_logging" title="Permalink to this definition">¶</a></dt>
+<dd><p>Centralized logging, default log level is WARNING
+:return: None</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-src">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">src package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-src.cli">src.cli module</a></li>
+<li><a class="reference internal" href="#module-src.logging">src.logging module</a></li>
+<li><a class="reference internal" href="#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">src</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="src.common.html"
+                        title="next chapter">src.common package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/src.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="src.common.html" title="src.common package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="src"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Tfremote 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >src</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">src package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Author.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+  </body>
+</html>
