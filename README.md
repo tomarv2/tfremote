@@ -1,6 +1,6 @@
 <p align="center">
-    <a href="https://github.com/tomarv2/tfremote/actions/workflows/unit_test.yml" alt="GitHub tag">
-        <img src="https://github.com/tomarv2/tfremote/actions/workflows/unit_test.yml/badge.svg?branch=main" /></a>
+    <a href="https://github.com/tomarv2/tfremote/actions/workflows/checks.yml" alt="Check">
+        <img src="https://github.com/tomarv2/tfremote/actions/workflows/checks.yml/badge.svg?branch=main" /></a>
     <a href="https://www.apache.org/licenses/LICENSE-2.0" alt="GitHub tag">
         <img src="https://img.shields.io/github/license/tomarv2/tfremote" /></a>
     <a href="https://github.com/tomarv2/tfremote/tags" alt="GitHub tag">
@@ -14,6 +14,7 @@
     <a href="https://twitter.com/intent/follow?screen_name=varuntomar2019" alt="follow on Twitter">
         <img src="https://img.shields.io/twitter/follow/varuntomar2019?style=social&logo=twitter"></a>
 </p>
+
 # Terraform Remote State Manager
 
 A Python package for managing Terraform remote state for: AWS, Azure, and Gcloud(GCP).
@@ -99,32 +100,28 @@ export TF_GCLOUD_CREDENTIALS= # change it to right value
 
 Once environment variables are configured, run:
 
-### For aws:
+### For AWS:
 
 ```
-tf -cloud aws plan -var-file ../custom.tfvars
+tf -cloud aws plan
 
 or
 
-tf plan -var-file ../demo.tfvars -var 'foo=bar'  -var 'john=doe' -cloud aws
+tf plan -var='teamid=foo' -var='prjid=bar' -cloud aws
 ```
 
-### For azure:
+### For Azure:
 
 ```
-tf plan -var-file ../custom.tfvars -cloud azure
+tf plan -var='teamid=foo' -var='prjid=bar' -cloud azure
+```
+
+### For Gcloud:
+
+```
+tf plan -cloud gcloud
 
 or
 
-tf plan -var-file ../custom.tfvars -var 'foo=bar' -var 'john=doe' -cloud azure
-```
-
-### For gcloud:
-
-```
-tf plan -var-file ../custom.tfvars -cloud gcloud
-
-or
-
-tf plan -var-file ../custom.tfvars -var 'foo=bar' -cloud gcloud -var 'john=doe'
+tf plan -var='teamid=foo' -var='prjid=bar' -cloud gcloud
 ```
