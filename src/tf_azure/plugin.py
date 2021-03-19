@@ -118,36 +118,45 @@ class TerraformAzureWrapper:
         current_tf_state["backend"]["config"] = {}
         current_tf_state["backend"]["config"]["storage_account_name"] = None
         current_tf_state["backend"]["config"]["key"] = None
-        if run_command.build_remote_backend_tf_file("azurerm"):
-            if os.path.isfile(".terraform/terraform.tfstate"):
-                with open(".terraform/terraform.tfstate") as fh:
-                    current_tf_state = json.load(fh)
-            if (
-                ("backend" in current_tf_state)
-                and (
-                    current_tf_state["backend"]["config"]["storage_account_name"]
-                    == self.azure_stg_acc_name
-                )
-                and (current_tf_state["backend"]["config"]["key"] == self.azure_path)
-            ):
-                logger.debug("no need to pull remote state")
-                return True
-            else:
+        if "None" in self.azure_path:
+            logger.error("""
+             Required values missing:
+             please specify: "teamid" & "prjid"
+             values can be specified using '-vars' or '-tfvars'
+             e.g. tf -cloud gcloud plan -var='teamid=foo' -var='prjid=bar'
+             tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n""")
+            raise SystemExit
+        else:
+            if run_command.build_remote_backend_tf_file("azurerm"):
                 if os.path.isfile(".terraform/terraform.tfstate"):
-                    os.unlink(".terraform/terraform.tfstate")
-                    logger.debug("removed .terraform/terraform.tfstate")
-                cmd = (
-                    'terraform init -backend-config="storage_account_name={}" -backend-config="key={}" '
-                    "-backend"
-                    '-config="container_name={}"'.format(
-                        self.azure_stg_acc_name,
-                        self.azure_path,
-                        self.azure_container_name,
+                    with open(".terraform/terraform.tfstate") as fh:
+                        current_tf_state = json.load(fh)
+                if (
+                    ("backend" in current_tf_state)
+                    and (
+                        current_tf_state["backend"]["config"]["storage_account_name"]
+                        == self.azure_stg_acc_name
                     )
-                )
-                logger.debug("init command: {}".format(cmd))
-                ret_code = run_command.run_cmd(cmd)
-                if ret_code == 0:
+                    and (current_tf_state["backend"]["config"]["key"] == self.azure_path)
+                ):
+                    logger.debug("no need to pull remote state")
                     return True
                 else:
-                    return False
+                    if os.path.isfile(".terraform/terraform.tfstate"):
+                        os.unlink(".terraform/terraform.tfstate")
+                        logger.debug("removed .terraform/terraform.tfstate")
+                    cmd = (
+                        'terraform init -backend-config="storage_account_name={}" -backend-config="key={}" '
+                        "-backend"
+                        '-config="container_name={}"'.format(
+                            self.azure_stg_acc_name,
+                            self.azure_path,
+                            self.azure_container_name,
+                        )
+                    )
+                    logger.debug("init command: {}".format(cmd))
+                    ret_code = run_command.run_cmd(cmd)
+                    if ret_code == 0:
+                        return True
+                    else:
+                        return False
