@@ -28,9 +28,9 @@ It works with:
 
 :point_right: Azure Storage
 
-:exclamation: Best practice is to make sure buckets are versioned.
+> ❗️ **Note** Best practice is to make sure buckets are versioned.
 
-To install package run:
+## Install package
 
 ```
 pip install tfremote --upgrade
