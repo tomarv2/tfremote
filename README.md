@@ -17,7 +17,7 @@
 
 # Terraform Remote State Manager
 
-**tf** is a python package for managing terraform remote state for: Google(GCP), AWS, and Azure. 
+**tf** is a python package for managing terraform remote state for: Google(GCP), AWS, and Azure.
 It sets a defined structure for all cloud providers removing the overheard of configuring and managing the path in storage buckets.
 
 It works with:
@@ -117,7 +117,6 @@ tf plan -var='teamid=foo' -var='prjid=bar' -cloud gcloud
 ```
 
 The structure in google storage bucket:
-
 
 ![alt text](docs/images/google_tf.png)
 

@@ -119,12 +119,14 @@ class TerraformAzureWrapper:
         current_tf_state["backend"]["config"]["storage_account_name"] = None
         current_tf_state["backend"]["config"]["key"] = None
         if "None" in self.azure_path:
-            logger.error("""
+            logger.error(
+                """
              Required values missing:
              please specify: "teamid" & "prjid"
              values can be specified using '-vars' or '-tfvars'
              e.g. tf -cloud gcloud plan -var='teamid=foo' -var='prjid=bar'
-             tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n""")
+             tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n"""
+            )
             raise SystemExit
         else:
             if run_command.build_remote_backend_tf_file("azurerm"):
@@ -137,7 +139,9 @@ class TerraformAzureWrapper:
                         current_tf_state["backend"]["config"]["storage_account_name"]
                         == self.azure_stg_acc_name
                     )
-                    and (current_tf_state["backend"]["config"]["key"] == self.azure_path)
+                    and (
+                        current_tf_state["backend"]["config"]["key"] == self.azure_path
+                    )
                 ):
                     logger.debug("no need to pull remote state")
                     return True

@@ -136,12 +136,14 @@ class TerraformAWSWrapper:
         current_tf_state["backend"]["config"]["bucket"] = None
         current_tf_state["backend"]["config"]["key"] = None
         if "None" in self.s3_path:
-            logger.error("""
+            logger.error(
+                """
              Required values missing:
              please specify: "teamid" & "prjid"
              values can be specified using '-vars' or '-tfvars'
              e.g. tf -cloud gcloud plan -var='teamid=foo' -var='prjid=bar'
-             tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n""")
+             tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n"""
+            )
             raise SystemExit
         else:
             if run_command.build_remote_backend_tf_file("s3"):
@@ -150,7 +152,10 @@ class TerraformAWSWrapper:
                         current_tf_state = json.load(fh)
                 if (
                     ("backend" in current_tf_state)
-                    and (current_tf_state["backend"]["config"]["bucket"] == self.s3_bucket)
+                    and (
+                        current_tf_state["backend"]["config"]["bucket"]
+                        == self.s3_bucket
+                    )
                     and (current_tf_state["backend"]["config"]["key"] == self.s3_path)
                 ):
                     logger.debug("No need to pull remote state")
