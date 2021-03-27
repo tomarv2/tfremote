@@ -87,6 +87,26 @@ jobs:
             fi
           done < '${{ runner.temp }}/files.txt'
 
+      - name: check modified file
+        id: check_file_github_actions
+        run: |
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > '${{ runner.temp }}/github_actions_files.txt'
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file != ]]; then
+              echo "Some files changed."
+              echo "::set-output name=run_job::true"
+              break
+            else
+              echo "::set-output name=run_job::false"
+            fi
+          done < '${{ runner.temp }}/github_actions_files.txt'
+
       - name: Get current branch name
         if: hashFiles('${{ runner.temp }}/files.txt') != ''
         id: vars
@@ -94,16 +114,15 @@ jobs:
           echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
       - name: Commit files
-        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles('${{ runner.temp }}/github_actions_files.txt) != '' && hashFiles('${{ runner.temp }}/files.txt) != ''
         run: |
-          cat '${{ runner.temp }}/files.txt'
           git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add -A; git commit -m "Add changes"; git push
 
       # Create a pull request from develop to main branch
       - name: Pull requests
-        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles('${{ runner.temp }}/github_actions_files.txt') != '' && hashFiles('${{ runner.temp }}/files.txt) != ''
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
