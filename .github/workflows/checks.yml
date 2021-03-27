@@ -1,6 +1,6 @@
 name: Code Analysis
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   analysis:
