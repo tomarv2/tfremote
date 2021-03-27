@@ -87,7 +87,7 @@ jobs:
   job_for_modified_files:
     name: Job for modified files
     needs: check
-    if: needs.check.outputs.run_job == 'true'
+    if: needs.analysis.outputs.run_job == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: run for modified files
