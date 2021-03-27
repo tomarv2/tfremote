@@ -45,25 +45,25 @@ jobs:
           python -m tox -e docs
           python -m tox -e tests
 
-      #      - name: Generate coverage report
-      #        run: |
-      #          pip install pytest
-      #          pip install hcl
-      #          pip install argparse
-      #          pip install pytest-cov
-      #          python -m pytest --cov=./ --cov-report=xml
-      #
-      #      - name: Upload coverage to Codecov
-      #        uses: codecov/codecov-action@v1
-      #        with:
-      #          token: ${{ secrets.CODECOV_TOKEN }}
-      #          directory: ./
-      #          flags: unittests
-      #          env_vars: OS,PYTHON
-      #          name: codecov-umbrella
-      #          fail_ci_if_error: true
-      #          path_to_write_report: ./coverage/codecov_report.txt
-      #          verbose: true
+            - name: Generate coverage report
+              run: |
+                pip install pytest
+                pip install hcl
+                pip install argparse
+                pip install pytest-cov
+                python -m pytest --cov=./ --cov-report=xml
+
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v1
+              with:
+                token: ${{ secrets.CODECOV_TOKEN }}
+                directory: ./
+                flags: unittests
+                env_vars: OS,PYTHON
+                name: codecov-umbrella
+                fail_ci_if_error: true
+                path_to_write_report: ./coverage/codecov_report.txt
+                verbose: true
 
       - name: Check modified file(s)
         id: check_files
