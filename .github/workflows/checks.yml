@@ -13,7 +13,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
-
       - name: check modified files
         id: check_files
         run: |
@@ -93,23 +92,23 @@ jobs:
         - name: run for 'db' folder
           run: echo "This job runs only when all the modified files are under the 'db' folder."
 
-      - name: Get current branch name
-        id: vars
-        run: |
-          echo ::set-output name=branch_name::${GITHUB_REF##*/}
+        - name: Get current branch name
+          id: vars
+          run: |
+            echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
-      - name: Commit files
-        run: |
-          git add -A .
-          git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add -A; git commit -m "Add changes"; git push
+        - name: Commit files
+          run: |
+            git add -A .
+            git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add -A; git commit -m "Add changes"; git push
 
-      # Create a pull request from develop to master branch
-      - name: Pull requests
-        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
-        uses: vsoch/pull-request-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_BRANCH: "main"
-          PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
+        # Create a pull request from develop to master branch
+        - name: Pull requests
+          if: ${{ steps.vars.outputs.branch_name }} == 'develop'
+          uses: vsoch/pull-request-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PULL_REQUEST_BRANCH: "main"
+            PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
