@@ -86,7 +86,6 @@ jobs:
         if: hashFiles('${{ runner.temp }}/files.txt') != ''
         run: |
           cat '${{ runner.temp }}/files.txt'
-          git add -A .
           git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add -A; git commit -m "Add changes"; git push
