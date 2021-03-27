@@ -74,16 +74,16 @@ jobs:
             else
               echo "::set-output name=run_job::false"
             fi
-          done < ./temp/files.txt
+          done <  ${{ runner.temp }}/files.txt
 
       - name: Get current branch name
-        if: hashFiles('./temp/files.txt') != ''
+        if: hashFiles(' ${{ runner.temp }}/files.txt') != ''
         id: vars
         run: |
           echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
       - name: Commit files
-        if: hashFiles('./temp/files.txt') != ''
+        if: hashFiles(' ${{ runner.temp }}/files.txt') != ''
         run: |
           git add -A .
           git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
@@ -92,7 +92,7 @@ jobs:
 
       # Create a pull request from develop to main branch
       - name: Pull requests
-        if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles('./temp/files.txt') != ''
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles(' ${{ runner.temp }}/files.txt') != ''
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
