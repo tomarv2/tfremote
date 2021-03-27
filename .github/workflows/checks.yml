@@ -57,7 +57,6 @@ jobs:
       #          verbose: true
 
       - name: check modified files
-        working-directory: .
         id: check_files
         run: |
           echo "=============== list modified files ==============="
@@ -78,14 +77,12 @@ jobs:
           done < ${{ runner.temp }}/files.txt
 
       - name: Get current branch name
-        working-directory: ${{ runner.temp }}
         if: hashFiles('${{ runner.temp }}/files.txt') != ''
         id: vars
         run: |
           echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
       - name: Commit files
-        working-directory: .
         if: hashFiles('${{ runner.temp }}/files.txt') != ''
         run: |
           git add -A .
