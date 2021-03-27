@@ -43,7 +43,7 @@ jobs:
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_BRANCH: "test"
+          PULL_REQUEST_BRANCH: "main"
           PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
 
       - name: Generate coverage report
