@@ -9,7 +9,10 @@ jobs:
       matrix:
         python-version: [3.8]
     steps:
-      - uses: actions/checkout@v2
+      - name: Error handling # https://github.com/actions/checkout/issues/317
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
