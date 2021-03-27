@@ -3,36 +3,6 @@ name: Code Analysis
 on: [push] # pull_request]
 
 jobs:
-  check:
-    name: Check for modified files
-    outputs:
-      run_job: ${{ steps.check_files.outputs.run_job }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-      - name: check modified files
-        id: check_files
-        run: |
-          echo "=============== list modified files ==============="
-          git diff --name-only HEAD^ HEAD
-
-          echo "========== check paths of modified files =========="
-          git diff --name-only HEAD^ HEAD > files.txt
-          while IFS= read -r file
-          do
-            echo $file
-            if [[ $file ]]; then
-              echo "Some files changed."
-              echo "::set-output name=run_job::true"
-              break
-            else
-              echo "::set-output name=run_job::false"
-            fi
-          done < files.txt
-
   analysis:
     runs-on: ubuntu-latest
     strategy:
@@ -82,6 +52,36 @@ jobs:
           fail_ci_if_error: true
           path_to_write_report: ./coverage/codecov_report.txt
           verbose: true
+
+  check:
+    name: Check for modified files
+    outputs:
+      run_job: ${{ steps.check_files.outputs.run_job }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: check modified files
+        id: check_files
+        run: |
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD > files.txt
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file ]]; then
+              echo "Some files changed."
+              echo "::set-output name=run_job::true"
+              break
+            else
+              echo "::set-output name=run_job::false"
+            fi
+          done < files.txt
 
   job_for_modified_files:
     name: Job for modified files
