@@ -94,7 +94,7 @@ jobs:
           echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
       - name: Commit files
-        if: ${{ steps.vars.outputs.branch_name }} != 'main && hashFiles('${{ runner.temp }}/files.txt') != ''
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
         run: |
           cat '${{ runner.temp }}/files.txt'
           git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
@@ -103,7 +103,7 @@ jobs:
 
       # Create a pull request from develop to main branch
       - name: Pull requests
-        if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles('${{ runner.temp }}/files.txt') != ''
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
