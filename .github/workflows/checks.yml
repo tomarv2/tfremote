@@ -56,14 +56,14 @@ jobs:
       #          path_to_write_report: ./coverage/codecov_report.txt
       #          verbose: true
 
-      - name: Check modified files
+      - name: Check modified file(s)
         id: check_files
         run: |
           echo "=============== list modified files ==============="
           git diff --name-only HEAD^ HEAD
 
           echo "========== check paths of modified files =========="
-          git diff --name-only HEAD^ HEAD > '${{ runner.temp }}/files.txt'
+          git diff --allow-empty --name-only HEAD^ HEAD > '${{ runner.temp }}/files.txt'
           while IFS= read -r file
           do
             echo $file
