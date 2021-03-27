@@ -7,9 +7,9 @@ on:
       - develop
       - main
     paths-ignore:
-      - 'LICENSE'
-      - '.gitignore'
-      - '**.md'
+      - "LICENSE"
+      - ".gitignore"
+      - "**.md"
 
 jobs:
   analysis:
