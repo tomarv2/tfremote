@@ -33,13 +33,21 @@ jobs:
           python -m tox -e docs
           python -m tox -e tests
 
+      - name: Get current branch name
+        id: vars
+        run: |
+          echo ::set-output name=branch_name::${GITHUB_REF##*/}
+
       - name: Commit files
         run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A .
+          git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add -A; git commit -m "Add changes"; git push
 
+      # Create a pull request from develop to master branch
       - name: Pull requests
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
