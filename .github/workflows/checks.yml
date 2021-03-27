@@ -56,7 +56,7 @@ jobs:
       #          path_to_write_report: ./coverage/codecov_report.txt
       #          verbose: true
 
-      - name: check modified files
+      - name: Check modified files
         id: check_files
         run: |
           echo "=============== list modified files ==============="
@@ -74,7 +74,7 @@ jobs:
             else
               echo "::set-output name=run_job::false"
             fi
-          done < ${{ runner.temp }}/files.txt
+          done < '${{ runner.temp }}/files.txt'
 
       - name: Get current branch name
         if: hashFiles('${{ runner.temp }}/files.txt') != ''
