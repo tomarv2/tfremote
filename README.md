@@ -116,7 +116,7 @@ Once environment variables are configured, run:
 tf plan -var='teamid=foo' -var='prjid=bar' -cloud gcloud
 ```
 
-The structure in google storage bucket:
+The structure in Google Storage Bucket:
 
 ![alt text](docs/images/google_tf.png)
 
@@ -126,8 +126,16 @@ The structure in google storage bucket:
 tf plan -var='teamid=foo' -var='prjid=bar' -cloud aws
 ```
 
+The structure in AWS S3:
+
+![alt text](docs/images/aws_tf.png)
+
 ### For Azure:
 
 ```
 tf plan -var='teamid=foo' -var='prjid=bar' -cloud azure
 ```
+
+The structure in Azure Storage:
+
+![alt text](docs/images/azure_tf.png)
