@@ -98,7 +98,7 @@ jobs:
           while IFS= read -r file
           do
             echo $file
-            if [[ $file != '.github/workflows/*.yml']]; then
+            if [[ $file != '.github/workflows/*.yml' ]]; then
               echo "Some files changed."
               echo "::set-output name=run_job::true"
               break
