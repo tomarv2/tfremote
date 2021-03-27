@@ -5,6 +5,8 @@ on: [push] # pull_request]
 jobs:
   analysis:
     runs-on: ubuntu-latest
+    outputs:
+      run_job: ${{ steps.check_files.outputs.run_job }}
     strategy:
       matrix:
         python-version: [3.8]
@@ -53,12 +55,11 @@ jobs:
           path_to_write_report: ./coverage/codecov_report.txt
           verbose: true
 
-  check:
-    name: Check for modified files
-    outputs:
-      run_job: ${{ steps.check_files.outputs.run_job }}
-    runs-on: ubuntu-latest
-    steps:
+#  check:
+#    name: Check for modified files
+
+#    runs-on: ubuntu-latest
+#    steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
