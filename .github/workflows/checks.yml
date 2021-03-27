@@ -74,28 +74,16 @@ jobs:
             else
               echo "::set-output name=run_job::false"
             fi
-          done < files.txt
-
-  job_for_modified_files:
-    name: Job for modified files
-    needs: analysis
-    if: needs.analysis.outputs.run_job == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - name: run for modified files
-        run: echo "This job runs only when any file(s) gets modified."
-
-      - name: Error handling # https://github.com/actions/checkout/issues/317
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          done < /tmp/files.txt
 
       - name: Get current branch name
+        if: hashFiles('/tmp/files.txt') != ''
         id: vars
         run: |
           echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
       - name: Commit files
+        if: hashFiles('/tmp/files.txt') != ''
         run: |
           git add -A .
           git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
@@ -104,7 +92,7 @@ jobs:
 
       # Create a pull request from develop to main branch
       - name: Pull requests
-        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles('/tmp/files.txt') != ''
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
