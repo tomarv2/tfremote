@@ -120,7 +120,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add -A; git commit -m "Add changes"; git push
 
-      # Create a pull request from develop to main branch
+      # Create a pull request from develop to main branch0
       - name: Pull requests
         if: ${{ steps.vars.outputs.branch_name }} == 'develop' && hashFiles('${{ runner.temp }}/github_actions_files.txt') != ''
         uses: vsoch/pull-request-action@master
