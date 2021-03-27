@@ -4,7 +4,7 @@ on: [push] # pull_request]
 
 jobs:
   check:
-    name: Check files
+    name: Check for modified files
     outputs:
       run_job: ${{ steps.check_files.outputs.run_job }}
     runs-on: ubuntu-latest
@@ -25,11 +25,11 @@ jobs:
           do
             echo $file
             if [[ $file ]]; then
-              echo "This modified file is not under the 'db' folder."
-              echo "::set-output name=run_job::false"
+              echo "Some files changed."
+              echo "::set-output name=run_job::true"
               break
             else
-              echo "::set-output name=run_job::true"
+              echo "::set-output name=run_job::false"
             fi
           done < files.txt
 
@@ -83,32 +83,32 @@ jobs:
           path_to_write_report: ./coverage/codecov_report.txt
           verbose: true
 
-  job_for_db:
-      name: Job for 'db' folder
-      needs: check
-      if: needs.check.outputs.run_job == 'true'
-      runs-on: ubuntu-latest
-      steps:
-        - name: run for 'db' folder
-          run: echo "This job runs only when all the modified files are under the 'db' folder."
+  job_for_modified_files:
+    name: Job for modified files
+    needs: check
+    if: needs.check.outputs.run_job == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: run for modified files
+        run: echo "This job runs only when any file gets modified."
 
-        - name: Get current branch name
-          id: vars
-          run: |
-            echo ::set-output name=branch_name::${GITHUB_REF##*/}
+      - name: Get current branch name
+        id: vars
+        run: |
+          echo ::set-output name=branch_name::${GITHUB_REF##*/}
 
-        - name: Commit files
-          run: |
-            git add -A .
-            git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
-            git config --local user.name "github-actions[bot]"
-            git add -A; git commit -m "Add changes"; git push
+      - name: Commit files
+        run: |
+          git add -A .
+          git config --local user.email "terraform+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A; git commit -m "Add changes"; git push
 
-        # Create a pull request from develop to master branch
-        - name: Pull requests
-          if: ${{ steps.vars.outputs.branch_name }} == 'develop'
-          uses: vsoch/pull-request-action@master
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            PULL_REQUEST_BRANCH: "main"
-            PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
+      # Create a pull request from develop to master branch
+      - name: Pull requests
+        if: ${{ steps.vars.outputs.branch_name }} == 'develop'
+        uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_BRANCH: "main"
+          PULL_REQUEST_FROM_BRANCH: ${{ github.ref }}
