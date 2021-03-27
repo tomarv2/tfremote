@@ -55,15 +55,11 @@ jobs:
           path_to_write_report: ./coverage/codecov_report.txt
           verbose: true
 
-#  check:
-#    name: Check for modified files
+      #      - name: Checkout code
+      #        uses: actions/checkout@v2
+      #        with:
+      #          fetch-depth: 2
 
-#    runs-on: ubuntu-latest
-#    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
       - name: check modified files
         id: check_files
         run: |
