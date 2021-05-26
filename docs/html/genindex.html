@@ -7,10 +7,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Index &#8212; Tfremote 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -58,6 +58,7 @@
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -68,8 +69,6 @@
       <li><a href="src.html#src.cli.TerraformWrapper.args">args (src.cli.TerraformWrapper attribute)</a>
 
       <ul>
-        <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.args">(src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
-</li>
         <li><a href="src.tf_azure.html#src.tf_azure.plugin.TerraformAzureWrapper.args">(src.tf_azure.plugin.TerraformAzureWrapper attribute)</a>
 </li>
         <li><a href="src.tf_gcloud.html#src.tf_gcloud.plugin.TerraformGcloudWrapper.args">(src.tf_gcloud.plugin.TerraformGcloudWrapper attribute)</a>
@@ -87,6 +86,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.aws_args">aws_args (src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
+</li>
       <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.aws_profile">aws_profile (src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
 </li>
       <li><a href="src.tf_azure.html#src.tf_azure.plugin.TerraformAzureWrapper.azure_access_key">azure_access_key (src.tf_azure.plugin.TerraformAzureWrapper attribute)</a>
@@ -251,7 +252,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.html#src.cli.TerraformWrapper.required_vars">required_vars (src.cli.TerraformWrapper attribute)</a>
+
+      <ul>
+        <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.required_vars">(src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
 </li>
+        <li><a href="src.tf_azure.html#src.tf_azure.plugin.TerraformAzureWrapper.required_vars">(src.tf_azure.plugin.TerraformAzureWrapper attribute)</a>
+</li>
+        <li><a href="src.tf_gcloud.html#src.tf_gcloud.plugin.TerraformGcloudWrapper.required_vars">(src.tf_gcloud.plugin.TerraformGcloudWrapper attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.common.html#src.common.run_command.run_cmd">run_cmd() (in module src.common.run_command)</a>
@@ -403,7 +412,15 @@
       <li><a href="src.html#src.cli.valid_terraform_version">valid_terraform_version() (in module src.cli)</a>
 </li>
       <li><a href="src.html#src.cli.TerraformWrapper.var_data">var_data (src.cli.TerraformWrapper attribute)</a>
+
+      <ul>
+        <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.var_data">(src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
 </li>
+        <li><a href="src.tf_azure.html#src.tf_azure.plugin.TerraformAzureWrapper.var_data">(src.tf_azure.plugin.TerraformAzureWrapper attribute)</a>
+</li>
+        <li><a href="src.tf_gcloud.html#src.tf_gcloud.plugin.TerraformGcloudWrapper.var_data">(src.tf_gcloud.plugin.TerraformGcloudWrapper attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.version">version (src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
@@ -412,6 +429,20 @@
         <li><a href="src.tf_azure.html#src.tf_azure.plugin.TerraformAzureWrapper.version">(src.tf_azure.plugin.TerraformAzureWrapper attribute)</a>
 </li>
         <li><a href="src.tf_gcloud.html#src.tf_gcloud.plugin.TerraformGcloudWrapper.version">(src.tf_gcloud.plugin.TerraformGcloudWrapper attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="src.tf_aws.html#src.tf_aws.plugin.TerraformAWSWrapper.workspace_key_prefix">workspace_key_prefix (src.tf_aws.plugin.TerraformAWSWrapper attribute)</a>
+
+      <ul>
+        <li><a href="src.tf_azure.html#src.tf_azure.plugin.TerraformAzureWrapper.workspace_key_prefix">(src.tf_azure.plugin.TerraformAzureWrapper attribute)</a>
+</li>
+        <li><a href="src.tf_gcloud.html#src.tf_gcloud.plugin.TerraformGcloudWrapper.workspace_key_prefix">(src.tf_gcloud.plugin.TerraformGcloudWrapper attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -454,7 +485,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Author.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>
