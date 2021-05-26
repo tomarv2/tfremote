@@ -39,11 +39,11 @@ repos:
             "--ignore=E501,E722,F541,E741,F401,F841,W503,W391,E712",
           ]
 
-  - repo: https://github.com/pre-commit/mirrors-autopep8
-    rev: v1.5.4
-    hooks:
-      - id: autopep8
-        exclude: (^docs/)
+  #  - repo: https://github.com/pre-commit/mirrors-autopep8
+  #    rev: v1.5.4
+  #    hooks:
+  #      - id: autopep8
+  #        exclude: (^docs/)
 
   #  - repo: https://github.com/asottile/add-trailing-comma
   #    rev: v2.1.0
