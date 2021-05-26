@@ -73,7 +73,6 @@ class TerraformWrapper:
         self.args, self.args_unknown = parser.parse_known_args()
 
     def main(self):
-        print("inside main")
         if vars(self.args)["subcommand"] in pass_through_list.deny_list():
             logger.error(
                 "subcommand '{}' should not be used with this wrapper script as it may break things ".format(
