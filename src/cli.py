@@ -26,13 +26,13 @@ from .logging import configure_logging
 logger = logging.getLogger(__name__)
 configure_logging()
 
-MIN_TERRAFORM_V = "0.12.0"
+MIN_TERRAFORM_V = "0.14.0"
 
 
 # verifying version of terraform installed
 def valid_terraform_version(min_supported_ver):
     """
-    :param min_supported_ver: v12
+    :param min_supported_ver: v14
     """
     cmd_output = subprocess.check_output("terraform version", shell=True)
     detected_ver = re.search(
@@ -67,23 +67,13 @@ class TerraformWrapper:
         parser.add_argument(
             "-cloud",
             dest="cloud",
-            help="specify cloud provider (e.g. azure, aws, or gcloud)",
+            help="specify cloud provider (e.g. gcloud, aws, or azure)",
         )
-        parser.add_argument(
-            "-var-file",
-            action="append",
-            dest="tfvar_files",
-            help="specify .tfvars file",
-        )
-        parser.add_argument(
-            "-var",
-            action="append",
-            dest="inline_vars",
-            help="specify a var",
-        )
+        parser.add_argument("-version", action="version", version="%(prog)s 0.1")
         self.args, self.args_unknown = parser.parse_known_args()
 
     def main(self):
+        print("inside main")
         if vars(self.args)["subcommand"] in pass_through_list.deny_list():
             logger.error(
                 "subcommand '{}' should not be used with this wrapper script as it may break things ".format(
@@ -92,8 +82,9 @@ class TerraformWrapper:
             )
             exit(1)
         elif vars(self.args)["subcommand"] in pass_through_list.allow_list():
-            cmd = "terraform %s" % (" ".join(sys.argv[3:]))
-            logging.debug("terraform command: {}".format(cmd))
+            argument = "".join(vars(self.args)["subcommand"])
+            cmd = "terraform " + argument
+            logging.debug("terraform command: {}", cmd)
             ret_code = run_command.run_cmd(cmd)
             if ret_code == 0:
                 exit(0)
@@ -102,7 +93,7 @@ class TerraformWrapper:
         else:
             if vars(self.args)["cloud"] is None:
                 logger.error(
-                    "Please specify cloud provider with -cloud argument(-cloud azure/aws/gcloud)",
+                    "Please specify cloud provider with -cloud argument(-cloud gcloud, aws, or azure)",
                 )
                 raise SystemExit
             cloud_env = vars(self.args)["cloud"].lower()
@@ -126,7 +117,7 @@ class TerraformWrapper:
                 )
             else:
                 logger.error(
-                    "Incorrect cloud provider entered (e.g. azure, aws, or gcloud)",
+                    "Incorrect cloud provider entered (e.g. gcloud, aws, or azure)",
                 )
                 raise SystemExit
 

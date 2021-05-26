@@ -29,29 +29,106 @@ class TerraformAzureWrapper:
         self.required_vars = None
         self.var_data = None
         parser = argparse.ArgumentParser(
-            description="terraform wrapper script",
-        )
-        parser.add_argument(
-            "-cloud",
-            dest="cloud",
-            help="specify the cloud: aws, gcloud, azure",
+            description="Terraform remote state wrapper package", add_help=True
         )
         parser.add_argument(
             "-var-file",
             action="append",
             dest="tfvar_files",
-            help="specify a tfvars file",
+            help="specify .tfvars file(s)",
         )
         parser.add_argument(
             "-var",
             action="append",
             dest="inline_vars",
-            help="specify a var",
+            help="specify inline variable(s)",
         )
+        parser.add_argument(
+            "-cloud",
+            dest="cloud",
+            metavar="",
+            help="specify the cloud provider: gcloud, aws, or azure",
+        )
+        parser.add_argument(
+            "-workspace",
+            dest="workspace",
+            metavar="",
+            help="workspace name",
+        )
+        parser.add_argument(
+            "-state_key",
+            dest="state_key",
+            default="terraform",
+            metavar="",
+            help="file name in remote state(default: 'terraform.tfstate')",
+        )
+        parser.add_argument(
+            "-fips",
+            dest="fips",
+            action="store_true",
+            help="enable FIPS endpoints(default: True)",
+        )
+        parser.add_argument(
+            "-no-fips", dest="fips", action="store_false", help="disable FIPS endpoints"
+        )
+        parser.set_defaults(fips=True)
+
+        parser.add_argument("-version", action="version", version="%(prog)s 0.1")
+
         self.args, self.args_unknown = parser.parse_known_args()
 
+    def configure_remotestate(self, required_vars, var_data):
+        logger.debug("configuring remote state")
+        self.required_vars = required_vars
+        self.var_data = var_data
+        run_command.parse_vars(self.var_data, self.args)
+        self.azure_path = run_command.build_tf_state_path(
+            self.required_vars,
+            self.var_data,
+            "".join(vars(self.args)["state_key"]),
+            vars(self.args)["workspace"],
+        )
+        self.configure(vars(self.args)["workspace"])
+        if required_vars["prjid"] is None or required_vars["teamid"] is None:
+            logger.error("required variables 'teamid' and 'prjid' not defined.")
+            raise SystemExit
+        else:
+            set_remote_backend_status = self.set_remote_backend(
+                required_vars["teamid"],
+                required_vars["prjid"],
+                vars(self.args)["workspace"],
+                vars(self.args)["fips"],
+            )
+        logger.info(
+            "Remote State backend is configured: {}".format(
+                set_remote_backend_status,
+            ),
+        )
+        if set_remote_backend_status:
+            logger.debug(sys.argv[1:])
+            new_cmd = [
+                x
+                for x in sys.argv[1:]
+                if not x.startswith(
+                    ("-workspace", "default", "-state_key", "-no-fips", "-fips")
+                )
+            ]
+            cmd = "terraform {}".format(
+                run_command.create_command(new_cmd),
+            )
+            logger.info(f"AZURE command: {cmd}")
+            ret_code = run_command.run_cmd(cmd)
+            if ret_code == 0:
+                exit(0)
+            else:
+                exit(1)
+        else:
+            raise Exception(
+                "\nThere was an error setting the remote backend for Azure; aborting",
+            )
+
     # set azure storage account details (get from env variables)
-    def configure(self):
+    def configure(self, workspace):
         self.azure_container_name = os.getenv("TF_AZURE_CONTAINER")
         self.azure_stg_acc_name = os.getenv("TF_AZURE_STORAGE_ACCOUNT")
         self.azure_access_key = os.getenv("ARM_ACCESS_KEY")
@@ -64,6 +141,9 @@ class TerraformAzureWrapper:
             logger.error(
                 "Please set the TF_AZURE_STORAGE_ACCOUNT environment variable",
             )
+            exit(1)
+        if (workspace is None) or (workspace == ""):
+            logger.error("Please set the workspace using -workspace=<workspace_name>")
             exit(1)
         if (self.azure_access_key is None) or (self.azure_access_key == ""):
             logger.error(
@@ -79,41 +159,13 @@ class TerraformAzureWrapper:
             ),
         )
 
-    def configure_remotestate(self, required_vars, var_data):
-        self.required_vars = required_vars
-        self.var_data = var_data
-        run_command.parse_vars(self.var_data, self.args)
-        self.azure_path = run_command.build_tf_state_path(
-            self.required_vars,
-            self.var_data,
-        )
-        self.configure()
-        set_remote_backend_status = self.set_remote_backend()
-        logger.info(
-            "Remote State backend is configured: {}".format(
-                set_remote_backend_status,
-            ),
-        )
-        if set_remote_backend_status:
-            cmd = "terraform {}".format(
-                run_command.create_command(sys.argv[1:]),
-            )
-            logger.info(f"AZURE command: {cmd}")
-            ret_code = run_command.run_cmd(cmd)
-            if ret_code == 0:
-                exit(0)
-            else:
-                exit(1)
-        else:
-            raise Exception(
-                "\nThere was an error setting the remote backend for Azure; aborting",
-            )
-
-    def set_remote_backend(self):
+    def set_remote_backend(self, teamid, prjid, workspace, fips):
         """
         configure the Terraform remote state if necessary
         return True if remote state was successfully configured
         """
+        logger.debug("configure remote state if necessary")
+        key_path = teamid + "/" + prjid
         current_tf_state = {"backend": {}}
         current_tf_state["backend"]["config"] = {}
         current_tf_state["backend"]["config"]["storage_account_name"] = None
@@ -121,15 +173,18 @@ class TerraformAzureWrapper:
         if "None" in self.azure_path:
             logger.error(
                 """
-             Required values missing:
-             please specify: "teamid" & "prjid"
-             values can be specified using '-vars' or '-tfvars'
-             e.g. tf -cloud gcloud plan -var='teamid=foo' -var='prjid=bar'
-             tf -cloud gcloud plan -var-file /tmp/demo.tfvars\n"""
+                    Required values missing:
+                    please specify: "teamid", "prjid", and "workspace"
+                    "teamid", "prjid" can be specified using '-vars' or '-tfvars' e.g.
+                        - tf -cloud azure plan -var='teamid=foo' -var='prjid=bar'
+                        - tf -cloud azure plan -var-file /tmp/demo.tfvars
+                    "workspace" can be specified using '-var' e.g.
+                        - tf -cloud azure plan -workspace=demo-workspace
+                """
             )
             raise SystemExit
         else:
-            if run_command.build_remote_backend_tf_file("azurerm"):
+            if run_command.build_remote_backend_tf_file("azurerm", teamid, fips):
                 if os.path.isfile(".terraform/terraform.tfstate"):
                     with open(".terraform/terraform.tfstate") as fh:
                         current_tf_state = json.load(fh)
@@ -142,21 +197,23 @@ class TerraformAzureWrapper:
                     and (
                         current_tf_state["backend"]["config"]["key"] == self.azure_path
                     )
+                    and (
+                        current_tf_state["backend"]["config"]["workspace_key_prefix"]
+                        == workspace
+                    )
                 ):
-                    logger.debug("no need to pull remote state")
+                    logger.debug("No need to pull remote state")
                     return True
                 else:
                     if os.path.isfile(".terraform/terraform.tfstate"):
                         os.unlink(".terraform/terraform.tfstate")
                         logger.debug("removed .terraform/terraform.tfstate")
-                    cmd = (
-                        'terraform init -backend-config="storage_account_name={}" -backend-config="key={}" '
-                        "-backend"
-                        '-config="container_name={}"'.format(
-                            self.azure_stg_acc_name,
-                            self.azure_path,
-                            self.azure_container_name,
-                        )
+                    cmd = 'echo "1" | TF_WORKSPACE={} terraform init -backend-config="storage_account_name={}" -backend-config="key={}" -backend-config="workspace_key_prefix={} -backend-config="container_name={}"'.format(
+                        workspace,
+                        self.azure_stg_acc_name,
+                        key_path,
+                        key_path,
+                        self.azure_container_name,
                     )
                     logger.debug("init command: {}".format(cmd))
                     ret_code = run_command.run_cmd(cmd)
