@@ -14,12 +14,20 @@ def test_create_command():
 
 def test_build_remote_backend_tf_file():
     storage_type = "s3"
-    output = build_remote_backend_tf_file(storage_type)
+    workspace_key_prefix = "demo-workspace"
+    fips = True
+    state_key = "terraform"
+
+    output = build_remote_backend_tf_file(
+        storage_type, workspace_key_prefix, fips, state_key
+    )
     assert output == True
 
 
 def test_build_tf_state_path():
     required_vars = {"teamid": "hello", "prjid": "world"}
+    workspace = "demo-workspace"
+    state_key = "demo-key"
 
     var_data = {
         "inline_vars": {},
@@ -29,8 +37,8 @@ def test_build_tf_state_path():
         },
     }
 
-    output = build_tf_state_path(required_vars, var_data)
-    assert output == "terraform/hello/world/terraform.tfstate"
+    output = build_tf_state_path(required_vars, var_data, state_key, workspace)
+    assert output == "demo-key.tfstate"
 
 
 # def test_parse_vars():
