@@ -6,6 +6,7 @@ import sys
 
 import src.tf_gcloud as gcloud_state
 from src.common import run_command
+from src.conf import REQUIRED_VARIABLES
 from src.logging import configure_logging
 
 configure_logging()
@@ -23,29 +24,29 @@ class TerraformGcloudWrapper:
     gcloud_path = None
     gcloud_bucket_name = None
     gcloud_credentials = None
+    workspace_key_prefix = None
+    var_data = {}
+    required_vars = REQUIRED_VARIABLES
 
     def __init__(self):
-        self.required_vars = None
-        self.var_data = None
+        self.required_vars = REQUIRED_VARIABLES
+        self.var_data = {}
         parser = argparse.ArgumentParser(
             description="Terraform remote state wrapper package", add_help=True
         )
         parser.add_argument(
             "-var-file",
             action="append",
+            metavar="",
             dest="tfvar_files",
             help="specify tfvars file(s)",
         )
         parser.add_argument(
             "-var",
             action="append",
+            metavar="",
             dest="inline_vars",
             help="specify inline variables",
-        )
-        parser.add_argument(
-            "-cloud",
-            dest="cloud",
-            help="specify the cloud provider: gcloud, aws, or azure",
         )
         parser.add_argument(
             "-workspace",
@@ -75,10 +76,10 @@ class TerraformGcloudWrapper:
 
         self.args, self.args_unknown = parser.parse_known_args()
 
-    def configure_remotestate(self, required_vars, var_data):
+    def configure_remotestate(self):
         logger.debug("configuring remote state")
-        self.required_vars = required_vars
-        self.var_data = var_data
+        # self.required_vars = required_vars
+        # self.var_data = var_data
         run_command.parse_vars(self.var_data, self.args)
         self.gcloud_path = run_command.build_tf_state_path(
             self.required_vars,
@@ -87,15 +88,16 @@ class TerraformGcloudWrapper:
             vars(self.args)["workspace"],
         )
         self.configure(vars(self.args)["workspace"])
-        if required_vars["prjid"] is None or required_vars["teamid"] is None:
+        if self.required_vars["prjid"] is None or self.required_vars["teamid"] is None:
             logger.error("required variables 'teamid' and 'prjid' not defined.")
             raise SystemExit
         else:
             set_remote_backend_status = self.set_remote_backend(
-                required_vars["teamid"],
-                required_vars["prjid"],
+                self.required_vars["teamid"],
+                self.required_vars["prjid"],
                 vars(self.args)["workspace"],
                 vars(self.args)["fips"],
+                vars(self.args)["state_key"],
             )
         logger.info(
             "Remote State backend is configured: {}".format(
@@ -151,18 +153,18 @@ class TerraformGcloudWrapper:
             ),
         )
 
-    def set_remote_backend(self, teamid, prjid, workspace, fips):
+    def set_remote_backend(self, teamid, prjid, workspace, fips, state_key):
         """
         configure the Terraform remote state if necessary
         return True if remote state was successfully configured
         """
         logger.debug("inside set_remote_backend")
-        key_path = teamid + "/" + prjid
+        key_path = teamid + "/" + prjid + "/" + workspace
         current_tf_state = {"backend": {}}
         current_tf_state["backend"]["config"] = {}
         current_tf_state["backend"]["config"]["bucket"] = None
         current_tf_state["backend"]["config"]["credentials"] = None
-        if run_command.build_remote_backend_tf_file("gcs", teamid, fips):
+        if run_command.build_remote_backend_tf_file("gcs", key_path, fips, state_key):
             if os.path.isfile(".terraform/terraform.tfstate"):
                 with open(".terraform/terraform.tfstate") as fh:
                     current_tf_state = json.load(fh)
@@ -176,10 +178,7 @@ class TerraformGcloudWrapper:
                     current_tf_state["backend"]["config"]["credentials"]
                     == self.gcloud_credentials
                 )
-                and (
-                    current_tf_state["backend"]["config"]["workspace_key_prefix"]
-                    == workspace
-                )
+                and (current_tf_state["backend"]["config"]["prefix"] == workspace)
             ):
                 logger.debug("no need to pull remote state")
                 return True
@@ -200,12 +199,11 @@ class TerraformGcloudWrapper:
                                  - tf -cloud azure plan -workspace=demo-workspace"""
                     )
                     raise SystemExit
-                cmd = 'echo "1" | TF_WORKSPACE={} terraform init -backend-config="bucket={}" -backend-config="credentials={}" -backend-config="key={}" -backend-config="workspace_key_prefix={}"'.format(
-                    workspace,
+                cmd = 'echo "1" | terraform init -backend-config="bucket={}" -backend-config="credentials={}" -backend-config="prefix={}"'.format(
+                    # workspace,
                     self.gcloud_bucket_name,
                     self.gcloud_credentials,
                     key_path,
-                    gcloud_path,
                 )
                 logger.debug(f"Terraform init command: {cmd}")
 

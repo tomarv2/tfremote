@@ -63,7 +63,7 @@ class TerraformWrapper:
         parser = argparse.ArgumentParser(
             description="terraform wrapper script",
         )
-        parser.add_argument("subcommand", help="terraform subcommand")
+        parser.add_argument("apply", help="terraform subcommand")
         parser.add_argument(
             "-cloud",
             dest="cloud",
@@ -73,15 +73,15 @@ class TerraformWrapper:
         self.args, self.args_unknown = parser.parse_known_args()
 
     def main(self):
-        if vars(self.args)["subcommand"] in pass_through_list.deny_list():
+        if vars(self.args)["apply"] in pass_through_list.deny_list():
             logger.error(
                 "subcommand '{}' should not be used with this wrapper script as it may break things ".format(
-                    vars(self.args)["subcommand"],
+                    vars(self.args)["apply"],
                 ),
             )
             exit(1)
-        elif vars(self.args)["subcommand"] in pass_through_list.allow_list():
-            argument = "".join(vars(self.args)["subcommand"])
+        elif vars(self.args)["apply"] in pass_through_list.allow_list():
+            argument = "".join(vars(self.args)["apply"])
             cmd = "terraform " + argument
             logging.debug("terraform command: {}", cmd)
             ret_code = run_command.run_cmd(cmd)
@@ -98,22 +98,13 @@ class TerraformWrapper:
             cloud_env = vars(self.args)["cloud"].lower()
             if cloud_env == "aws":
                 logger.debug("configuring aws")
-                aws_plugin.configure_remotestate(
-                    self.required_vars,
-                    self.var_data,
-                )
+                aws_plugin.configure_remotestate()
             elif cloud_env == "azure":
                 logger.debug("configuring azure")
-                azure_plugin.configure_remotestate(
-                    self.required_vars,
-                    self.var_data,
-                )
+                azure_plugin.configure_remotestate()
             elif cloud_env == "gcloud":
                 logger.debug("configuring gcloud")
-                gcloud_plugin.configure_remotestate(
-                    self.required_vars,
-                    self.var_data,
-                )
+                gcloud_plugin.configure_remotestate()
             else:
                 logger.error(
                     "Incorrect cloud provider entered (e.g. gcloud, aws, or azure)",

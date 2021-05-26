@@ -7,7 +7,7 @@ import sys
 
 import src.tf_aws as aws_state
 from src.common import run_command
-from src.conf import DEFAULT_AWS_BUCKET_REGION
+from src.conf import DEFAULT_AWS_BUCKET_REGION, REQUIRED_VARIABLES
 from src.logging import configure_logging
 
 configure_logging()
@@ -27,10 +27,12 @@ class TerraformAWSWrapper:
     s3_region = None
     aws_profile = None
     workspace_key_prefix = None
+    var_data = {}
+    required_vars = REQUIRED_VARIABLES
 
     def __init__(self):
-        self.required_vars = None
-        self.var_data = None
+        self.required_vars = REQUIRED_VARIABLES
+        self.var_data = {}
         parser = argparse.ArgumentParser(
             description="Terraform remote state wrapper package", add_help=True
         )
@@ -82,10 +84,8 @@ class TerraformAWSWrapper:
 
         self.aws_args, self.aws_args_unknown = parser.parse_known_args()
 
-    def configure_remotestate(self, required_vars, var_data):
+    def configure_remotestate(self):
         logger.debug("configuring remote state")
-        self.required_vars = required_vars
-        self.var_data = var_data
         run_command.parse_vars(self.var_data, self.aws_args)
         self.s3_path = run_command.build_tf_state_path(
             self.required_vars,
@@ -94,15 +94,16 @@ class TerraformAWSWrapper:
             vars(self.aws_args)["workspace"],
         )
         self.configure(vars(self.aws_args)["workspace"])
-        if required_vars["prjid"] is None or required_vars["teamid"] is None:
+        if self.required_vars["prjid"] is None or self.required_vars["teamid"] is None:
             logger.error("required variables 'teamid' and 'prjid' not defined.")
             raise SystemExit
         else:
             set_remote_backend_status = self.set_remote_backend(
-                required_vars["teamid"],
-                required_vars["prjid"],
+                self.required_vars["teamid"],
+                self.required_vars["prjid"],
                 vars(self.aws_args)["workspace"],
                 vars(self.aws_args)["fips"],
+                vars(self.aws_args)["state_key"],
             )
         logger.info(
             "Remote State backend is configured: {}".format(
@@ -110,7 +111,6 @@ class TerraformAWSWrapper:
             ),
         )
         if set_remote_backend_status:
-            print(sys.argv[1:])
             new_cmd = [
                 x
                 for x in sys.argv[1:]
@@ -180,7 +180,7 @@ class TerraformAWSWrapper:
             ),
         )
 
-    def set_remote_backend(self, teamid, prjid, workspace, fips):
+    def set_remote_backend(self, teamid, prjid, workspace, fips, state_key):
         """
         configure the Terraform remote state if necessary
         return True if remote state was successfully configured
@@ -205,7 +205,7 @@ class TerraformAWSWrapper:
             )
             raise SystemExit
         else:
-            if run_command.build_remote_backend_tf_file("s3", teamid, fips):
+            if run_command.build_remote_backend_tf_file("s3", teamid, fips, state_key):
                 if os.path.isfile(".terraform/terraform.tfstate"):
                     with open(".terraform/terraform.tfstate") as fh:
                         current_tf_state = json.load(fh)

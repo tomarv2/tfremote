@@ -43,7 +43,7 @@ def create_command(arguments_entered: List[str]) -> str:
     return " ".join(arguments_entered)
 
 
-def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips):
+def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state_key):
     logger.debug("recreating remote_backend.tf")
     if os.path.exists("remote_backend.tf"):
         logger.info("remote_backend.tf exists, deleting existing backend file")
@@ -58,6 +58,18 @@ def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips):
                 f.write(
                     'terraform {{\n\tbackend "{}" {{\n\t\tendpoint = "{}"\n\t\tworkspace_key_prefix = "{}"\n\t}}\n}}\n'.format(
                         storage_type, AWS_FIPS_US_WEST2_ENDPOINT, workspace_key_prefix
+                    )
+                )
+            elif storage_type == "azurerm":
+                f.write(
+                    'terraform {{\n\tbackend "{}" {{\n\t\tkey = "{}"\n\t}}\n}}\n'.format(
+                        storage_type, state_key
+                    )
+                )
+            elif storage_type == "gcs":
+                f.write(
+                    'terraform {{\n\tbackend "{}" {{\n\t\tprefix = "{}"\n\t}}\n}}\n'.format(
+                        storage_type, workspace_key_prefix
                     )
                 )
             else:
