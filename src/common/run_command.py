@@ -15,6 +15,7 @@ import hcl
 from src.conf import (
     AWS_FIPS_US_WEST2_ENDPOINT,
     LIST_OF_VARIABLES_FILES,
+    MISSING_VARS,
     SUPPORTED_CLOUD_PROVIDERS,
 )
 from src.logging import configure_logging
@@ -44,7 +45,7 @@ def create_command(arguments_entered: List[str]) -> str:
 
 
 def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state_key):
-    logger.debug("recreating remote_backend.tf")
+    logger.debug("creating remote_backend.tf file")
     if os.path.exists("remote_backend.tf"):
         logger.info("remote_backend.tf exists, deleting existing backend file")
         os.remove("remote_backend.tf")
@@ -101,28 +102,15 @@ def build_tf_state_path(required_vars, var_data, state_key, workspace):
                 if var_data["variables_tf"][var] != "":
                     required_vars[var] = var_data["variables_tf"][var]
                 else:
-                    raise Exception(
-                        "ERROR: required variables 'teamid' and 'prjid' not provided"
-                    )
+                    raise Exception(MISSING_VARS)
         else:
-            raise Exception(
-                "ERROR: required variables 'teamid' and 'prjid' not defined.\n"
-                "Variables can be defined using:\n"
-                "- inline variables e.g.: -var='teamid=demo-team' -var='prjid=demo-project'\n"
-                "- inside '.tfvars' file e.g.: -var-file=<tfvars file location> \n"
-                "for more information refer to Terraform documentation"
-            )
+            raise Exception(MISSING_VARS)
 
     else:
         if workspace != "default":
-            if state_key.endswith(".tfstate"):
-                path = "{}".format(state_key)
-                logger.debug("terraform path: %s" % path)
-                return path
-            else:
-                path = "{}.tfstate".format(state_key)
-                logger.debug("terraform path: %s" % path)
-                return path
+            path = "{}".format(state_key)
+            logger.debug("terraform path: %s" % path)
+            return path
         else:
             path = "terraform/{}/{}/terraform.tfstate".format(
                 required_vars["teamid"],

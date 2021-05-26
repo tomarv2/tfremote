@@ -18,7 +18,6 @@ def allow_list():
         "taint",
         "untaint",
         "validate",
-        "version",
     ]
     return subcommand_pass_thru
 

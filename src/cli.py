@@ -6,20 +6,18 @@ This package allows multiple teams to collaborate on Terraform deployments by ma
 - gcloud
 - alicloud in-progress
 
-It needs two variables: teamid and prjid to structure files in storage
+It needs three variables: teamid, prjid and workspace to structure files in backend storage
 """
 import argparse
 import logging
 import re
 import subprocess
-import sys
 from distutils.version import StrictVersion as V
 
-from src.common import pass_through_list, run_command
-from src.conf import REQUIRED_VARIABLES
-from src.tf_aws import plugin as aws_plugin
-from src.tf_azure import plugin as azure_plugin
-from src.tf_gcloud import plugin as gcloud_plugin
+from src.common import pass_through_list
+from src.common import plugin as common_plugin
+from src.common import run_command
+from src.conf import REQUIRED_VARIABLES, VERSION
 
 from .logging import configure_logging
 
@@ -69,7 +67,12 @@ class TerraformWrapper:
             dest="cloud",
             help="specify cloud provider (e.g. gcloud, aws, or azure)",
         )
-        parser.add_argument("-version", action="version", version="%(prog)s 0.1")
+        parser.add_argument(
+            "--version",
+            action="version",
+            version="%(prog)s {version}".format(version=VERSION),
+        )
+
         self.args, self.args_unknown = parser.parse_known_args()
 
     def main(self):
@@ -98,13 +101,13 @@ class TerraformWrapper:
             cloud_env = vars(self.args)["cloud"].lower()
             if cloud_env == "aws":
                 logger.debug("configuring aws")
-                aws_plugin.configure_remotestate()
+                common_plugin.configure_remotestate(cloud_env)
             elif cloud_env == "azure":
                 logger.debug("configuring azure")
-                azure_plugin.configure_remotestate()
+                common_plugin.configure_remotestate(cloud_env)
             elif cloud_env == "gcloud":
                 logger.debug("configuring gcloud")
-                gcloud_plugin.configure_remotestate()
+                common_plugin.configure_remotestate(cloud_env)
             else:
                 logger.error(
                     "Incorrect cloud provider entered (e.g. gcloud, aws, or azure)",
