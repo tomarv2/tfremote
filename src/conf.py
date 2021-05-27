@@ -11,13 +11,13 @@ GCP_FIPS_WESTUS2_ENDPOINT = ""
 MISSING_VARS = """
 ------------------------------------------
 Required argument(s) missing: 'teamid', 'prjid', or 'workspace'
-- 'teamid', 'prjid' can be defined using '-v/--var' or '-vf/--var-file' e.g.
-   - tf -c=gcloud plan -v='teamid=foo' -v='prjid=bar'
-   - tf -c=gcloud plan -vf=demo.tfvars
+- 'teamid', 'prjid' can be defined using '-var' or '-var-file' e.g.
+   - tf -c=gcloud plan -var='teamid=foo' -var='prjid=bar'
+   - tf -c=gcloud plan -var-file=demo.tfvars
 - 'workspace' can be defined using -w/--workspace='<workspace_name>'
 - 'cloud' can be defined using -c/--cloud='aws' (supported values: gcloud, aws, or azure)
 
-e.g: tf plan -c=gcloud -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
+e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 
 (more information: https://github.com/tomarv2/tfremote)
 ------------------------------------------

@@ -13,6 +13,7 @@ from src.conf import (
     MISSING_VARS,
     PACKAGE_DESCRIPTION,
     REQUIRED_VARIABLES,
+    SUPPORTED_CLOUD_PROVIDERS,
     VERSION,
 )
 from src.logging import configure_logging
@@ -46,20 +47,18 @@ class TerraformCommonWrapper:
             add_help=True,
         )
         parser.add_argument(
-            "-vf",
-            "--var-file",
+            "-var-file",
             action="append",
             metavar="",
             dest="tfvar_files",
-            help="specify .tfvars file(s)",
+            help="TERRAFORM ARGUMENT: specify .tfvars file(s)",
         )
         parser.add_argument(
-            "-v",
-            "--var",
+            "-var",
             action="append",
             metavar="",
             dest="inline_vars",
-            help="specify inline variable(s)",
+            help="TERRAFORM ARGUMENT: specify inline variable(s)",
         )
         parser.add_argument(
             "-c",
@@ -118,11 +117,18 @@ class TerraformCommonWrapper:
 
         state_key = "".join(vars(self.args)["state_key"])
         cloud = "".join(vars(self.args)["cloud"])
+        if cloud not in SUPPORTED_CLOUD_PROVIDERS:
+            logger.error(f"Missing or Incorrect argument(s)")
+            raise SystemExit
         fips = vars(self.args)["fips"]
         workspace = vars(self.args)["workspace"]
-        if not validate_allowed_workspace.allowed_workspace(cloud, workspace, fips):
-            logger.error(f"Missing argument(s) or Not approved workspace: {workspace}")
+        if workspace is None or workspace == "":
+            logger.error(f"Missing or Incorrect argument(s)")
             raise SystemExit
+        else:
+            if not validate_allowed_workspace.allowed_workspace(cloud, workspace, fips):
+                logger.error(f"Missing or Incorrect argument(s)")
+                raise SystemExit
         if not state_key.endswith(".tfstate"):
             state_key = state_key + ".tfstate"
         self.storage_path = run_command.build_tf_state_path(
