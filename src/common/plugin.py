@@ -49,7 +49,7 @@ class TerraformCommonWrapper:
             "-vf",
             "--var-file",
             action="append",
-            metavar="N",
+            metavar="",
             dest="tfvar_files",
             help="specify .tfvars file(s)",
         )
