@@ -62,12 +62,12 @@ Default log level is `WARNING`, to change:
 >
 > `teamid` and `prjid` can be defined using:
 >
-> - As `inline variables` e.g.: `-v='teamid=demo-team' -v='prjid=demo-project'`
-> - Inside `.tfvars` file e.g.: `-vf=<tfvars file location> `
+> - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
+> - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
 >
 > `workspace` can be defined using:
 >
-> - `-w=<workspace_name>`
+> - `-w/--workspace=<workspace_name>`
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
@@ -125,7 +125,7 @@ export TF_GCLOUD_CREDENTIALS=json credentials file path>
 ### For Gcloud:
 
 ```
-tf plan -c=gcloud -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
+tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 ```
 
 The structure in Google Storage Bucket:
@@ -135,19 +135,19 @@ The structure in Google Storage Bucket:
 ### For AWS:
 
 ```
-tf plan -c=aws -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
+tf plan -c=aws -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 ```
 
 The structure in AWS S3:
 
 ![alt text](docs/images/aws_tf.png)
 
-If you need to specify `state_key` in S3, specify `-state_key=tryme-key`
+If you need to specify `state_key` in S3, specify `-s/--state-key=tryme-key`
 
 ### For Azure:
 
 ```
-tf plan -c=azure -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
+tf plan -c=azure -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 ```
 
 The structure in Azure Storage:
@@ -157,8 +157,8 @@ The structure in Azure Storage:
 ### For more available options:
 
 ```
-tf apply -h
-usage: tf [-h] [-vf] [-v] [-c] [-w] [-s] [-f] [-nf] [-V]
+tf --help
+usage: tf [-h] [-var-file] [-var] [-c] [-w] [-s] [-f] [-nf] [-V]
 
 Terraform remote state wrapper package
 --------------------------------------
@@ -170,8 +170,8 @@ gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 
 optional arguments:
   -h, --help         show this help message and exit
-  -vf , --var-file    specify .tfvars file(s)
-  -v , --var         specify inline variable(s)
+  -var-file          TERRAFORM ARGUMENT: specify .tfvars file(s)
+  -var               TERRAFORM ARGUMENT: specify inline variable(s)
   -c , --cloud       specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
   -w , --workspace   workspace name
   -s , --state_key   file name in remote state(default: 'terraform.tfstate')
