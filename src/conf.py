@@ -15,7 +15,7 @@ Required argument(s) missing: 'teamid', 'prjid', or 'workspace'
    - tf -c=gcloud plan -var='teamid=foo' -var='prjid=bar'
    - tf -c=gcloud plan -var-file=demo.tfvars
 - 'workspace' can be defined using -w/--workspace='<workspace_name>'
-- 'cloud' can be defined using -c/--cloud='aws' (supported values: gcloud, aws, or azure)
+- 'cloud' can be defined using -c/--cloud='aws' (supported values: gcloud, aws, or azure, default: aws)
 
 e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 
@@ -44,3 +44,20 @@ aws: TF_AWS_BUCKET, TF_AWS_PROFILE, TF_AWS_BUCKET_REGION=us-west-2
 azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
 gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 """
+REQUIRED_GCLOUD_ENV_VARIABLES = [
+    "TF_WORKSPACE_FILE_LOCATION",
+    "TF_GCLOUD_BUCKET",
+    "TF_GCLOUD_CREDENTIALS",
+]
+REQUIRED_AWS_ENV_VARIABLES = [
+    "TF_WORKSPACE_FILE_LOCATION",
+    "TF_AWS_BUCKET",
+    "TF_AWS_PROFILE",
+    "TF_AWS_BUCKET_REGION",
+]
+REQUIRED_AZURE_ENV_VARIABLES = [
+    "TF_WORKSPACE_FILE_LOCATION",
+    "TF_AZURE_STORAGE_ACCOUNT",
+    "TF_AZURE_CONTAINER",
+    "ARM_ACCESS_KEY",
+]
