@@ -38,7 +38,7 @@ def test_build_tf_state_path():
     }
 
     output = build_tf_state_path(required_vars, var_data, state_key, workspace)
-    assert output == "demo-key.tfstate"
+    assert output == "demo-key"
 
 
 # def test_parse_vars():

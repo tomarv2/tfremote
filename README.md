@@ -18,7 +18,7 @@
 # Terraform Remote State Manager([tfremote](https://pypi.org/project/tfremote/))
 
 **tf** is a python package for managing terraform remote state for: Google(GCP), AWS, and Azure.
-It sets a defined structure for all cloud providers removing the overheard of configuring and managing the path in storage buckets.
+It sets a defined structure for all cloud providers by removing the overheard of configuring and managing the path in storage buckets.
 
 It works with:
 
@@ -58,17 +58,16 @@ Default log level is `WARNING`, to change:
 > - prjid
 > - workspace
 >
-> These variables are required to set backend path in the remote storage.
-> Variables can be defined using:
+> Three variables are required to set backend path in the remote storage: `teamid`, `prjid`, and `workspace`
 >
-> teamid and prjid can be defined using:
+> `teamid` and `prjid` can be defined using:
 >
 > - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
 > - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
 >
-> workspace van be defined using:
+> `workspace` can be defined using:
 >
-> - `-workspace=demo_workspace_name`
+> - `-workspace=<workspace_name>`
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
@@ -115,12 +114,10 @@ export TF_GCLOUD_CREDENTIALS= # change it to right value
 
 ## How to use
 
-Once environment variables are configured, run:
-
 ### For Gcloud:
 
 ```
-tf plan -var='teamid=foo' -var='prjid=bar' -cloud gcloud -workspace=demo-workspace
+tf plan -cloud=gcloud -var=teamid=demo-team -var=prjid=demo-app -workspace=demo-workspace
 ```
 
 The structure in Google Storage Bucket:
@@ -130,17 +127,19 @@ The structure in Google Storage Bucket:
 ### For AWS:
 
 ```
-tf plan -var='teamid=foo' -var='prjid=bar' -cloud aws -workspace=demo-workspace
+tf plan -cloud=aws -var=teamid=demo-team -var=prjid=demo-app -workspace=demo-workspace
 ```
 
 The structure in AWS S3:
 
 ![alt text](docs/images/aws_tf.png)
 
+If you need to specify `state_key` in S3, specify `-state_key=tryme-key`
+
 ### For Azure:
 
 ```
-tf plan -var='teamid=foo' -var='prjid=bar' -cloud azure -workspace=demo-workspace
+tf plan -cloud=azure -var=teamid=demo-team -var=prjid=demo-app -workspace=demo-workspace
 ```
 
 The structure in Azure Storage:
@@ -150,19 +149,20 @@ The structure in Azure Storage:
 ### For more available options:
 
 ```
-tf --help
-usage: tf [-h] [-var-file] [-var] [-cloud] [-workspace] [-state_key] [-fips] [-no-fips] [-version]
+tf -h
+usage: tf [-h] [-var-file] [-var] [-cloud] [-workspace] [-state_key] [-fips] [-no-fips] [-v]
 
 Terraform remote state wrapper package
 
 optional arguments:
-  -h, --help   show this help message and exit
-  -var-file    specify tfvars file(s)
-  -var         specify inline variables
-  -cloud       specify the cloud provider: gcloud, aws, or azure
-  -workspace   workspace name
-  -state_key   file name in remote state(default: 'terraform.tfstate')
-  -fips        enable FIPS endpoints(default: True)
-  -no-fips     disable FIPS endpoints
-  -version     show program's version number and exit
+  -h, --help     show this help message and exit
+  -var-file      specify .tfvars file(s)
+  -var           specify inline variable(s)
+  -cloud         specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
+  -workspace     workspace name
+  -state_key     file name in remote state(default: 'terraform.tfstate')
+  -fips          enable FIPS endpoints(default: True)
+  -no-fips       disable FIPS endpoints
+  -v, --version  show program's version number and exit
+
 ```

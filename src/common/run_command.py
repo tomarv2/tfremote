@@ -45,6 +45,9 @@ def create_command(arguments_entered: List[str]) -> str:
 
 
 def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state_key):
+    """
+    function to create remote_backend.tf file
+    """
     logger.debug("creating remote_backend.tf file")
     if os.path.exists("remote_backend.tf"):
         logger.info("remote_backend.tf exists, deleting existing backend file")
@@ -85,6 +88,9 @@ def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state
 
 
 def build_tf_state_path(required_vars, var_data, state_key, workspace):
+    """
+    function to build tf state path
+    """
     logger.debug("build tf state path")
     for var in required_vars:
         logger.debug("checking if required variables are provided")

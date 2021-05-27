@@ -5,9 +5,14 @@ import os
 import subprocess
 import sys
 
-import src.common as aws_state
-from src.common import run_command
-from src.conf import DEFAULT_AWS_BUCKET_REGION, MISSING_VARS, REQUIRED_VARIABLES
+import src.common as state
+from src.common import run_command, validate_allowed_workspace
+from src.conf import (
+    DEFAULT_AWS_BUCKET_REGION,
+    MISSING_VARS,
+    REQUIRED_VARIABLES,
+    VERSION,
+)
 from src.logging import configure_logging
 
 configure_logging()
@@ -15,10 +20,10 @@ logger = logging.getLogger()
 
 
 class TerraformCommonWrapper:
-    title = "AWS State Plugin"
-    slug = "aws-remote-state"
-    description = "Configure AWS remote state"
-    version = aws_state.__version__
+    title = "Remote State Plugin"
+    slug = "remote-state-management"
+    description = "Configure Terraform remote state for GCP, AWS, and Azure"
+    version = state.__version__
     args = None
     args_unknown = None
     logger = None
@@ -28,7 +33,7 @@ class TerraformCommonWrapper:
     aws_profile = None
     workspace_key_prefix = None
     var_data = {}
-    required_vars = REQUIRED_VARIABLES
+    required_vars = None
 
     def __init__(self):
         self.required_vars = REQUIRED_VARIABLES
@@ -49,6 +54,13 @@ class TerraformCommonWrapper:
             metavar="",
             dest="inline_vars",
             help="specify inline variable(s)",
+        )
+        parser.add_argument(
+            "-cloud",
+            dest="cloud",
+            default="aws",
+            metavar="",
+            help="specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)",
         )
         parser.add_argument(
             "-workspace",
@@ -74,23 +86,37 @@ class TerraformCommonWrapper:
         )
         parser.set_defaults(fips=True)
 
-        parser.add_argument("-version", action="version", version="%(prog)s 0.1")
-
+        parser.add_argument(
+            "-v",
+            "--version",
+            action="version",
+            version="%(prog)s {version}".format(version=VERSION),
+        )
         self.args, self.aws_args_unknown = parser.parse_known_args()
 
-    def configure_remotestate(self, cloud):
+    def configure_remotestate(self):
+        """
+        configuring remote state
+        """
         logger.debug("configuring remote state")
         run_command.parse_vars(self.var_data, self.args)
+
         state_key = "".join(vars(self.args)["state_key"])
+        cloud = "".join(vars(self.args)["cloud"])
+        fips = vars(self.args)["fips"]
+        workspace = vars(self.args)["workspace"]
+        if not validate_allowed_workspace.allowed_workspace(cloud, workspace, fips):
+            logger.error(f"Not approved workspace: {workspace}")
+            raise SystemExit
         if not state_key.endswith(".tfstate"):
             state_key = state_key + ".tfstate"
         self.storage_path = run_command.build_tf_state_path(
             self.required_vars,
             self.var_data,
             state_key,
-            vars(self.args)["workspace"],
+            workspace,
         )
-        self.configure(vars(self.args)["workspace"], cloud)
+        self.configure(workspace, cloud)
         if self.required_vars["prjid"] is None or self.required_vars["teamid"] is None:
             logger.error(MISSING_VARS)
             raise SystemExit
@@ -98,8 +124,8 @@ class TerraformCommonWrapper:
             set_remote_backend_status = self.set_remote_backend(
                 self.required_vars["teamid"],
                 self.required_vars["prjid"],
-                vars(self.args)["workspace"],
-                vars(self.args)["fips"],
+                workspace,
+                fips,
                 state_key,
                 cloud,
             )
@@ -113,7 +139,14 @@ class TerraformCommonWrapper:
                 x
                 for x in sys.argv[1:]
                 if not x.startswith(
-                    ("-workspace", "default", "-state_key", "-no-fips", "-fips")
+                    (
+                        "-cloud",
+                        "-workspace",
+                        "default",
+                        "-state_key",
+                        "-no-fips",
+                        "-fips",
+                    )
                 )
             ]
             cmd = "terraform {}".format(
@@ -132,16 +165,20 @@ class TerraformCommonWrapper:
 
     # set bucket details (get from env variables)
     def configure(self, workspace, cloud):
-        logger.debug("configuring backend")
+        """
+        configure bucket
+        """
+        logger.debug("configure bucket")
         if cloud == "aws":
+            logger.debug(f"configuring remote state for {cloud}")
             self.aws_profile = os.getenv("TF_AWS_PROFILE")
             self.s3_bucket = os.getenv("TF_AWS_BUCKET")
             self.s3_region = os.getenv("TF_AWS_BUCKET_REGION")
             if (self.aws_profile is None) or (self.aws_profile == ""):
-                logger.error("Please set the TF_AWS_PROFILE environment variable")
+                logger.error("Please set TF_AWS_PROFILE environment variable")
                 exit(1)
             if (self.s3_bucket is None) or (self.s3_bucket == ""):
-                logger.error("Please set the TF_AWS_BUCKET environment variable")
+                logger.error("Please set TF_AWS_BUCKET environment variable")
                 exit(1)
             if (workspace is None) or (workspace == ""):
                 logger.error(MISSING_VARS)
@@ -179,17 +216,18 @@ class TerraformCommonWrapper:
                 ),
             )
         elif cloud == "azure":
+            logger.debug(f"configuring remote state for {cloud}")
             self.azure_container_name = os.getenv("TF_AZURE_CONTAINER")
             self.azure_stg_acc_name = os.getenv("TF_AZURE_STORAGE_ACCOUNT")
             self.azure_access_key = os.getenv("ARM_ACCESS_KEY")
             if (self.azure_container_name is None) or (self.azure_container_name == ""):
                 logger.error(
-                    "Please set the TF_AZURE_CONTAINER environment variable",
+                    "Please set TF_AZURE_CONTAINER environment variable",
                 )
                 exit(1)
             if (self.azure_stg_acc_name is None) or (self.azure_stg_acc_name == ""):
                 logger.error(
-                    "Please set the TF_AZURE_STORAGE_ACCOUNT environment variable",
+                    "Please set TF_AZURE_STORAGE_ACCOUNT environment variable",
                 )
                 exit(1)
             if (workspace is None) or (workspace == ""):
@@ -209,18 +247,18 @@ class TerraformCommonWrapper:
                 ),
             )
         else:
-            logger.debug("configuring remote state")
+            logger.debug(f"configuring remote state for {cloud}")
             self.gcloud_bucket_name = os.getenv("TF_GCLOUD_BUCKET")
             self.gcloud_credentials = os.getenv("TF_GCLOUD_CREDENTIALS")
             if (self.gcloud_bucket_name is None) or (self.gcloud_bucket_name == ""):
                 logger.error(
-                    "Please set the TF_GCLOUD_BUCKET environment variable",
+                    "Please set TF_GCLOUD_BUCKET environment variable",
                 )
                 exit(1)
             # different credentials for different env
             if (self.gcloud_credentials is None) or (self.gcloud_credentials == ""):
                 logger.error(
-                    "Please set the TF_GCLOUD_CREDENTIALS environment variable",
+                    "Please set TF_GCLOUD_CREDENTIALS environment variable",
                 )
                 exit(1)
             if (workspace is None) or (workspace == ""):
