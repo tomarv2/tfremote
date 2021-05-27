@@ -15,6 +15,9 @@ from src.conf import (
     REQUIRED_VARIABLES,
     SUPPORTED_CLOUD_PROVIDERS,
     VERSION,
+    REQUIRED_AWS_ENV_VARIABLES,
+    REQUIRED_GCLOUD_ENV_VARIABLES,
+    REQUIRED_AZURE_ENV_VARIABLES,
 )
 from src.logging import configure_logging
 
@@ -114,20 +117,34 @@ class TerraformCommonWrapper:
         """
         logger.debug("configuring remote state")
         run_command.parse_vars(self.var_data, self.args)
-
         state_key = "".join(vars(self.args)["state_key"])
-        cloud = "".join(vars(self.args)["cloud"])
+        cloud = "".join(vars(self.args)["cloud"]).lower()
         if cloud not in SUPPORTED_CLOUD_PROVIDERS:
-            logger.error(f"Missing or Incorrect argument(s)")
+            logger.error("Incorrect cloud provider specified")
             raise SystemExit
+        if cloud == "gcloud":
+            for env_var in REQUIRED_GCLOUD_ENV_VARIABLES:
+                if not os.getenv(env_var):
+                    logger.error(f"Required env. variables missing: {REQUIRED_GCLOUD_ENV_VARIABLES}")
+                    raise SystemExit
+        if cloud == "aws":
+            for env_var in REQUIRED_AWS_ENV_VARIABLES:
+                if not os.getenv(env_var):
+                    logger.error(f"Required env. variables missing: {REQUIRED_AWS_ENV_VARIABLES}")
+                    raise SystemExit
+        if cloud == "azure":
+            for env_var in REQUIRED_AZURE_ENV_VARIABLES:
+                if not os.getenv(env_var):
+                    logger.error(f"Required env. variables missing: {REQUIRED_AZURE_ENV_VARIABLES}")
+                    raise SystemExit
         fips = vars(self.args)["fips"]
         workspace = vars(self.args)["workspace"]
         if workspace is None or workspace == "":
-            logger.error(f"Missing or Incorrect argument(s)")
+            logger.error(MISSING_VARS)
             raise SystemExit
         else:
             if not validate_allowed_workspace.allowed_workspace(cloud, workspace, fips):
-                logger.error(f"Missing or Incorrect argument(s)")
+                logger.error(MISSING_VARS)
                 raise SystemExit
         if not state_key.endswith(".tfstate"):
             state_key = state_key + ".tfstate"
