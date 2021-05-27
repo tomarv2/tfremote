@@ -2,7 +2,9 @@ import os
 
 from setuptools import find_packages, setup
 
-VERSION = "0.0.5"
+from src.conf import VERSION
+
+VERSION = VERSION
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 

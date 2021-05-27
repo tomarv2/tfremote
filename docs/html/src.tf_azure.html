@@ -5,12 +5,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>src.tf_azure package &#8212; Tfremote 0.0.1 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/bizstyle.css" />
     
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -51,96 +52,18 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="src-tf-azure-package">
+  <section id="src-tf-azure-package">
 <h1>src.tf_azure package<a class="headerlink" href="#src-tf-azure-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-src.tf_azure.plugin">
-<span id="src-tf-azure-plugin-module"></span><h2>src.tf_azure.plugin module<a class="headerlink" href="#module-src.tf_azure.plugin" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">src.tf_azure.plugin.</span></code><code class="sig-name descname"><span class="pre">TerraformAzureWrapper</span></code><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.args">
-<code class="sig-name descname"><span class="pre">args</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.args_unknown">
-<code class="sig-name descname"><span class="pre">args_unknown</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.args_unknown" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.azure_access_key">
-<code class="sig-name descname"><span class="pre">azure_access_key</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.azure_access_key" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.azure_container_name">
-<code class="sig-name descname"><span class="pre">azure_container_name</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.azure_container_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.azure_path">
-<code class="sig-name descname"><span class="pre">azure_path</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.azure_path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.azure_stg_acc_name">
-<code class="sig-name descname"><span class="pre">azure_stg_acc_name</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.azure_stg_acc_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.configure">
-<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.configure" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.configure_remotestate">
-<code class="sig-name descname"><span class="pre">configure_remotestate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.configure_remotestate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.description">
-<code class="sig-name descname"><span class="pre">description</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Configure</span> <span class="pre">Azure</span> <span class="pre">remote</span> <span class="pre">state'</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.description" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.logger">
-<code class="sig-name descname"><span class="pre">logger</span></code><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.logger" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.set_remote_backend">
-<code class="sig-name descname"><span class="pre">set_remote_backend</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.set_remote_backend" title="Permalink to this definition">¶</a></dt>
-<dd><p>configure the Terraform remote state if necessary
-return True if remote state was successfully configured</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.slug">
-<code class="sig-name descname"><span class="pre">slug</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'azure-remote-state'</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.slug" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.title">
-<code class="sig-name descname"><span class="pre">title</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'Azure</span> <span class="pre">State</span> <span class="pre">Plugin'</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.title" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt id="src.tf_azure.plugin.TerraformAzureWrapper.version">
-<code class="sig-name descname"><span class="pre">version</span></code><em class="property"> <span class="pre">=</span> <span class="pre">'0.1.0.dev1'</span></em><a class="headerlink" href="#src.tf_azure.plugin.TerraformAzureWrapper.version" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-src.tf_azure">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.tf_azure" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+</section>
+<section id="src-tf-azure-plugin-module">
+<h2>src.tf_azure.plugin module<a class="headerlink" href="#src-tf-azure-plugin-module" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -153,8 +76,8 @@ return True if remote state was successfully configured</p>
   <ul>
 <li><a class="reference internal" href="#">src.tf_azure package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-src.tf_azure.plugin">src.tf_azure.plugin module</a></li>
-<li><a class="reference internal" href="#module-src.tf_azure">Module contents</a></li>
+<li><a class="reference internal" href="#src-tf-azure-plugin-module">src.tf_azure.plugin module</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -209,7 +132,7 @@ return True if remote state was successfully configured</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Author.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.3.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>
