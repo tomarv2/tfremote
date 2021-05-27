@@ -12,12 +12,12 @@ from src.conf import (
     DEFAULT_AWS_BUCKET_REGION,
     MISSING_VARS,
     PACKAGE_DESCRIPTION,
+    REQUIRED_AWS_ENV_VARIABLES,
+    REQUIRED_AZURE_ENV_VARIABLES,
+    REQUIRED_GCLOUD_ENV_VARIABLES,
     REQUIRED_VARIABLES,
     SUPPORTED_CLOUD_PROVIDERS,
     VERSION,
-    REQUIRED_AWS_ENV_VARIABLES,
-    REQUIRED_GCLOUD_ENV_VARIABLES,
-    REQUIRED_AZURE_ENV_VARIABLES,
 )
 from src.logging import configure_logging
 
@@ -125,17 +125,23 @@ class TerraformCommonWrapper:
         if cloud == "gcloud":
             for env_var in REQUIRED_GCLOUD_ENV_VARIABLES:
                 if not os.getenv(env_var):
-                    logger.error(f"Required env. variables missing: {REQUIRED_GCLOUD_ENV_VARIABLES}")
+                    logger.error(
+                        f"Required env. variables missing: {REQUIRED_GCLOUD_ENV_VARIABLES}"
+                    )
                     raise SystemExit
         if cloud == "aws":
             for env_var in REQUIRED_AWS_ENV_VARIABLES:
                 if not os.getenv(env_var):
-                    logger.error(f"Required env. variables missing: {REQUIRED_AWS_ENV_VARIABLES}")
+                    logger.error(
+                        f"Required env. variables missing: {REQUIRED_AWS_ENV_VARIABLES}"
+                    )
                     raise SystemExit
         if cloud == "azure":
             for env_var in REQUIRED_AZURE_ENV_VARIABLES:
                 if not os.getenv(env_var):
-                    logger.error(f"Required env. variables missing: {REQUIRED_AZURE_ENV_VARIABLES}")
+                    logger.error(
+                        f"Required env. variables missing: {REQUIRED_AZURE_ENV_VARIABLES}"
+                    )
                     raise SystemExit
         fips = vars(self.args)["fips"]
         workspace = vars(self.args)["workspace"]
