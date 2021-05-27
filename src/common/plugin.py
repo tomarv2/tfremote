@@ -8,8 +8,10 @@ import sys
 import src.common as state
 from src.common import run_command, validate_allowed_workspace
 from src.conf import (
+    ARGS_REMOVED,
     DEFAULT_AWS_BUCKET_REGION,
     MISSING_VARS,
+    PACKAGE_DESCRIPTION,
     REQUIRED_VARIABLES,
     VERSION,
 )
@@ -39,60 +41,73 @@ class TerraformCommonWrapper:
         self.required_vars = REQUIRED_VARIABLES
         self.var_data = {}
         parser = argparse.ArgumentParser(
-            description="Terraform remote state wrapper package", add_help=True
+            description=PACKAGE_DESCRIPTION,
+            formatter_class=argparse.RawTextHelpFormatter,
+            add_help=True,
         )
         parser.add_argument(
-            "-var-file",
+            "-vf",
+            "--var-file",
             action="append",
-            metavar="",
+            metavar="N",
             dest="tfvar_files",
             help="specify .tfvars file(s)",
         )
         parser.add_argument(
-            "-var",
+            "-v",
+            "--var",
             action="append",
             metavar="",
             dest="inline_vars",
             help="specify inline variable(s)",
         )
         parser.add_argument(
-            "-cloud",
+            "-c",
+            "--cloud",
             dest="cloud",
             default="aws",
             metavar="",
             help="specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)",
         )
         parser.add_argument(
-            "-workspace",
+            "-w",
+            "--workspace",
             dest="workspace",
             metavar="",
             help="workspace name",
         )
         parser.add_argument(
-            "-state_key",
+            "-s",
+            "--state_key",
             dest="state_key",
             default="terraform",
             metavar="",
             help="file name in remote state(default: 'terraform.tfstate')",
         )
         parser.add_argument(
-            "-fips",
+            "-f",
+            "--fips",
             dest="fips",
             action="store_true",
             help="enable FIPS endpoints(default: True)",
         )
         parser.add_argument(
-            "-no-fips", dest="fips", action="store_false", help="disable FIPS endpoints"
+            "-nf",
+            "-no-fips",
+            dest="fips",
+            action="store_false",
+            help="disable FIPS endpoints",
         )
         parser.set_defaults(fips=True)
 
         parser.add_argument(
-            "-v",
+            "-V",
             "--version",
             action="version",
             version="%(prog)s {version}".format(version=VERSION),
         )
-        self.args, self.aws_args_unknown = parser.parse_known_args()
+        self.args, self.args_unknown = parser.parse_known_args()
+        # print(self.args_unknown)
 
     def configure_remotestate(self):
         """
@@ -106,7 +121,7 @@ class TerraformCommonWrapper:
         fips = vars(self.args)["fips"]
         workspace = vars(self.args)["workspace"]
         if not validate_allowed_workspace.allowed_workspace(cloud, workspace, fips):
-            logger.error(f"Not approved workspace: {workspace}")
+            logger.error(f"Missing argument(s) or Not approved workspace: {workspace}")
             raise SystemExit
         if not state_key.endswith(".tfstate"):
             state_key = state_key + ".tfstate"
@@ -135,20 +150,7 @@ class TerraformCommonWrapper:
             ),
         )
         if set_remote_backend_status:
-            new_cmd = [
-                x
-                for x in sys.argv[1:]
-                if not x.startswith(
-                    (
-                        "-cloud",
-                        "-workspace",
-                        "default",
-                        "-state_key",
-                        "-no-fips",
-                        "-fips",
-                    )
-                )
-            ]
+            new_cmd = [x for x in sys.argv[1:] if not x.startswith(ARGS_REMOVED)]
             cmd = "terraform {}".format(
                 run_command.create_command(new_cmd),
             )

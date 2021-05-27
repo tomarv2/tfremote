@@ -6,10 +6,8 @@ from src.common.run_command import (  # parse_vars,
 
 
 def test_create_command():
-    output = create_command(
-        ["tf", "plan", "-cloud", "aws", "-var-file", "foo.vars", "-var", "foo=var"]
-    )
-    assert output == "tf plan -var-file foo.vars -var foo=var"
+    output = create_command(["tf", "plan", "-vf=foo.vars", "-v=foo=var"])
+    assert output == "tf plan -vf=foo.vars -v=foo=var"
 
 
 def test_build_remote_backend_tf_file():

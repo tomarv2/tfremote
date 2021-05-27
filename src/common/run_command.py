@@ -36,8 +36,6 @@ def create_command(arguments_entered: List[str]) -> str:
     :return: command generated
     """
     logger.debug(f"arguments_entered: {arguments_entered}")
-    if "-cloud" in arguments_entered:
-        arguments_entered.remove("-cloud")
     for i in SUPPORTED_CLOUD_PROVIDERS:
         if i in arguments_entered:
             arguments_entered.remove(i)

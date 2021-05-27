@@ -62,16 +62,26 @@ Default log level is `WARNING`, to change:
 >
 > `teamid` and `prjid` can be defined using:
 >
-> - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
-> - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
+> - As `inline variables` e.g.: `-v='teamid=demo-team' -v='prjid=demo-project'`
+> - Inside `.tfvars` file e.g.: `-vf=<tfvars file location> `
 >
 > `workspace` can be defined using:
 >
-> - `-workspace=<workspace_name>`
+> - `-w=<workspace_name>`
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
 ## Setup environment variables
+
+### Workspace list file location
+
+Workspace file location(`TF_WORKSPACE_FILE_LOCATION`) is used to standardize deployment process and location for teams.
+
+```
+export TF_WORKSPACE_FILE_LOCATION=<workspace list file location>
+```
+
+Reference file: [link](scripts/workspaces.json)
 
 ### AWS
 
@@ -81,7 +91,7 @@ Set below env variables:
 
 ```
 export TF_AWS_BUCKET=<your_remote_state_bucket_name>
-export TF_AWS_PROFILE=default
+export TF_AWS_PROFILE=<aws profile to use>
 export TF_AWS_BUCKET_REGION=us-west-2
 ```
 
@@ -94,9 +104,9 @@ Run `scripts/remote_state.sh` (fill in the required information)
 Set below env variables:
 
 ```
-export TF_AZURE_STORAGE_ACCOUNT=tfstatexxxxx # Output of remote_state.sh
-export TF_AZURE_CONTAINER=tfstate # Output of remote_state.sh
-export ARM_ACCESS_KEY=xxxxxxxxxx # Output of remote_state.sh
+export TF_AZURE_STORAGE_ACCOUNT=<remote state storage account name>
+export TF_AZURE_CONTAINER=<remote state container>
+export ARM_ACCESS_KEY=<storage account access key>
 ```
 
 ### GCP(Gcloud)
@@ -106,18 +116,16 @@ https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terrafor
 Set below env variables:
 
 ```
-# Google storage bucket name
-export TF_GCLOUD_BUCKET= # change it to right value
-# Path to google service account file
-export TF_GCLOUD_CREDENTIALS= # change it to right value
+export TF_GCLOUD_BUCKET=<remote state storage bucket name>
+export TF_GCLOUD_CREDENTIALS=json credentials file path>
 ```
 
-## How to use
+## Usage
 
 ### For Gcloud:
 
 ```
-tf plan -cloud=gcloud -var=teamid=demo-team -var=prjid=demo-app -workspace=demo-workspace
+tf plan -c=gcloud -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
 ```
 
 The structure in Google Storage Bucket:
@@ -127,7 +135,7 @@ The structure in Google Storage Bucket:
 ### For AWS:
 
 ```
-tf plan -cloud=aws -var=teamid=demo-team -var=prjid=demo-app -workspace=demo-workspace
+tf plan -c=aws -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
 ```
 
 The structure in AWS S3:
@@ -139,7 +147,7 @@ If you need to specify `state_key` in S3, specify `-state_key=tryme-key`
 ### For Azure:
 
 ```
-tf plan -cloud=azure -var=teamid=demo-team -var=prjid=demo-app -workspace=demo-workspace
+tf plan -c=azure -v=teamid=demo-team -v=prjid=demo-app -w=demo-workspace
 ```
 
 The structure in Azure Storage:
@@ -149,20 +157,25 @@ The structure in Azure Storage:
 ### For more available options:
 
 ```
-tf -h
-usage: tf [-h] [-var-file] [-var] [-cloud] [-workspace] [-state_key] [-fips] [-no-fips] [-v]
+tf apply -h
+usage: tf [-h] [-vf] [-v] [-c] [-w] [-s] [-f] [-nf] [-V]
 
 Terraform remote state wrapper package
+--------------------------------------
+Usage: Set below env variables to begin (more information: https://github.com/tomarv2/tfremote):
+TF_WORKSPACE_FILE_LOCATION
+aws: TF_AWS_BUCKET, TF_AWS_PROFILE, TF_AWS_BUCKET_REGION=us-west-2
+azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
+gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 
 optional arguments:
-  -h, --help     show this help message and exit
-  -var-file      specify .tfvars file(s)
-  -var           specify inline variable(s)
-  -cloud         specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
-  -workspace     workspace name
-  -state_key     file name in remote state(default: 'terraform.tfstate')
-  -fips          enable FIPS endpoints(default: True)
-  -no-fips       disable FIPS endpoints
-  -v, --version  show program's version number and exit
-
+  -h, --help         show this help message and exit
+  -vf , --var-file    specify .tfvars file(s)
+  -v , --var         specify inline variable(s)
+  -c , --cloud       specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
+  -w , --workspace   workspace name
+  -s , --state_key   file name in remote state(default: 'terraform.tfstate')
+  -f, --fips         enable FIPS endpoints(default: True)
+  -nf, -no-fips      disable FIPS endpoints
+  -V, --version      show program's version number and exit
 ```
