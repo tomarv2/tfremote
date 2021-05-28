@@ -50,22 +50,22 @@ class TerraformCommonWrapper:
             add_help=True,
         )
         parser.add_argument(
-            "-var-file",
-            action="append",
-            metavar="",
-            dest="tfvar_files",
-            help="TERRAFORM ARGUMENT: specify .tfvars file(s)",
-        )
-        parser.add_argument(
             "-var",
             action="append",
             metavar="",
             dest="inline_vars",
-            help="TERRAFORM ARGUMENT: specify inline variable(s)",
+            help="""set Terraform configuration variable. This flag can be set multiple times""",
+        )
+        parser.add_argument(
+            "-var-file",
+            action="append",
+            metavar="",
+            dest="tfvar_files",
+            help="""set Terraform configuration variables from a file. This flag can be set multiple times""",
         )
         parser.add_argument(
             "-c",
-            "--cloud",
+            # "--cloud",
             dest="cloud",
             default="aws",
             metavar="",
@@ -73,29 +73,29 @@ class TerraformCommonWrapper:
         )
         parser.add_argument(
             "-w",
-            "--workspace",
+            # "--workspace",
             dest="workspace",
             metavar="",
-            help="workspace name",
+            help="specify existing workspace name",
         )
         parser.add_argument(
             "-s",
-            "--state_key",
+            # "--state_key",
             dest="state_key",
             default="terraform",
             metavar="",
-            help="file name in remote state(default: 'terraform.tfstate')",
+            help="file name in remote state (default: 'terraform.tfstate')",
         )
         parser.add_argument(
             "-f",
-            "--fips",
+            # "--fips",
             dest="fips",
             action="store_true",
-            help="enable FIPS endpoints(default: True)",
+            help="enable FIPS endpoints (default: True)",
         )
         parser.add_argument(
             "-nf",
-            "-no-fips",
+            # "--no-fips",
             dest="fips",
             action="store_false",
             help="disable FIPS endpoints",
@@ -103,8 +103,8 @@ class TerraformCommonWrapper:
         parser.set_defaults(fips=True)
 
         parser.add_argument(
-            "-V",
-            "--version",
+            "-v",
+            # "--version",
             action="version",
             version="%(prog)s {version}".format(version=VERSION),
         )
@@ -133,14 +133,14 @@ class TerraformCommonWrapper:
             for env_var in REQUIRED_AWS_ENV_VARIABLES:
                 if not os.getenv(env_var):
                     logger.error(
-                        f"Required env. variables missing: {REQUIRED_AWS_ENV_VARIABLES}"
+                        f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}"
                     )
                     raise SystemExit
         if cloud == "azure":
             for env_var in REQUIRED_AZURE_ENV_VARIABLES:
                 if not os.getenv(env_var):
                     logger.error(
-                        f"Required env. variables missing: {REQUIRED_AZURE_ENV_VARIABLES}"
+                        f"Required environment variable(s) missing: {REQUIRED_AZURE_ENV_VARIABLES}"
                     )
                     raise SystemExit
         fips = vars(self.args)["fips"]

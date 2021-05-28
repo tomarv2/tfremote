@@ -14,8 +14,7 @@ Required argument(s) missing: 'teamid', 'prjid', or 'workspace'
 - 'teamid', 'prjid' can be defined using '-var' or '-var-file' e.g.
    - tf -c=gcloud plan -var='teamid=foo' -var='prjid=bar'
    - tf -c=gcloud plan -var-file=demo.tfvars
-- 'workspace' can be defined using -w/--workspace='<workspace_name>'
-- 'cloud' can be defined using -c/--cloud='aws' (supported values: gcloud, aws, or azure, default: aws)
+- 'workspace' can be defined using -w='<workspace_name>'
 
 e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 
@@ -24,16 +23,11 @@ e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspa
 """
 ARGS_REMOVED = (
     "-c",
-    "--cloud",
     "-w",
-    "--workspace",
     "default",
     "-s",
-    "--state_key",
     "-nf",
-    "--no-fips",
     "-f",
-    "--fips",
 )
 PACKAGE_DESCRIPTION = """
 Terraform remote state wrapper package
