@@ -1,4 +1,4 @@
-VERSION = "0.0.10"
+VERSION = "0.0.11"
 SUPPORTED_CLOUD_PROVIDERS = ["aws", "azure", "gcloud"]
 DEFAULT_AWS_BUCKET_REGION = "us-west-2"
 LIST_OF_VARIABLES_FILES = ["vars.tf", "variable.tf", "variables.tf"]
