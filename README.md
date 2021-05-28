@@ -109,7 +109,7 @@ export TF_AZURE_CONTAINER=<remote state container>
 export ARM_ACCESS_KEY=<storage account access key>
 ```
 
-### GCP(Gcloud)
+### GCP(gcloud)
 
 https://cloud.google.com/community/tutorials/managing-gcp-projects-with-terraform
 
@@ -122,7 +122,7 @@ export TF_GCLOUD_CREDENTIALS=json credentials file path>
 
 ## Usage
 
-### For Gcloud:
+### For GCP(gcloud):
 
 ```
 tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
@@ -142,7 +142,7 @@ The structure in AWS S3:
 
 ![alt text](docs/images/aws_tf.png)
 
-If you need to specify `state_key` in S3, specify `-s/--state-key=tryme-key`
+If you need to specify `state_key` in S3, specify `-s=tryme-key`
 
 ### For Azure:
 
@@ -157,8 +157,8 @@ The structure in Azure Storage:
 ### For more available options:
 
 ```
-tf --help
-usage: tf [-h] [-var-file] [-var] [-c] [-w] [-s] [-f] [-nf] [-V]
+tf -h
+usage: tf [-h] [-var] [-var-file] [-c] [-w] [-s] [-f] [-nf] [-v]
 
 Terraform remote state wrapper package
 --------------------------------------
@@ -169,13 +169,14 @@ azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
 gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -var-file          TERRAFORM ARGUMENT: specify .tfvars file(s)
-  -var               TERRAFORM ARGUMENT: specify inline variable(s)
-  -c , --cloud       specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
-  -w , --workspace   workspace name
-  -s , --state_key   file name in remote state(default: 'terraform.tfstate')
-  -f, --fips         enable FIPS endpoints(default: True)
-  -nf, -no-fips      disable FIPS endpoints
-  -V, --version      show program's version number and exit
+  -h, --help  show this help message and exit
+  -var        set Terraform configuration variable. This flag can be set multiple times
+  -var-file   set Terraform configuration variables from a file. This flag can be set multiple times
+  -c          specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
+  -w          specify existing workspace name
+  -s          file name in remote state (default: 'terraform.tfstate')
+  -f          enable FIPS endpoints (default: True)
+  -nf         disable FIPS endpoints
+  -v          show program's version number and exit
+
 ```
