@@ -17,7 +17,7 @@
 
 # Terraform Remote State Manager([tfremote](https://pypi.org/project/tfremote/))
 
-**tf** is a python package for managing terraform remote state for: Google(GCP), AWS, and Azure.
+**tf** is a python package for managing terraform remote state for: Google(Gcloud), AWS, and Azure.
 It sets a defined structure for all cloud providers by removing the overheard of configuring and managing the path in storage buckets.
 
 It works with:
@@ -52,33 +52,34 @@ Default log level is `WARNING`, to change:
 
 `export TF_LOG_LEVEL` to any of these: `'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'`
 
-> ❗️ **Important** - Three variables are required for using `tf` package:
+> ❗️ **Important** - Two variables are required for using `tf` package to set path in remote storage:
 >
 > - teamid
 > - prjid
-> - workspace
 >
-> Three variables are required to set backend path in the remote storage: `teamid`, `prjid`, and `workspace`
->
-> `teamid` and `prjid` can be defined using:
+> Required variables can be defined using:
 >
 > - As `inline variables` e.g.: `-var='teamid=demo-team' -var='prjid=demo-project'`
 > - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
 >
-> `workspace` can be defined using:
+> Two optional variables:
 >
-> - `-w/--workspace=<workspace_name>`
+> `workspace` and `state_key` can be defined using:
+>
+> - `-w=<workspace_name>`. If no workspace is provided `default` workspace is used.
+>
+> - `s=<state_key name>`. If no key is provided `terraform` is used.
+>
+> Path created in S3 backend: `/<teamid>/<prjid>/<workspace>/<state-key>`
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
 ## Setup environment variables
 
-### Workspace list file location
-
-Workspace file location(`TF_WORKSPACE_FILE_LOCATION`) is used to standardize deployment process and location for teams.
+### Workspace list file location `TF_WORKSPACE_FILE_LOCATION`
 
 ```
-export TF_WORKSPACE_FILE_LOCATION=<workspace list file location>
+export TF_WORKSPACE_FILE_LOCATION=<workspace json file location>
 ```
 
 Reference file: [link](scripts/workspaces.json)
@@ -173,10 +174,9 @@ optional arguments:
   -var        set Terraform configuration variable. This flag can be set multiple times
   -var-file   set Terraform configuration variables from a file. This flag can be set multiple times
   -c          specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
-  -w          specify existing workspace name
+  -w          specify existing workspace name(default: 'default')
   -s          file name in remote state (default: 'terraform.tfstate')
   -f          enable FIPS endpoints (default: True)
   -nf         disable FIPS endpoints
   -v          show program's version number and exit
-
 ```
