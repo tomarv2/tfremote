@@ -1,4 +1,4 @@
-VERSION = "0.0.13"
+VERSION = "0.0.14"
 SUPPORTED_CLOUD_PROVIDERS = ["aws", "azure", "gcloud"]
 DEFAULT_AWS_BUCKET_REGION = "us-west-2"
 LIST_OF_VARIABLES_FILES = ["vars.tf", "variable.tf", "variables.tf"]
@@ -10,11 +10,12 @@ GCP_FIPS_WESTUS2_ENDPOINT = ""
 # Error messages
 MISSING_VARS = """
 ------------------------------------------
-Required argument(s) missing: 'teamid', 'prjid', or 'workspace'
+Required argument(s) missing: 'teamid', 'prjid or invalid 'workspace' provided:
 - 'teamid', 'prjid' can be defined using '-var' or '-var-file' e.g.
    - tf -c=gcloud plan -var='teamid=foo' -var='prjid=bar'
    - tf -c=gcloud plan -var-file=demo.tfvars
-- 'workspace' can be defined using -w='<workspace_name>'
+- 'workspace' can be defined using '-w' (if no workspace is provided 'default' workspace is used).
+  Supported workspace are parsed from TF_WORKSPACE_FILE_LOCATION
 
 e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspace
 
@@ -39,18 +40,15 @@ azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
 gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 """
 REQUIRED_GCLOUD_ENV_VARIABLES = [
-    "TF_WORKSPACE_FILE_LOCATION",
     "TF_GCLOUD_BUCKET",
     "TF_GCLOUD_CREDENTIALS",
 ]
 REQUIRED_AWS_ENV_VARIABLES = [
-    "TF_WORKSPACE_FILE_LOCATION",
     "TF_AWS_BUCKET",
     "TF_AWS_PROFILE",
     "TF_AWS_BUCKET_REGION",
 ]
 REQUIRED_AZURE_ENV_VARIABLES = [
-    "TF_WORKSPACE_FILE_LOCATION",
     "TF_AZURE_STORAGE_ACCOUNT",
     "TF_AZURE_CONTAINER",
     "ARM_ACCESS_KEY",

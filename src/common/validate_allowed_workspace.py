@@ -30,11 +30,12 @@ def allowed_workspace(cloud, workspace, fips):
                 )
                 raise SystemExit
     else:
-        logger.debug("using default workspaces")
+        logger.debug("using default workspaces file")
         try:
-            dump_workspace_data = json.dumps(WORKSPACES_JSON)
-            data = json.loads(dump_workspace_data)
-            for i in data[cloud]["workspaces"]:
+            dump_workspace_data = json.loads(WORKSPACES_JSON)
+            for i in dump_workspace_data[cloud]["workspaces"]:
+                print("-" * 50)
+                print(workspace)
                 if (i["name"]) == workspace:
                     return True
         except Exception as e:
