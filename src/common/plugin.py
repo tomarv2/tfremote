@@ -65,7 +65,6 @@ class TerraformCommonWrapper:
         )
         parser.add_argument(
             "-c",
-            # "--cloud",
             dest="cloud",
             default="aws",
             metavar="",
@@ -73,14 +72,13 @@ class TerraformCommonWrapper:
         )
         parser.add_argument(
             "-w",
-            # "--workspace",
             dest="workspace",
+            default="default",
             metavar="",
-            help="specify existing workspace name",
+            help="specify existing workspace name(default: 'default')",
         )
         parser.add_argument(
             "-s",
-            # "--state_key",
             dest="state_key",
             default="terraform",
             metavar="",
@@ -88,14 +86,12 @@ class TerraformCommonWrapper:
         )
         parser.add_argument(
             "-f",
-            # "--fips",
             dest="fips",
             action="store_true",
             help="enable FIPS endpoints (default: True)",
         )
         parser.add_argument(
             "-nf",
-            # "--no-fips",
             dest="fips",
             action="store_false",
             help="disable FIPS endpoints",
@@ -104,12 +100,10 @@ class TerraformCommonWrapper:
 
         parser.add_argument(
             "-v",
-            # "--version",
             action="version",
             version="%(prog)s {version}".format(version=VERSION),
         )
         self.args, self.args_unknown = parser.parse_known_args()
-        # print(self.args_unknown)
 
     def configure_remotestate(self):
         """
