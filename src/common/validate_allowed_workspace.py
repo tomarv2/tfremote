@@ -34,8 +34,6 @@ def allowed_workspace(cloud, workspace, fips):
         try:
             dump_workspace_data = json.loads(WORKSPACES_JSON)
             for i in dump_workspace_data[cloud]["workspaces"]:
-                print("-" * 50)
-                print(workspace)
                 if (i["name"]) == workspace:
                     return True
         except Exception as e:
