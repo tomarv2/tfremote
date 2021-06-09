@@ -1,4 +1,4 @@
-VERSION = "0.0.11"
+VERSION = "0.0.13"
 SUPPORTED_CLOUD_PROVIDERS = ["aws", "azure", "gcloud"]
 DEFAULT_AWS_BUCKET_REGION = "us-west-2"
 LIST_OF_VARIABLES_FILES = ["vars.tf", "variable.tf", "variables.tf"]
@@ -55,3 +55,39 @@ REQUIRED_AZURE_ENV_VARIABLES = [
     "TF_AZURE_CONTAINER",
     "ARM_ACCESS_KEY",
 ]
+WORKSPACES_JSON = """{
+  "gcloud": {
+    "workspaces": [
+      {
+        "name": "default"
+      },
+      {
+        "name": "demo-workspace",
+        "fips": true
+      }
+    ]
+  },
+  "aws": {
+    "workspaces": [
+      {
+        "name": "default"
+      },
+      {
+        "name": "demo-workspace",
+        "fips": true
+      }
+    ]
+  },
+  "azure": {
+    "workspaces": [
+      {
+        "name": "default"
+      },
+      {
+        "name": "demo-workspace",
+        "fips": true
+      }
+    ]
+  }
+}
+"""

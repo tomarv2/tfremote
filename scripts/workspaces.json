@@ -2,7 +2,7 @@
   "gcloud": {
     "workspaces": [
       {
-        "name": "test-gcloud-no-fips"
+        "name": "default"
       },
       {
         "name": "demo-workspace",
@@ -13,22 +13,22 @@
   "aws": {
     "workspaces": [
       {
-        "name": "demo-workspace",
-        "fips": true
+        "name": "default"
       },
       {
-        "name": "test-aws-no-fips"
+        "name": "demo-workspace",
+        "fips": true
       }
     ]
   },
   "azure": {
     "workspaces": [
       {
-        "name": "demo-workspace",
-        "fips": true
+        "name": "default"
       },
       {
-        "name": "test-azure-no-fips"
+        "name": "demo-workspace",
+        "fips": true
       }
     ]
   }

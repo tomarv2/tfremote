@@ -2,6 +2,7 @@ import json
 import logging
 import os
 
+from src.conf import WORKSPACES_JSON
 from src.logging import configure_logging
 
 configure_logging()
@@ -12,6 +13,8 @@ def allowed_workspace(cloud, workspace, fips):
     """
     check if the workspace specified by user in the approved list
     """
+    if workspace == "default":
+        return True
     if os.getenv("TF_WORKSPACE_FILE_LOCATION"):
         file_location = os.getenv("TF_WORKSPACE_FILE_LOCATION")
         with open(file_location) as f:
@@ -27,7 +30,13 @@ def allowed_workspace(cloud, workspace, fips):
                 )
                 raise SystemExit
     else:
-        logger.error(
-            f"Unable to open workspace list file, please set TF_WORKSPACE_FILE_LOCATION environment variable"
-        )
-        raise SystemExit
+        logger.debug("using default workspaces")
+        try:
+            dump_workspace_data = json.dumps(WORKSPACES_JSON)
+            data = json.loads(dump_workspace_data)
+            for i in data[cloud]["workspaces"]:
+                if (i["name"]) == workspace:
+                    return True
+        except Exception as e:
+            logger.error("unable to read default workspace values")
+            raise SystemExit

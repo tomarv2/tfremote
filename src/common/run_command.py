@@ -91,7 +91,6 @@ def build_tf_state_path(required_vars, var_data, state_key, workspace):
     """
     logger.debug("build tf state path")
     for var in required_vars:
-        logger.debug("checking if required variables are provided")
         logger.debug("checking required vars in inline vars")
         if var in var_data["inline_vars"]:
             required_vars[var] = var_data["inline_vars"][var]
@@ -116,7 +115,7 @@ def build_tf_state_path(required_vars, var_data, state_key, workspace):
             logger.debug("terraform path: %s" % path)
             return path
         else:
-            path = "terraform/{}/{}/terraform.tfstate".format(
+            path = "{}/{}/default/terraform.tfstate".format(
                 required_vars["teamid"],
                 required_vars["prjid"],
             )
