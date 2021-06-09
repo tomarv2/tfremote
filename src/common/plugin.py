@@ -68,7 +68,7 @@ class TerraformCommonWrapper:
             dest="cloud",
             default="aws",
             metavar="",
-            help="specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)",
+            help="specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure",
         )
         parser.add_argument(
             "-w",
