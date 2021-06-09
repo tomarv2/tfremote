@@ -63,15 +63,15 @@ Default log level is `WARNING`, to change:
 > - Inside `.tfvars` file e.g.: `-var-file=<tfvars file location> `
 >
 > Two optional variables:
-> 
+>
 > `workspace` and `state_key` can be defined using:
 >
 > - `-w=<workspace_name>`. If no workspace is provided `default` workspace is used.
-> 
+>
 > - `s=<state_key name>`. If no key is provided `terraform` is used.
-> 
+>
 > Path created in S3 backend: `/<teamid>/<prjid>/<workspace>/<state-key>`
-> 
+>
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
 ## Setup environment variables
