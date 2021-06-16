@@ -407,7 +407,12 @@ class TerraformCommonWrapper:
                         ret_code = run_command.run_cmd(cmd)
                         if ret_code == 0:
                             logger.info(f"Selecting/Creating Workspce {workspace}")
-                            if run_command.run_cmd(f"terraform workspace select {workspace} || terraform workspace new {workspace}") == 0:
+                            if (
+                                run_command.run_cmd(
+                                    f"terraform workspace select {workspace} || terraform workspace new {workspace}"
+                                )
+                                == 0
+                            ):
                                 return True
                         else:
                             return False
