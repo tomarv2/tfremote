@@ -36,7 +36,7 @@ Terraform remote state wrapper package
 --------------------------------------
 Usage: Set below env variables to begin (more information: https://github.com/tomarv2/tfremote):
 TF_WORKSPACE_FILE_LOCATION
-aws: TF_AWS_BUCKET, TF_AWS_PROFILE or , TF_AWS_BUCKET_REGION=us-west-2
+aws: TF_AWS_BUCKET, TF_AWS_BUCKET_REGION=us-west-2, TF_AWS_PROFILE or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
 azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
 gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 """
