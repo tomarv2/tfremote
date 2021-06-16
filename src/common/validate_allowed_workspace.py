@@ -1,8 +1,12 @@
 import json
 import logging
 import os
+import sys
 
-from src.conf import WORKSPACES_JSON
+from ruamel.yaml import YAML
+from ruamel.yaml.scanner import ScannerError
+
+from src.conf import WORKSPACES_YML
 from src.logging import configure_logging
 
 configure_logging()
@@ -17,25 +21,48 @@ def allowed_workspace(cloud, workspace, fips):
         return True
     if os.getenv("TF_WORKSPACE_FILE_LOCATION"):
         file_location = os.getenv("TF_WORKSPACE_FILE_LOCATION")
-        with open(file_location) as f:
-            try:
-                data = json.load(f)
-                for i in data[cloud]["workspaces"]:
-                    if (i["name"]) == workspace:
-                        return True
-            except Exception as e:
-                logger.error(
-                    f"Not a valid json file provided for env variable: TF_WORKSPACE_FILE_LOCATION\n"
-                    f"{os.getenv('TF_WORKSPACE_FILE_LOCATION')}: {str(e)}"
-                )
-                raise SystemExit
-    else:
-        logger.debug("using default workspaces file")
         try:
-            dump_workspace_data = json.loads(WORKSPACES_JSON)
-            for i in dump_workspace_data[cloud]["workspaces"]:
-                if (i["name"]) == workspace:
-                    return True
-        except Exception as e:
-            logger.error("unable to read default workspace values")
-            raise SystemExit
+            with open(os.path.expanduser(file_location), "r") as f:
+                try:
+                    data = YAML().load(f)
+                    for i in data[cloud]:
+                        if workspace in i["workspaces"]:
+                            return workspace, i["account_id"]
+                except ScannerError as e:
+                    logger.error(
+                        "Error parsing yaml of configuration file "
+                        "{}: {}".format(
+                            e.problem_mark,
+                            e.problem,
+                        )
+                    )
+                    print("parsing failed")
+                    sys.exit(1)
+        except FileNotFoundError:
+            logger.error("Error opening configuration file {}".format(file_location))
+            sys.exit(1)
+    else:
+        logger.info("Using default workspaces file")
+        try:
+            data = YAML().load(WORKSPACES_YML)
+            out_list = []
+            for i in data[cloud]:
+                if workspace in i["workspaces"]:
+                    out_list.append(workspace)
+                    out_list.append(i["account_id"])
+            if out_list:
+                return out_list
+            else:
+                logger.error(
+                    f"{workspace} workspace does not exist in default workspaces file"
+                )
+        except ScannerError as e:
+            logger.error(
+                "Error parsing yaml of configuration file "
+                "{}: {}".format(
+                    e.problem_mark,
+                    e.problem,
+                )
+            )
+            print("parsing failed")
+            sys.exit(1)

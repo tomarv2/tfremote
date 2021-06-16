@@ -5,7 +5,7 @@
 #
 # def test_allowed_workspace():
 #     dirname = os.path.dirname(__file__)
-#     filename = os.path.join(dirname, "../scripts/workspaces.json")
+#     filename = os.path.join(dirname, "../scripts/workspaces.yml")
 #     os.environ["TF_WORKSPACE_FILE_LOCATION"] = filename
 #
 #     cloud = "gcloud"

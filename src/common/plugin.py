@@ -13,6 +13,8 @@ from src.conf import (
     MISSING_VARS,
     PACKAGE_DESCRIPTION,
     REQUIRED_AWS_ENV_VARIABLES,
+    REQUIRED_AWS_KEY_ENV_VARIABLES,
+    REQUIRED_AWS_PROFILE_ENV_VARIABLES,
     REQUIRED_AZURE_ENV_VARIABLES,
     REQUIRED_GCLOUD_ENV_VARIABLES,
     REQUIRED_VARIABLES,
@@ -127,9 +129,21 @@ class TerraformCommonWrapper:
             for env_var in REQUIRED_AWS_ENV_VARIABLES:
                 if not os.getenv(env_var):
                     logger.error(
-                        f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}"
+                        f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES} and {REQUIRED_AWS_PROFILE_ENV_VARIABLES} or {REQUIRED_AWS_KEY_ENV_VARIABLES}"
                     )
                     raise SystemExit
+
+            creds_list = []
+            for env_var in REQUIRED_AWS_PROFILE_ENV_VARIABLES:
+                creds_list.append(env_var)
+            for env_var in REQUIRED_AWS_KEY_ENV_VARIABLES:
+                creds_list.append(env_var)
+
+            if not creds_list:
+                logger.error(
+                    f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}, {REQUIRED_AWS_ENV_VARIABLES} or {REQUIRED_AWS_KEY_ENV_VARIABLES}"
+                )
+                raise SystemExit
         if cloud == "azure":
             for env_var in REQUIRED_AZURE_ENV_VARIABLES:
                 if not os.getenv(env_var):
@@ -200,8 +214,16 @@ class TerraformCommonWrapper:
             self.s3_bucket = os.getenv("TF_AWS_BUCKET")
             self.s3_region = os.getenv("TF_AWS_BUCKET_REGION")
             if (self.aws_profile is None) or (self.aws_profile == ""):
-                logger.error("Please set TF_AWS_PROFILE environment variable")
-                exit(1)
+                if (
+                    (os.getenv("AWS_ACCESS_KEY_ID") is None)
+                    or (os.getenv("AWS_ACCESS_KEY_ID") == "")
+                    and (os.getenv("AWS_SECRET_ACCESS_KEY") is None)
+                    or (os.getenv("AWS_SECRET_ACCESS_KEY") == "")
+                ):
+                    logger.debug(
+                        "Please set TF_AWS_PROFILE or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variable"
+                    )
+                    exit(1)
             if (self.s3_bucket is None) or (self.s3_bucket == ""):
                 logger.error("Please set TF_AWS_BUCKET environment variable")
                 exit(1)
@@ -210,24 +232,38 @@ class TerraformCommonWrapper:
                 exit(1)
             # TODO: fixed to use 'us-west-2', to be made global
             if (self.s3_region is None) or (self.s3_region == ""):
-                p = subprocess.Popen(
-                    [
-                        "aws",
-                        "s3api",
-                        "get-bucket-location",
-                        "--output",
-                        "text",
-                        "--profile",
-                        self.aws_profile,
-                        "--bucket",
-                        self.s3_bucket,
-                    ],
-                    stdout=subprocess.PIPE,
-                )
+                if (self.aws_profile is None) or (self.aws_profile == ""):
+                    p = subprocess.Popen(
+                        [
+                            "aws",
+                            "s3api",
+                            "get-bucket-location",
+                            "--output",
+                            "text",
+                            "--bucket",
+                            self.s3_bucket,
+                        ],
+                        stdout=subprocess.PIPE,
+                    )
+                else:
+                    p = subprocess.Popen(
+                        [
+                            "aws",
+                            "s3api",
+                            "get-bucket-location",
+                            "--output",
+                            "text",
+                            "--profile",
+                            self.aws_profile,
+                            "--bucket",
+                            self.s3_bucket,
+                        ],
+                        stdout=subprocess.PIPE,
+                    )
                 self.s3_region = p.communicate()[0]
                 if (self.s3_region is None) or (self.s3_region == ""):
                     logger.error(
-                        'unable to determine S3 bucket "{}" location.  AWS profile used is "{}"'.format(
+                        'Unable to determine S3 bucket "{}" location.\nAWS profile used is "{}"'.format(
                             self.s3_bucket,
                             self.aws_profile,
                         ),
@@ -342,21 +378,52 @@ class TerraformCommonWrapper:
                             os.unlink(".terraform/terraform.tfstate")
                             logger.debug("Removed .terraform/terraform.tfstate")
 
-                        cmd = (
-                            'echo "1" | TF_WORKSPACE={} terraform init -backend-config="bucket={}" '
-                            '-backend-config="region={}" -backend-config="key={}" '
-                            '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '
-                            '-backend-config="profile={}"'.format(
-                                workspace,
-                                self.s3_bucket,
-                                DEFAULT_AWS_BUCKET_REGION,
-                                self.storage_path,
-                                key_path,
-                                self.aws_profile,
+                        logger.info("Switching to using existing workspace")
+                        if self.aws_profile is not None:
+                            cmd = (
+                                'terraform init -backend-config="bucket={}" '
+                                '-backend-config="region={}" -backend-config="key={}" '
+                                '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '
+                                '-backend-config="profile={}"'.format(
+                                    self.s3_bucket,
+                                    DEFAULT_AWS_BUCKET_REGION,
+                                    self.storage_path,
+                                    key_path,
+                                    self.aws_profile,
+                                )
                             )
-                        )
+                        else:
+                            cmd = (
+                                'terraform init -backend-config="bucket={}" '
+                                '-backend-config="region={}" -backend-config="key={}" '
+                                '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '.format(
+                                    self.s3_bucket,
+                                    DEFAULT_AWS_BUCKET_REGION,
+                                    self.storage_path,
+                                    key_path,
+                                )
+                            )
                         logger.debug("init command: {}".format(cmd))
                         ret_code = run_command.run_cmd(cmd)
+                        os.system(
+                            f"terraform workspace select {workspace} || terraform workspace new {workspace}"
+                        )
+                        # try:
+                        #     cmd_out = subprocess.check_output(
+                        #         ["terraform", "workspace", "select", workspace],
+                        #         stderr=subprocess.STDOUT,
+                        #         shell=True,
+                        #     )
+                        #     logger.info(
+                        #         f"Workspace {workspace} already exists {cmd_out}"
+                        #     )
+                        # except subprocess.CalledProcessError as e:
+                        #     cmd_out = subprocess.check_output(
+                        #         ["terraform", "workspace", "new", workspace],
+                        #         stderr=subprocess.STDOUT,
+                        #         shell=True,
+                        #     )
+                        #     logger.info(f"Created workspace {workspace} {cmd_out}")
                         if ret_code == 0:
                             return True
                         else:
