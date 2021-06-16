@@ -52,6 +52,7 @@ jobs:
           pip install hcl
           pip install argparse
           pip install pytest-cov
+          pip install ruamel.yaml
           python -m pytest --cov=./ --cov-report=xml
 
       - name: Upload coverage to Codecov
