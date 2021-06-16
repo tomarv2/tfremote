@@ -11,4 +11,5 @@ pytest
 pytest-env
 moto
 pytest-cov
+ruamel.yaml
 # flake8: noqa

@@ -62,13 +62,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.pass_through_list.allow_list">
 <span class="sig-prename descclassname"><span class="pre">src.common.pass_through_list.</span></span><span class="sig-name descname"><span class="pre">allow_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.common.pass_through_list.allow_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>following subcommands don’t need remote state</p>
+<dd><p>Following subcommands don’t need remote state</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.pass_through_list.deny_list">
 <span class="sig-prename descclassname"><span class="pre">src.common.pass_through_list.</span></span><span class="sig-name descname"><span class="pre">deny_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.common.pass_through_list.deny_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>commands that can break setup</p>
+<dd><p>Commands that can break setup</p>
 </dd></dl>
 
 </section>
@@ -82,13 +82,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.run_command.build_remote_backend_tf_file">
 <span class="sig-prename descclassname"><span class="pre">src.common.run_command.</span></span><span class="sig-name descname"><span class="pre">build_remote_backend_tf_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace_key_prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fips</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.common.run_command.build_remote_backend_tf_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>function to create remote_backend.tf file</p>
+<dd><p>Function to create remote_backend.tf file</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.run_command.build_tf_state_path">
 <span class="sig-prename descclassname"><span class="pre">src.common.run_command.</span></span><span class="sig-name descname"><span class="pre">build_tf_state_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">required_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workspace</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.common.run_command.build_tf_state_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>function to build tf state path</p>
+<dd><p>Function to build tf state path</p>
 </dd></dl>
 
 <dl class="py function">
@@ -107,14 +107,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.run_command.parse_inline_vars">
 <span class="sig-prename descclassname"><span class="pre">src.common.run_command.</span></span><span class="sig-name descname"><span class="pre">parse_inline_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.common.run_command.parse_inline_vars" title="Permalink to this definition">¶</a></dt>
-<dd><p>parse variables defined on the command line (-var foo=bar)</p>
+<dd><p>Parse variables defined on the command line (-var foo=bar)</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.run_command.parse_tfvar_files">
 <span class="sig-prename descclassname"><span class="pre">src.common.run_command.</span></span><span class="sig-name descname"><span class="pre">parse_tfvar_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.common.run_command.parse_tfvar_files" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>parse variables defined in:</dt><dd><ul class="simple">
+<dt>Parse variables defined in:</dt><dd><ul class="simple">
 <li><p>terraform.tfvars</p></li>
 <li><p>file(s) defined in command line (-var-file foo.tfvars)</p></li>
 </ul>
@@ -126,7 +126,7 @@
 <dt class="sig sig-object py" id="src.common.run_command.parse_var_file">
 <span class="sig-prename descclassname"><span class="pre">src.common.run_command.</span></span><span class="sig-name descname"><span class="pre">parse_var_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.common.run_command.parse_var_file" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>parse the variables defined in .tf file</dt><dd><dl class="simple">
+<dt>Parse the variables defined in .tf file</dt><dd><dl class="simple">
 <dt>eg:</dt><dd><dl class="simple">
 <dt>variable name {</dt><dd><p>foo = “bar”</p>
 </dd>
@@ -141,7 +141,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="src.common.run_command.parse_vars">
 <span class="sig-prename descclassname"><span class="pre">src.common.run_command.</span></span><span class="sig-name descname"><span class="pre">parse_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.common.run_command.parse_vars" title="Permalink to this definition">¶</a></dt>
-<dd><p>function to parse variables</p>
+<dd><p>Function to parse variables</p>
 </dd></dl>
 
 <dl class="py function">

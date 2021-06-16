@@ -1,0 +1,20 @@
+# verify if workspace is supported
+#
+aws:
+  - name: "aws-demo"
+    account_id: "123456789012"
+    workspaces:
+      [
+        "aws-demo.us-west-2.prod",
+        "aws-demo.us-west-2.dev",
+        "aws-demo.us-west-2.staging",
+      ]
+
+  - name: "aws-test"
+    account_id: "987654321012"
+    workspaces:
+      [
+        "aws-test.us-west-2.prod",
+        "aws-test.us-west-2.dev",
+        "aws-test.us-west-2.staging",
+      ]

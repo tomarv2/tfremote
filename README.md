@@ -79,10 +79,10 @@ Default log level is `WARNING`, to change:
 ### Workspace list file location `TF_WORKSPACE_FILE_LOCATION`
 
 ```
-export TF_WORKSPACE_FILE_LOCATION=<workspace json file location>
+export TF_WORKSPACE_FILE_LOCATION=<workspace yml file location>
 ```
 
-Reference file: [link](scripts/workspaces.json)
+Reference file: [link](scripts/workspaces.yml)
 
 ### AWS
 
@@ -92,8 +92,15 @@ Set below env variables:
 
 ```
 export TF_AWS_BUCKET=<your_remote_state_bucket_name>
-export TF_AWS_PROFILE=<aws profile to use>
 export TF_AWS_BUCKET_REGION=us-west-2
+export TF_AWS_PROFILE=<aws profile to use>
+```
+
+```
+export TF_AWS_BUCKET=<your_remote_state_bucket_name>
+export TF_AWS_BUCKET_REGION=us-west-2
+export AWS_ACCESS_KEY_ID=<aws access key>
+export AWS_SECRET_ACCESS_KEY=<aws secret access key>
 ```
 
 ### Azure

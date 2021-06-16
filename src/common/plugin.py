@@ -13,6 +13,8 @@ from src.conf import (
     MISSING_VARS,
     PACKAGE_DESCRIPTION,
     REQUIRED_AWS_ENV_VARIABLES,
+    REQUIRED_AWS_KEY_ENV_VARIABLES,
+    REQUIRED_AWS_PROFILE_ENV_VARIABLES,
     REQUIRED_AZURE_ENV_VARIABLES,
     REQUIRED_GCLOUD_ENV_VARIABLES,
     REQUIRED_VARIABLES,
@@ -54,47 +56,47 @@ class TerraformCommonWrapper:
             action="append",
             metavar="",
             dest="inline_vars",
-            help="""set Terraform configuration variable. This flag can be set multiple times""",
+            help="""Set Terraform configuration variable. This flag can be set multiple times""",
         )
         parser.add_argument(
             "-var-file",
             action="append",
             metavar="",
             dest="tfvar_files",
-            help="""set Terraform configuration variables from a file. This flag can be set multiple times""",
+            help="""Set Terraform configuration variables from a file. This flag can be set multiple times""",
         )
         parser.add_argument(
             "-c",
             dest="cloud",
             default="aws",
             metavar="",
-            help="specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)",
+            help="Specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure",
         )
         parser.add_argument(
             "-w",
             dest="workspace",
             default="default",
             metavar="",
-            help="specify existing workspace name(default: 'default')",
+            help="Specify existing workspace name(default: 'default')",
         )
         parser.add_argument(
             "-s",
             dest="state_key",
             default="terraform",
             metavar="",
-            help="file name in remote state (default: 'terraform.tfstate')",
+            help="File name in remote state (default: 'terraform.tfstate')",
         )
         parser.add_argument(
             "-f",
             dest="fips",
             action="store_true",
-            help="enable FIPS endpoints (default: True)",
+            help="Enable FIPS endpoints (default: True)",
         )
         parser.add_argument(
             "-nf",
             dest="fips",
             action="store_false",
-            help="disable FIPS endpoints",
+            help="Disable FIPS endpoints",
         )
         parser.set_defaults(fips=True)
 
@@ -107,7 +109,7 @@ class TerraformCommonWrapper:
 
     def configure_remotestate(self):
         """
-        configuring remote state
+        Configuring remote state
         """
         logger.debug("configuring remote state")
         run_command.parse_vars(self.var_data, self.args)
@@ -127,9 +129,21 @@ class TerraformCommonWrapper:
             for env_var in REQUIRED_AWS_ENV_VARIABLES:
                 if not os.getenv(env_var):
                     logger.error(
-                        f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}"
+                        f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES} and {REQUIRED_AWS_PROFILE_ENV_VARIABLES} or {REQUIRED_AWS_KEY_ENV_VARIABLES}"
                     )
                     raise SystemExit
+
+            creds_list = []
+            for env_var in REQUIRED_AWS_PROFILE_ENV_VARIABLES:
+                creds_list.append(env_var)
+            for env_var in REQUIRED_AWS_KEY_ENV_VARIABLES:
+                creds_list.append(env_var)
+
+            if not creds_list:
+                logger.error(
+                    f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}, {REQUIRED_AWS_ENV_VARIABLES} or {REQUIRED_AWS_KEY_ENV_VARIABLES}"
+                )
+                raise SystemExit
         if cloud == "azure":
             for env_var in REQUIRED_AZURE_ENV_VARIABLES:
                 if not os.getenv(env_var):
@@ -191,17 +205,25 @@ class TerraformCommonWrapper:
     # set bucket details (get from env variables)
     def configure(self, workspace, cloud):
         """
-        configure bucket
+        Configure bucket
         """
-        logger.debug("configure bucket")
+        logger.debug("Configure bucket")
         if cloud == "aws":
-            logger.debug(f"configuring remote state for {cloud}")
+            logger.debug(f"Configuring remote state for {cloud}")
             self.aws_profile = os.getenv("TF_AWS_PROFILE")
             self.s3_bucket = os.getenv("TF_AWS_BUCKET")
             self.s3_region = os.getenv("TF_AWS_BUCKET_REGION")
             if (self.aws_profile is None) or (self.aws_profile == ""):
-                logger.error("Please set TF_AWS_PROFILE environment variable")
-                exit(1)
+                if (
+                    (os.getenv("AWS_ACCESS_KEY_ID") is None)
+                    or (os.getenv("AWS_ACCESS_KEY_ID") == "")
+                    and (os.getenv("AWS_SECRET_ACCESS_KEY") is None)
+                    or (os.getenv("AWS_SECRET_ACCESS_KEY") == "")
+                ):
+                    logger.debug(
+                        "Please set TF_AWS_PROFILE or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variable"
+                    )
+                    exit(1)
             if (self.s3_bucket is None) or (self.s3_bucket == ""):
                 logger.error("Please set TF_AWS_BUCKET environment variable")
                 exit(1)
@@ -210,24 +232,38 @@ class TerraformCommonWrapper:
                 exit(1)
             # TODO: fixed to use 'us-west-2', to be made global
             if (self.s3_region is None) or (self.s3_region == ""):
-                p = subprocess.Popen(
-                    [
-                        "aws",
-                        "s3api",
-                        "get-bucket-location",
-                        "--output",
-                        "text",
-                        "--profile",
-                        self.aws_profile,
-                        "--bucket",
-                        self.s3_bucket,
-                    ],
-                    stdout=subprocess.PIPE,
-                )
+                if (self.aws_profile is None) or (self.aws_profile == ""):
+                    p = subprocess.Popen(
+                        [
+                            "aws",
+                            "s3api",
+                            "get-bucket-location",
+                            "--output",
+                            "text",
+                            "--bucket",
+                            self.s3_bucket,
+                        ],
+                        stdout=subprocess.PIPE,
+                    )
+                else:
+                    p = subprocess.Popen(
+                        [
+                            "aws",
+                            "s3api",
+                            "get-bucket-location",
+                            "--output",
+                            "text",
+                            "--profile",
+                            self.aws_profile,
+                            "--bucket",
+                            self.s3_bucket,
+                        ],
+                        stdout=subprocess.PIPE,
+                    )
                 self.s3_region = p.communicate()[0]
                 if (self.s3_region is None) or (self.s3_region == ""):
                     logger.error(
-                        'unable to determine S3 bucket "{}" location.  AWS profile used is "{}"'.format(
+                        'Unable to determine S3 bucket "{}" location.\nAWS profile used is "{}"'.format(
                             self.s3_bucket,
                             self.aws_profile,
                         ),
@@ -241,7 +277,7 @@ class TerraformCommonWrapper:
                 ),
             )
         elif cloud == "azure":
-            logger.debug(f"configuring remote state for {cloud}")
+            logger.debug(f"Configuring remote state for {cloud}")
             self.azure_container_name = os.getenv("TF_AZURE_CONTAINER")
             self.azure_stg_acc_name = os.getenv("TF_AZURE_STORAGE_ACCOUNT")
             self.azure_access_key = os.getenv("ARM_ACCESS_KEY")
@@ -272,7 +308,7 @@ class TerraformCommonWrapper:
                 ),
             )
         else:
-            logger.debug(f"configuring remote state for {cloud}")
+            logger.debug(f"Configuring remote state for {cloud}")
             self.gcloud_bucket_name = os.getenv("TF_GCLOUD_BUCKET")
             self.gcloud_credentials = os.getenv("TF_GCLOUD_CREDENTIALS")
             if (self.gcloud_bucket_name is None) or (self.gcloud_bucket_name == ""):
@@ -298,7 +334,7 @@ class TerraformCommonWrapper:
 
     def set_remote_backend(self, teamid, prjid, workspace, fips, state_key, cloud):
         """
-        configure the Terraform remote state if necessary
+        Configure the Terraform remote state if necessary
         return True if remote state was successfully configured
         """
         logger.debug("configure remote state if necessary")
@@ -342,27 +378,46 @@ class TerraformCommonWrapper:
                             os.unlink(".terraform/terraform.tfstate")
                             logger.debug("Removed .terraform/terraform.tfstate")
 
-                        cmd = (
-                            'echo "1" | TF_WORKSPACE={} terraform init -backend-config="bucket={}" '
-                            '-backend-config="region={}" -backend-config="key={}" '
-                            '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '
-                            '-backend-config="profile={}"'.format(
-                                workspace,
-                                self.s3_bucket,
-                                DEFAULT_AWS_BUCKET_REGION,
-                                self.storage_path,
-                                key_path,
-                                self.aws_profile,
+                        logger.info("Switching to using existing workspace")
+                        if self.aws_profile is not None:
+                            cmd = (
+                                'terraform init -backend-config="bucket={}" '
+                                '-backend-config="region={}" -backend-config="key={}" '
+                                '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '
+                                '-backend-config="profile={}"'.format(
+                                    self.s3_bucket,
+                                    DEFAULT_AWS_BUCKET_REGION,
+                                    self.storage_path,
+                                    key_path,
+                                    self.aws_profile,
+                                )
                             )
-                        )
+                        else:
+                            cmd = (
+                                'terraform init -backend-config="bucket={}" '
+                                '-backend-config="region={}" -backend-config="key={}" '
+                                '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '.format(
+                                    self.s3_bucket,
+                                    DEFAULT_AWS_BUCKET_REGION,
+                                    self.storage_path,
+                                    key_path,
+                                )
+                            )
                         logger.debug("init command: {}".format(cmd))
                         ret_code = run_command.run_cmd(cmd)
                         if ret_code == 0:
-                            return True
+                            logger.info(f"Selecting/Creating Workspce {workspace}")
+                            if (
+                                run_command.run_cmd(
+                                    f"terraform workspace select {workspace} || terraform workspace new {workspace}"
+                                )
+                                == 0
+                            ):
+                                return True
                         else:
                             return False
         elif cloud == "azure":
-            logger.debug("configure remote state if necessary")
+            logger.debug("Configure remote state if necessary")
             key_path = teamid + "/" + prjid
             current_tf_state = {"backend": {}}
             current_tf_state["backend"]["config"] = {}
@@ -409,7 +464,7 @@ class TerraformCommonWrapper:
                         else:
                             return False
         else:
-            logger.debug("inside set_remote_backend")
+            logger.debug("Setting remote state backend")
             key_path = teamid + "/" + prjid + "/" + workspace
             current_tf_state = {"backend": {}}
             current_tf_state["backend"]["config"] = {}
@@ -433,12 +488,12 @@ class TerraformCommonWrapper:
                     )
                     and (current_tf_state["backend"]["config"]["prefix"] == workspace)
                 ):
-                    logger.debug("no need to pull remote state")
+                    logger.debug("No need to pull remote state")
                     return True
                 else:
                     if os.path.isfile(".terraform/terraform.tfstate"):
                         os.unlink(".terraform/terraform.tfstate")
-                        logger.debug("removed .terraform/terraform.tfstate")
+                        logger.debug("Removed .terraform/terraform.tfstate")
                     storage_path = self.storage_path.rsplit("/", 1)[0]
                     if "None" in storage_path:
                         logger.error(MISSING_VARS)
