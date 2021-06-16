@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import sys
@@ -15,7 +14,7 @@ logger = logging.getLogger()
 
 def allowed_workspace(cloud, workspace, fips):
     """
-    check if the workspace specified by user in the approved list
+    Check if the workspace specified by user in the approved list
     """
     if workspace == "default":
         return True
@@ -36,7 +35,6 @@ def allowed_workspace(cloud, workspace, fips):
                             e.problem,
                         )
                     )
-                    print("parsing failed")
                     sys.exit(1)
         except FileNotFoundError:
             logger.error("Error opening configuration file {}".format(file_location))
@@ -64,5 +62,4 @@ def allowed_workspace(cloud, workspace, fips):
                     e.problem,
                 )
             )
-            print("parsing failed")
             sys.exit(1)

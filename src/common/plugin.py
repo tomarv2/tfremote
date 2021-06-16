@@ -56,47 +56,47 @@ class TerraformCommonWrapper:
             action="append",
             metavar="",
             dest="inline_vars",
-            help="""set Terraform configuration variable. This flag can be set multiple times""",
+            help="""Set Terraform configuration variable. This flag can be set multiple times""",
         )
         parser.add_argument(
             "-var-file",
             action="append",
             metavar="",
             dest="tfvar_files",
-            help="""set Terraform configuration variables from a file. This flag can be set multiple times""",
+            help="""Set Terraform configuration variables from a file. This flag can be set multiple times""",
         )
         parser.add_argument(
             "-c",
             dest="cloud",
             default="aws",
             metavar="",
-            help="specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure",
+            help="Specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure",
         )
         parser.add_argument(
             "-w",
             dest="workspace",
             default="default",
             metavar="",
-            help="specify existing workspace name(default: 'default')",
+            help="Specify existing workspace name(default: 'default')",
         )
         parser.add_argument(
             "-s",
             dest="state_key",
             default="terraform",
             metavar="",
-            help="file name in remote state (default: 'terraform.tfstate')",
+            help="File name in remote state (default: 'terraform.tfstate')",
         )
         parser.add_argument(
             "-f",
             dest="fips",
             action="store_true",
-            help="enable FIPS endpoints (default: True)",
+            help="Enable FIPS endpoints (default: True)",
         )
         parser.add_argument(
             "-nf",
             dest="fips",
             action="store_false",
-            help="disable FIPS endpoints",
+            help="Disable FIPS endpoints",
         )
         parser.set_defaults(fips=True)
 
@@ -109,7 +109,7 @@ class TerraformCommonWrapper:
 
     def configure_remotestate(self):
         """
-        configuring remote state
+        Configuring remote state
         """
         logger.debug("configuring remote state")
         run_command.parse_vars(self.var_data, self.args)
@@ -205,11 +205,11 @@ class TerraformCommonWrapper:
     # set bucket details (get from env variables)
     def configure(self, workspace, cloud):
         """
-        configure bucket
+        Configure bucket
         """
-        logger.debug("configure bucket")
+        logger.debug("Configure bucket")
         if cloud == "aws":
-            logger.debug(f"configuring remote state for {cloud}")
+            logger.debug(f"Configuring remote state for {cloud}")
             self.aws_profile = os.getenv("TF_AWS_PROFILE")
             self.s3_bucket = os.getenv("TF_AWS_BUCKET")
             self.s3_region = os.getenv("TF_AWS_BUCKET_REGION")
@@ -277,7 +277,7 @@ class TerraformCommonWrapper:
                 ),
             )
         elif cloud == "azure":
-            logger.debug(f"configuring remote state for {cloud}")
+            logger.debug(f"Configuring remote state for {cloud}")
             self.azure_container_name = os.getenv("TF_AZURE_CONTAINER")
             self.azure_stg_acc_name = os.getenv("TF_AZURE_STORAGE_ACCOUNT")
             self.azure_access_key = os.getenv("ARM_ACCESS_KEY")
@@ -308,7 +308,7 @@ class TerraformCommonWrapper:
                 ),
             )
         else:
-            logger.debug(f"configuring remote state for {cloud}")
+            logger.debug(f"Configuring remote state for {cloud}")
             self.gcloud_bucket_name = os.getenv("TF_GCLOUD_BUCKET")
             self.gcloud_credentials = os.getenv("TF_GCLOUD_CREDENTIALS")
             if (self.gcloud_bucket_name is None) or (self.gcloud_bucket_name == ""):
@@ -334,7 +334,7 @@ class TerraformCommonWrapper:
 
     def set_remote_backend(self, teamid, prjid, workspace, fips, state_key, cloud):
         """
-        configure the Terraform remote state if necessary
+        Configure the Terraform remote state if necessary
         return True if remote state was successfully configured
         """
         logger.debug("configure remote state if necessary")
@@ -405,31 +405,14 @@ class TerraformCommonWrapper:
                             )
                         logger.debug("init command: {}".format(cmd))
                         ret_code = run_command.run_cmd(cmd)
-                        os.system(
-                            f"terraform workspace select {workspace} || terraform workspace new {workspace}"
-                        )
-                        # try:
-                        #     cmd_out = subprocess.check_output(
-                        #         ["terraform", "workspace", "select", workspace],
-                        #         stderr=subprocess.STDOUT,
-                        #         shell=True,
-                        #     )
-                        #     logger.info(
-                        #         f"Workspace {workspace} already exists {cmd_out}"
-                        #     )
-                        # except subprocess.CalledProcessError as e:
-                        #     cmd_out = subprocess.check_output(
-                        #         ["terraform", "workspace", "new", workspace],
-                        #         stderr=subprocess.STDOUT,
-                        #         shell=True,
-                        #     )
-                        #     logger.info(f"Created workspace {workspace} {cmd_out}")
                         if ret_code == 0:
-                            return True
+                            logger.info(f"Selecting/Creating Workspce {workspace}")
+                            if run_command.run_cmd(f"terraform workspace select {workspace} || terraform workspace new {workspace}") == 0:
+                                return True
                         else:
                             return False
         elif cloud == "azure":
-            logger.debug("configure remote state if necessary")
+            logger.debug("Configure remote state if necessary")
             key_path = teamid + "/" + prjid
             current_tf_state = {"backend": {}}
             current_tf_state["backend"]["config"] = {}
@@ -476,7 +459,7 @@ class TerraformCommonWrapper:
                         else:
                             return False
         else:
-            logger.debug("inside set_remote_backend")
+            logger.debug("Setting remote state backend")
             key_path = teamid + "/" + prjid + "/" + workspace
             current_tf_state = {"backend": {}}
             current_tf_state["backend"]["config"] = {}
@@ -500,12 +483,12 @@ class TerraformCommonWrapper:
                     )
                     and (current_tf_state["backend"]["config"]["prefix"] == workspace)
                 ):
-                    logger.debug("no need to pull remote state")
+                    logger.debug("No need to pull remote state")
                     return True
                 else:
                     if os.path.isfile(".terraform/terraform.tfstate"):
                         os.unlink(".terraform/terraform.tfstate")
-                        logger.debug("removed .terraform/terraform.tfstate")
+                        logger.debug("Removed .terraform/terraform.tfstate")
                     storage_path = self.storage_path.rsplit("/", 1)[0]
                     if "None" in storage_path:
                         logger.error(MISSING_VARS)

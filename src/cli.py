@@ -57,7 +57,7 @@ class TerraformWrapper:
 
     def __init__(self):
         parser = argparse.ArgumentParser(
-            description="terraform wrapper script",
+            description="Terraform wrapper script",
         )
         parser.add_argument("plan, apply, or destroy", help="terraform command")
 

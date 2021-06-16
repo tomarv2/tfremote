@@ -1,1 +1,2 @@
-__version__ = "0.1.0.dev1"
+from src.conf import VERSION
+__version__ = VERSION

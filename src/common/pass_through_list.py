@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 def allow_list():
     """
-    following subcommands don't need remote state
+    Following subcommands don't need remote state
     """
     subcommand_pass_thru = [
         "fmt",
@@ -26,7 +26,7 @@ def allow_list():
 
 def deny_list():
     """
-    commands that can break setup
+    Commands that can break setup
     """
     blacklist_subcommand = []
     return blacklist_subcommand
