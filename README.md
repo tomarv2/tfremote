@@ -38,7 +38,7 @@ pip install tfremote --upgrade
 
 ## Environment setup
 
-- Install Python 3.8+
+- Install Python 3.6+
 
 - Using virtualenv is strongly recommended:
 
@@ -88,18 +88,23 @@ Reference file: [link](scripts/workspaces.yml)
 
 > ❗️ **Important** - s3 bucket for remote state should reside in `us-west-2`
 
-Set below env variables:
+Set these env variables:
 
 ```
 export TF_AWS_BUCKET=<your_remote_state_bucket_name>
 export TF_AWS_BUCKET_REGION=us-west-2
+```
+
+One of below environment variable is required:
+
+```
 export TF_AWS_PROFILE=<aws profile to use>
+export AWS_ACCESS_KEY_ID=<aws access key>
 ```
 
+or
+
 ```
-export TF_AWS_BUCKET=<your_remote_state_bucket_name>
-export TF_AWS_BUCKET_REGION=us-west-2
-export AWS_ACCESS_KEY_ID=<aws access key>
 export AWS_SECRET_ACCESS_KEY=<aws secret access key>
 ```
 

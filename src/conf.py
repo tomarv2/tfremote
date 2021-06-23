@@ -11,7 +11,7 @@ GCP_FIPS_WESTUS2_ENDPOINT = ""
 MISSING_VARS = """
 ------------------------------------------
 Required argument(s)
- missing: 'teamid', 'prjid or invalid 'workspace' provided:
+Missing: 'teamid', 'prjid or invalid 'workspace' provided:
 - 'teamid', 'prjid' can be defined using '-var' or '-var-file' e.g.
    - tf -c=gcloud plan -var='teamid=foo' -var='prjid=bar'
    - tf -c=gcloud plan -var-file=demo.tfvars

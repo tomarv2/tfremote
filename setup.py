@@ -28,12 +28,12 @@ setup(
     long_description_content_type="text/markdown",
     author="Varun Tomar",
     author_email="varuntomar2019@gmail.com",
-    python_requires=">=3.8",
+    python_requires=">=3.6",
     packages=find_packages(),
     install_requires=install_requires,
     url="https://github.com/tomarv2/tfremote",
     classifiers=[
-        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.6",
         "Operating System :: OS Independent",
     ],
     entry_points="""
