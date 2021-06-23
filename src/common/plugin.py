@@ -220,7 +220,7 @@ class TerraformCommonWrapper:
                     and (os.getenv("AWS_SECRET_ACCESS_KEY") is None)
                     or (os.getenv("AWS_SECRET_ACCESS_KEY") == "")
                 ):
-                    logger.debug(
+                    logger.error(
                         "Please set TF_AWS_PROFILE or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variable"
                     )
                     exit(1)
