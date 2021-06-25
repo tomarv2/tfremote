@@ -52,7 +52,7 @@ Default log level is `WARNING`, to change:
 
 `export TF_LOG_LEVEL` to any of these: `'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'`
 
-> ❗️ **Important** - Two variables are required for using `tf` package to set path in remote storage:
+> ❗️ **Important** - Two variables are required for using `tf` package (used set creat path in remote storage):
 >
 > - teamid
 > - prjid
@@ -70,7 +70,7 @@ Default log level is `WARNING`, to change:
 >
 > - `s=<state_key name>`. If no key is provided `terraform` is used.
 >
-> Path created in S3 backend: `/<teamid>/<prjid>/<workspace>/<state-key>`
+> Path created in S3 backend: `/<teamid>/<prjid>/<workspace>/<state-key>.tfstate`
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
@@ -99,12 +99,12 @@ One of below environment variable is required:
 
 ```
 export TF_AWS_PROFILE=<aws profile to use>
-export AWS_ACCESS_KEY_ID=<aws access key>
 ```
 
 or
 
 ```
+export AWS_ACCESS_KEY_ID=<aws access key>
 export AWS_SECRET_ACCESS_KEY=<aws secret access key>
 ```
 
