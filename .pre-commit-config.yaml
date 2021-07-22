@@ -85,3 +85,19 @@ repos:
     hooks:
       - id: prettier
         exclude: (^docs/)
+
+  - repo: https://github.com/pycqa/pylint
+    rev: pylint-2.6.0
+    hooks:
+      - id: pylint
+        entry: pylint
+        language: python
+        "types": [python]
+        require_serial: false
+        additional_dependencies: []
+        exclude: ^(src/|tests/|docs/)
+        args:
+          [
+            "--max-line-length=127",
+            "--disable=C0301,W1203,W0703,C0121,R1705,R0915,R0912,R0903,W0107,R1702,W0707,W0702,W0231,R1720,C0103",
+          ]

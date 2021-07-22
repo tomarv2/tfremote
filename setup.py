@@ -1,15 +1,19 @@
+"""
+Tool to manage remote backend storage
+"""
 import os
 
 from setuptools import find_packages, setup
 
 from src.conf import VERSION
 
-VERSION = VERSION
-
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def get_requirements():
+    """
+    Install dependencies
+    """
     with open("requirements.txt") as fp:
         return [x.strip() for x in fp.read().split("\n") if not x.startswith("#")]
 
