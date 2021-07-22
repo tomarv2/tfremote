@@ -57,11 +57,46 @@ def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state
             f.write("# do not edit or delete!\n")
             f.write("\n")
             if fips and storage_type == "s3":
-                f.write(
-                    'terraform {{\n\tbackend "{}" {{\n\t\tendpoint = "{}"\n\t\tworkspace_key_prefix = "{}"\n\t}}\n}}\n'.format(
-                        storage_type, AWS_FIPS_US_WEST2_ENDPOINT, workspace_key_prefix
+                if os.getenv("REMOTE_STATE_ROLE_ARN"):
+                    remote_state_role_arn = os.getenv("REMOTE_STATE_ROLE_ARN")
+                    if os.getenv("SESSION_NAME"):
+                        session_name = os.getenv("SESSION_NAME")
+                    else:
+                        session_name = "terraformstate"
+                    logger.info(
+                        f"Using {remote_state_role_arn} role for remote state management"
                     )
-                )
+                    if os.getenv("EXTERNAL_ID"):
+                        external_id = os.getenv("EXTERNAL_ID")
+                        f.write(
+                            'terraform {{\n\tbackend "{}" {{\n\t\tendpoint = "{}"\n\t\trole_arn = "{}"\n\t\texternal_id = "{}"\n\t\tsession_name = "{}"\n\t\tworkspace_key_prefix = "{}"\n\t}}\n}}\n'.format(
+                                storage_type,
+                                AWS_FIPS_US_WEST2_ENDPOINT,
+                                remote_state_role_arn,
+                                external_id,
+                                session_name,
+                                workspace_key_prefix,
+                            )
+                        )
+                    else:
+                        f.write(
+                            'terraform {{\n\tbackend "{}" {{\n\t\tendpoint = "{}"\n\t\trole_arn = "{}"\n\t\tsession_name = "{}"\n\t\tworkspace_key_prefix = "{}"\n\t}}\n}}\n'.format(
+                                storage_type,
+                                AWS_FIPS_US_WEST2_ENDPOINT,
+                                remote_state_role_arn,
+                                session_name,
+                                workspace_key_prefix,
+                            )
+                        )
+                else:
+                    logger.info("Using default setup for remote state management")
+                    f.write(
+                        'terraform {{\n\tbackend "{}" {{\n\t\tendpoint = "{}"\n\t\tworkspace_key_prefix = "{}"\n\t}}\n}}\n'.format(
+                            storage_type,
+                            AWS_FIPS_US_WEST2_ENDPOINT,
+                            workspace_key_prefix,
+                        )
+                    )
             elif storage_type == "azurerm":
                 f.write(
                     'terraform {{\n\tbackend "{}" {{\n\t\tkey = "{}"\n\t}}\n}}\n'.format(
