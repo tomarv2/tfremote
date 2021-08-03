@@ -170,25 +170,26 @@ The structure in Azure Storage:
 ### For more available options:
 
 ```
-tf -h
-usage: tf [-h] [-var] [-var-file] [-c] [-w] [-s] [-f] [-nf] [-v]
+tf --help
+usage: tf [-h] [-var] [-var-file] [-c] [-w] [-wp] [-s] [-f] [-nf] [-v]
 
 Terraform remote state wrapper package
 --------------------------------------
 Usage: Set below env variables to begin (more information: https://github.com/tomarv2/tfremote):
 TF_WORKSPACE_FILE_LOCATION
-aws: TF_AWS_BUCKET, TF_AWS_PROFILE, TF_AWS_BUCKET_REGION=us-west-2
+aws: TF_AWS_BUCKET, TF_AWS_BUCKET_REGION=us-west-2, TF_AWS_PROFILE or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
 azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
 gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 
 optional arguments:
   -h, --help  show this help message and exit
-  -var        set Terraform configuration variable. This flag can be set multiple times
-  -var-file   set Terraform configuration variables from a file. This flag can be set multiple times
-  -c          specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure)
-  -w          specify existing workspace name(default: 'default')
-  -s          file name in remote state (default: 'terraform.tfstate')
-  -f          enable FIPS endpoints (default: True)
-  -nf         disable FIPS endpoints
+  -var        Set Terraform configuration variable. This flag can be set multiple times
+  -var-file   Set Terraform configuration variables from a file. This flag can be set multiple times
+  -c          Specify cloud provider (default: 'aws'). Supported values: gcloud, aws, or azure
+  -w          Specify existing workspace name(default: 'default')
+  -wp         Overwrite workspace directory path structure
+  -s          File name in remote state (default: 'terraform.tfstate')
+  -f          Enable FIPS endpoints (default: True)
+  -nf         Disable FIPS endpoints
   -v          show program's version number and exit
 ```

@@ -12,10 +12,13 @@ configure_logging()
 logger = logging.getLogger()
 
 
-def allowed_workspace(cloud, workspace, fips):
+def allowed_workspace(workspace_directory, workspace, fips):
     """
     Check if the workspace specified by user in the approved list
     """
+    logger.debug(
+        f"workspace_directory: [{workspace_directory}] workspace: [{workspace}]"
+    )
     if workspace == "default":
         return True
     if os.getenv("TF_WORKSPACE_FILE_LOCATION"):
@@ -24,7 +27,7 @@ def allowed_workspace(cloud, workspace, fips):
             with open(os.path.expanduser(file_location), "r") as f:
                 try:
                     data = YAML().load(f)
-                    for i in data[cloud]:
+                    for i in data[workspace_directory]:
                         if workspace in i["workspaces"]:
                             return workspace, i["account_id"]
                 except ScannerError as e:
@@ -44,7 +47,7 @@ def allowed_workspace(cloud, workspace, fips):
         try:
             data = YAML().load(WORKSPACES_YML)
             out_list = []
-            for i in data[cloud]:
+            for i in data[workspace_directory]:
                 if workspace in i["workspaces"]:
                     out_list.append(workspace)
                     out_list.append(i["account_id"])
