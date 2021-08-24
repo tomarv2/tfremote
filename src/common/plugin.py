@@ -80,6 +80,13 @@ class TerraformCommonWrapper:
             help="Specify existing workspace name(default: 'default')",
         )
         parser.add_argument(
+            "-wp",
+            dest="workspace_path",
+            default="default",
+            metavar="",
+            help="Overwrite workspace directory path structure",
+        )
+        parser.add_argument(
             "-s",
             dest="state_key",
             default="terraform",
@@ -153,13 +160,18 @@ class TerraformCommonWrapper:
                     raise SystemExit
         fips = vars(self.args)["fips"]
         workspace = vars(self.args)["workspace"]
+        workspace_path = vars(self.args)["workspace_path"]
         if workspace is None or workspace == "":
             logger.error(MISSING_VARS)
             raise SystemExit
         else:
-            if not validate_allowed_workspace.allowed_workspace(cloud, workspace, fips):
-                logger.error(MISSING_VARS)
-                raise SystemExit
+            if workspace_path is None or workspace_path == "":
+                workspace_path = cloud
+                if not validate_allowed_workspace.allowed_workspace(
+                    workspace_path, workspace, fips
+                ):
+                    logger.error(MISSING_VARS)
+                    raise SystemExit
         if not state_key.endswith(".tfstate"):
             state_key = state_key + ".tfstate"
         self.storage_path = run_command.build_tf_state_path(
@@ -406,7 +418,7 @@ class TerraformCommonWrapper:
                         logger.debug("init command: {}".format(cmd))
                         ret_code = run_command.run_cmd(cmd)
                         if ret_code == 0:
-                            logger.info(f"Selecting/Creating Workspce {workspace}")
+                            logger.info(f"Selecting/Creating Workspace {workspace}")
                             if (
                                 run_command.run_cmd(
                                     f"terraform workspace select {workspace} || terraform workspace new {workspace}"

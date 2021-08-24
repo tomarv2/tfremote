@@ -1,5 +1,5 @@
 """
-Tool to manage remote backend storage
+Tool to manage remote backend storage for Terraform
 """
 import os
 

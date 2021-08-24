@@ -1,4 +1,4 @@
-VERSION = "0.0.31"
+VERSION = "0.0.32"
 SUPPORTED_CLOUD_PROVIDERS = ["aws", "azure", "gcloud"]
 DEFAULT_AWS_BUCKET_REGION = "us-west-2"
 LIST_OF_VARIABLES_FILES = ["vars.tf", "variable.tf", "variables.tf"]
@@ -26,6 +26,7 @@ e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspa
 ARGS_REMOVED = (
     "-c",
     "-w",
+    "-wp",
     "default",
     "-s",
     "-nf",
