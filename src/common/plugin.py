@@ -94,6 +94,27 @@ class TerraformCommonWrapper:
             help="File name in remote state (default: 'terraform.tfstate')",
         )
         parser.add_argument(
+            "-no-color",
+            dest="no_color",
+            action="store_true",
+            help="Disables terminal formatting sequences in the output",
+        )
+        parser.set_defaults(no_color=True)
+        parser.add_argument(
+            "-json",
+            dest="json",
+            action="store_true",
+            help="Enables the machine readable JSON UI output",
+        )
+        parser.set_defaults(json=False)
+        parser.add_argument(
+            "-out",
+            dest="tf_out",
+            metavar="",
+            action="append",
+            help="Writes the generated plan to the given filename in an opaque file format",
+        )
+        parser.add_argument(
             "-f",
             dest="fips",
             action="store_true",
@@ -106,7 +127,6 @@ class TerraformCommonWrapper:
             help="Disable FIPS endpoints",
         )
         parser.set_defaults(fips=True)
-
         parser.add_argument(
             "-v",
             action="version",
