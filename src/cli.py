@@ -74,6 +74,11 @@ class TerraformWrapper:
         elif (
             vars(self.args)["plan, apply, or destroy"] in pass_through_list.allow_list()
         ):
+            # TODO: unset: teamid prjid
+            import os
+
+            os.remove("TF_VAR_teamid")
+            os.remove("TF_VAR_prjid")
             argument = "".join(vars(self.args)["plan, apply, or destroy"])
             cmd = "terraform " + argument
             logging.debug(f"terraform command: {cmd}")

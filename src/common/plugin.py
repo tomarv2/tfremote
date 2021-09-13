@@ -413,7 +413,7 @@ class TerraformCommonWrapper:
                         logger.info("Switching to using existing workspace")
                         if self.aws_profile is not None:
                             cmd = (
-                                'terraform init -backend-config="bucket={}" '
+                                'echo "1" | terraform init -backend-config="bucket={}" '
                                 '-backend-config="region={}" -backend-config="key={}" '
                                 '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '
                                 '-backend-config="profile={}"'.format(
@@ -438,7 +438,7 @@ class TerraformCommonWrapper:
                         logger.debug("init command: {}".format(cmd))
                         ret_code = run_command.run_cmd(cmd)
                         if ret_code == 0:
-                            logger.info(f"Selecting/Creating Workspace {workspace}")
+                            logger.info(f"Selecting/Creating Workspace: [{workspace}]")
                             if (
                                 run_command.run_cmd(
                                     f"terraform workspace select {workspace} || terraform workspace new {workspace}"
