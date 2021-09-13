@@ -171,7 +171,7 @@ The structure in Azure Storage:
 
 ```
 tf --help
-usage: tf [-h] [-var] [-var-file] [-c] [-w] [-wp] [-s] [-f] [-nf] [-v]
+usage: tf [-h] [-var] [-var-file] [-c] [-w] [-wp] [-s] [-no-color] [-json] [-out] [-f] [-nf] [-v]
 
 Terraform remote state wrapper package
 --------------------------------------
@@ -189,6 +189,9 @@ optional arguments:
   -w          Specify existing workspace name(default: 'default')
   -wp         Overwrite workspace directory path structure
   -s          File name in remote state (default: 'terraform.tfstate')
+  -no-color   Disables terminal formatting sequences in the output
+  -json       Enables the machine readable JSON UI output
+  -out        Writes the generated plan to the given filename in an opaque file format
   -f          Enable FIPS endpoints (default: True)
   -nf         Disable FIPS endpoints
   -v          show program's version number and exit

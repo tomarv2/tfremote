@@ -94,6 +94,27 @@ class TerraformCommonWrapper:
             help="File name in remote state (default: 'terraform.tfstate')",
         )
         parser.add_argument(
+            "-no-color",
+            dest="no_color",
+            action="store_true",
+            help="Disables terminal formatting sequences in the output",
+        )
+        parser.set_defaults(no_color=True)
+        parser.add_argument(
+            "-json",
+            dest="json",
+            action="store_true",
+            help="Enables the machine readable JSON UI output",
+        )
+        parser.set_defaults(json=False)
+        parser.add_argument(
+            "-out",
+            dest="tf_out",
+            metavar="",
+            action="append",
+            help="Writes the generated plan to the given filename in an opaque file format",
+        )
+        parser.add_argument(
             "-f",
             dest="fips",
             action="store_true",
@@ -106,7 +127,6 @@ class TerraformCommonWrapper:
             help="Disable FIPS endpoints",
         )
         parser.set_defaults(fips=True)
-
         parser.add_argument(
             "-v",
             action="version",
@@ -393,7 +413,7 @@ class TerraformCommonWrapper:
                         logger.info("Switching to using existing workspace")
                         if self.aws_profile is not None:
                             cmd = (
-                                'terraform init -backend-config="bucket={}" '
+                                'echo "1" | terraform init -backend-config="bucket={}" '
                                 '-backend-config="region={}" -backend-config="key={}" '
                                 '-backend-config="workspace_key_prefix={}" -backend-config="acl=bucket-owner-full-control" '
                                 '-backend-config="profile={}"'.format(
@@ -418,7 +438,7 @@ class TerraformCommonWrapper:
                         logger.debug("init command: {}".format(cmd))
                         ret_code = run_command.run_cmd(cmd)
                         if ret_code == 0:
-                            logger.info(f"Selecting/Creating Workspace {workspace}")
+                            logger.info(f"Selecting/Creating Workspace: [{workspace}]")
                             if (
                                 run_command.run_cmd(
                                     f"terraform workspace select {workspace} || terraform workspace new {workspace}"
