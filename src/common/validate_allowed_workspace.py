@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from typing import Tuple
 
 from ruamel.yaml import YAML
 from ruamel.yaml.scanner import ScannerError
@@ -12,12 +13,22 @@ configure_logging()
 logger = logging.getLogger()
 
 
-def allowed_workspace(workspace_directory, workspace, fips):
+def allowed_workspace(workspace_directory: str, workspace: str, fips: str) -> Tuple:
     """
-    Check if the workspace specified by user in the approved list
+    Function to check if the workspace specified by user in the approved list
+
+    :param workspace_directory: workspace yaml file
+    :type workspace_directory: dict
+    :param workspace: workspace name
+    :type workspace: str
+    :param fips: Fips
+    :type fips: str
+
+    :rtype: Tuple
+    :return: Workspace name and account id(aws)/subscription id(azure)/project id(gcp)
     """
     logger.debug(
-        f"workspace_directory: [{workspace_directory}] workspace: [{workspace}]"
+        f"Workspace directory: [{workspace_directory}] workspace: [{workspace}]"
     )
     if workspace == "default":
         return True

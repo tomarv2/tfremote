@@ -43,7 +43,7 @@ class TerraformCommonWrapper:
     var_data = {}
     required_vars = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.required_vars = REQUIRED_VARIABLES
         self.var_data = {}
         parser = argparse.ArgumentParser(
@@ -134,11 +134,11 @@ class TerraformCommonWrapper:
         )
         self.args, self.args_unknown = parser.parse_known_args()
 
-    def configure_remotestate(self):
+    def configure_remotestate(self) -> None:
         """
-        Configuring remote state
+        Configure remote state
         """
-        logger.debug("configuring remote state")
+        logger.debug("Configure remote state")
         run_command.parse_vars(self.var_data, self.args)
         state_key = "".join(vars(self.args)["state_key"])
         cloud = "".join(vars(self.args)["cloud"]).lower()
@@ -149,7 +149,7 @@ class TerraformCommonWrapper:
             for env_var in REQUIRED_GCLOUD_ENV_VARIABLES:
                 if not os.getenv(env_var):
                     logger.error(
-                        f"Required env. variables missing: {REQUIRED_GCLOUD_ENV_VARIABLES}"
+                        f"Required environment variable(s) missing: {REQUIRED_GCLOUD_ENV_VARIABLES}"
                     )
                     raise SystemExit
         if cloud == "aws":
@@ -168,7 +168,7 @@ class TerraformCommonWrapper:
 
             if not creds_list:
                 logger.error(
-                    f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}, {REQUIRED_AWS_ENV_VARIABLES} or {REQUIRED_AWS_KEY_ENV_VARIABLES}"
+                    f"Required environment variable(s) missing: {REQUIRED_AWS_ENV_VARIABLES}, {REQUIRED_AWS_ENV_VARIABLES} or {REQUIRED_AWS_KEY_ENV_VARIABLES} "
                 )
                 raise SystemExit
         if cloud == "azure":
@@ -235,11 +235,16 @@ class TerraformCommonWrapper:
             )
 
     # set bucket details (get from env variables)
-    def configure(self, workspace, cloud):
+    def configure(self, workspace: str, cloud: str) -> None:
         """
-        Configure bucket
+        Configure bucket/storage account
+
+        :param workspace: Terraform workspace name
+        :type workspace: str
+        :param cloud: Cloud provider to configure
+        :type cloud: str
         """
-        logger.debug("Configure bucket")
+        logger.debug("Configure bucket/storage account")
         if cloud == "aws":
             logger.debug(f"Configuring remote state for {cloud}")
             self.aws_profile = os.getenv("TF_AWS_PROFILE")
@@ -364,10 +369,34 @@ class TerraformCommonWrapper:
                 ),
             )
 
-    def set_remote_backend(self, teamid, prjid, workspace, fips, state_key, cloud):
+    def set_remote_backend(
+        self,
+        teamid: str,
+        prjid: str,
+        workspace: str,
+        fips: str,
+        state_key: str,
+        cloud: str,
+    ) -> bool:
         """
         Configure the Terraform remote state if necessary
         return True if remote state was successfully configured
+
+        :param teamid: Team ID
+        :type teamid: str
+        :param prjid: Project ID
+        :type prjid: str
+        :param workspace: Terraform workspace name
+        :type workspace: str
+        :param fips: Fips
+        :type fips: str
+        :param state_key: Remote state key
+        :type state_key: str
+        :param cloud: Cloud provider to configure
+        :type cloud: str
+
+        :rtype: bool
+        :return: Remote state configuration status
         """
         logger.debug("configure remote state if necessary")
         if cloud == "aws":
@@ -496,7 +525,7 @@ class TerraformCommonWrapper:
                         else:
                             return False
         else:
-            logger.debug("Setting remote state backend")
+            logger.debug("Set remote state backend")
             key_path = teamid + "/" + prjid + "/" + workspace
             current_tf_state = {"backend": {}}
             current_tf_state["backend"]["config"] = {}
@@ -536,9 +565,6 @@ class TerraformCommonWrapper:
                         key_path,
                     )
                     logger.debug(f"Terraform init command: {cmd}")
-
-                    # TODO: if 'prefix=' in cmd:
-                    # verify contents of backend file
 
                     ret_code = run_command.run_cmd(cmd)
                     if ret_code == 0:

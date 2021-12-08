@@ -3,9 +3,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def allow_list():
+def allow_list() -> list:
     """
-    Following subcommands don't need remote state
+    Function to list subcommands that don't need remote state
     """
     subcommand_pass_thru = [
         "fmt",
@@ -24,9 +24,9 @@ def allow_list():
     return subcommand_pass_thru
 
 
-def deny_list():
+def deny_list() -> list:
     """
-    Commands that can break setup
+    Function to list commands that can break setup
     """
     blacklist_subcommand = []
     return blacklist_subcommand

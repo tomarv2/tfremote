@@ -8,7 +8,7 @@ import logging
 import os
 import re
 import subprocess
-from typing import List
+from typing import Any, List
 
 import hcl
 
@@ -24,7 +24,7 @@ configure_logging()
 logger = logging.getLogger()
 
 
-def run_cmd(cmd):
+def run_cmd(cmd: str) -> int:
     p = subprocess.Popen(cmd, shell=True)
     p.wait()
     return p.returncode
@@ -42,13 +42,27 @@ def create_command(arguments_entered: List[str]) -> str:
     return " ".join(arguments_entered)
 
 
-def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state_key):
+def build_remote_backend_tf_file(
+    storage_type: str, workspace_key_prefix: str, fips: str, state_key: str
+) -> bool:
     """
     Function to create remote_backend.tf file
+
+    :param: storage_type: Type of storage depending on Cloud provider (S3, azurerm, gcs
+    :type storage_type: str
+    :param: workspace_key_prefix: Terraform workspace prefix
+    :type workspace_key_prefix: str
+    :param: fips: Fips
+    :type fips: str
+    :param: state_key: State key path
+    :type state_key: str
+
+    :rtype: bool
+    :return: Status of remote state configuration
     """
-    logger.debug("Creating remote_backend.tf file")
+    logger.debug("Create remote_backend.tf file")
     if os.path.exists("remote_backend.tf"):
-        logger.info("Remote_backend.tf exists, deleting existing backend file")
+        logger.info("remote_backend.tf exists, deleting existing backend file")
         os.remove("remote_backend.tf")
     logger.debug(f"Storage_type: {storage_type}")
     try:
@@ -120,23 +134,37 @@ def build_remote_backend_tf_file(storage_type, workspace_key_prefix, fips, state
         logger.error("error creating file: {}".format("remote_backend.tf"))
 
 
-def build_tf_state_path(required_vars, var_data, state_key, workspace):
+def build_tf_state_path(
+    required_vars: dict, var_data: dict, state_key: str, workspace: str
+) -> Any:
     """
     Function to build tf state path
+
+    :param: required_vars: Required variables (teamid, prjid)
+    :type required_vars: str
+    :param: var_data: Variable data
+    :type var_data: dict
+    :param: state_key: State key path
+    :type state_key: str
+    :param: workspace: Terraform workspace
+    :type workspace: str
+
+    :rtype: bool
+    :return: Status of remote state configuration
     """
     logger.debug("Build tf state path")
     for var in required_vars:
-        logger.debug("Checking required vars in inline vars")
+        logger.debug("Check required vars in inline vars")
         if var in var_data["inline_vars"]:
             required_vars[var] = var_data["inline_vars"][var]
         elif var_data["tfvars"] is not None:
-            logger.debug("checking required vars in tfvars")
+            logger.debug("Check required vars in tfvars")
             if var in var_data["tfvars"]:
                 required_vars[var] = var_data["tfvars"][var]
         elif "variables_tf" in var_data:
-            logger.debug("checking required vars in variables file")
+            logger.debug("Check required vars in variables file")
             if var in var_data["variables_tf"]:
-                logger.debug("checking required vars in variables.tf file")
+                logger.debug("Check required vars in variables.tf file")
                 if var_data["variables_tf"][var] != "":
                     required_vars[var] = var_data["variables_tf"][var]
                 else:
@@ -158,9 +186,14 @@ def build_tf_state_path(required_vars, var_data, state_key, workspace):
             return path
 
 
-def parse_vars(var_data, args):
+def parse_vars(var_data: dict, args: Any) -> None:
     """
     Function to parse variables
+
+    :param: var_data: Variable data
+    :type var_data: dict
+    :param: args: Arguments passed
+    :type args: dict
     """
     logger.debug("Parsing variables")
     var_data["inline_vars"] = parse_inline_vars(args)
@@ -180,9 +213,15 @@ def parse_vars(var_data, args):
             )
 
 
-def parse_inline_vars(args):
+def parse_inline_vars(args: dict) -> dict:
     """
-    Parse variables defined on the command line (-var foo=bar)
+    Function to parse variables defined on the command line (-var foo=bar)
+
+    :param: args: Variable data
+    :type args: dict
+
+    :rtype: dict
+    :return Parsed arguments
     """
     logger.debug("Parsing inline vars")
     results = {}
@@ -196,11 +235,17 @@ def parse_inline_vars(args):
     return results
 
 
-def parse_tfvar_files(args):
+def parse_tfvar_files(args: dict) -> dict:
     """
     Parse variables defined in:
      - terraform.tfvars
      - file(s) defined in command line (-var-file foo.tfvars)
+
+    :param: args: Variable data
+    :type args: dict
+
+    :rtype: dict
+    :return Parsed arguments
     """
     logger.debug("Parsing .tfvars file(s)")
     tfvar_files = vars(args)["tfvar_files"]
@@ -217,14 +262,19 @@ def parse_tfvar_files(args):
         logger.debug("No tfvars provided")
 
 
-def parse_var_file(file):
+def parse_var_file(file: str) -> dict:
     """
-    Parse the variables defined in .tf file
-        eg:
-            variable name {
-                foo = "bar"
+     Parse the variables defined in .tf file
+         eg:
+             variable name {
+                 foo = "bar"
+     }
 
-    }
+    :param: file: variable file
+    :type file: dict
+
+     :rtype: dict
+     :return Parsed arguments
     """
     logger.debug("Parsing variables")
     results = {}
