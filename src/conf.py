@@ -1,12 +1,15 @@
 VERSION = "0.0.36"
+MIN_TERRAFORM_V = "0.14.0"
 SUPPORTED_CLOUD_PROVIDERS = ["aws", "azure", "gcloud"]
 DEFAULT_AWS_BUCKET_REGION = "us-west-2"
 LIST_OF_VARIABLES_FILES = ["vars.tf", "variable.tf", "variables.tf"]
 REQUIRED_VARIABLES = {"teamid": None, "prjid": None}
+
 # FIPS endpoints
 AWS_FIPS_US_WEST2_ENDPOINT = "s3-fips.us-west-2.amazonaws.com"
 AZURE_FIPS_WESTUS2_ENDPOINT = ""
 GCP_FIPS_WESTUS2_ENDPOINT = ""
+
 # Error messages
 MISSING_VARS = """
 ------------------------------------------
@@ -23,6 +26,7 @@ e.g: tf plan -c=gcloud -var=teamid=demo-team -var=prjid=demo-app -w=demo-workspa
 (more information: https://github.com/tomarv2/tfremote)
 ------------------------------------------
 """
+
 ARGS_REMOVED = (
     "-c",
     "-w",
@@ -32,6 +36,7 @@ ARGS_REMOVED = (
     "-nf",
     "-f",
 )
+
 PACKAGE_DESCRIPTION = """
 Terraform remote state wrapper package
 --------------------------------------
@@ -41,6 +46,7 @@ aws: TF_AWS_BUCKET, TF_AWS_BUCKET_REGION=us-west-2, TF_AWS_PROFILE or AWS_ACCESS
 azure: TF_AZURE_STORAGE_ACCOUNT, TF_AZURE_CONTAINER, ARM_ACCESS_KEY
 gcloud: TF_GCLOUD_BUCKET, TF_GCLOUD_CREDENTIALS
 """
+
 REQUIRED_GCLOUD_ENV_VARIABLES = [
     "TF_GCLOUD_BUCKET",
     "TF_GCLOUD_CREDENTIALS",
