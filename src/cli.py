@@ -55,7 +55,7 @@ class TerraformWrapper:
     args_unknown = None
     logger = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         parser = argparse.ArgumentParser(
             description="Terraform wrapper script",
         )
