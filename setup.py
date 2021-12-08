@@ -10,7 +10,7 @@ from src.conf import VERSION
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-def get_requirements():
+def get_requirements() -> list:
     """
     Install dependencies
     """
