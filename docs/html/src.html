@@ -90,18 +90,19 @@
 </section>
 <section id="module-src.cli">
 <span id="src-cli-module"></span><h2>src.cli module<a class="headerlink" href="#module-src.cli" title="Permalink to this headline">¶</a></h2>
-<p>This package allows multiple teams to collaborate on Terraform deployments by maintaining centralized remote state.</p>
+<p>Package allows multiple teams to collaborate on Terraform deployments by maintaining centralized remote state.</p>
 <ul class="simple">
 <li><p>aws</p></li>
 <li><p>azure</p></li>
 <li><p>gcloud</p></li>
 <li><p>alicloud in-progress</p></li>
 </ul>
-<p>It needs three variables: teamid, prjid and workspace to structure files in backend storage</p>
+<p>Two variables: teamid, prjid are required to structure files in backend storage</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.cli.TerraformWrapper">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.cli.</span></span><span class="sig-name descname"><span class="pre">TerraformWrapper</span></span><a class="headerlink" href="#src.cli.TerraformWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for TerraformWrapper</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.cli.TerraformWrapper.args">
 <span class="sig-name descname"><span class="pre">args</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#src.cli.TerraformWrapper.args" title="Permalink to this definition">¶</a></dt>
@@ -119,8 +120,9 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.cli.TerraformWrapper.main">
-<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.cli.TerraformWrapper.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.cli.TerraformWrapper.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to verify commands</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.cli.TerraformWrapper.var_data">
@@ -131,15 +133,23 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.cli.entrypoint">
-<span class="sig-prename descclassname"><span class="pre">src.cli.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.cli.entrypoint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">src.cli.</span></span><span class="sig-name descname"><span class="pre">entrypoint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#src.cli.entrypoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entrypoint for the Wrapper</p>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="src.cli.valid_terraform_version">
-<span class="sig-prename descclassname"><span class="pre">src.cli.</span></span><span class="sig-name descname"><span class="pre">valid_terraform_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_supported_ver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.cli.valid_terraform_version" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<span class="sig-prename descclassname"><span class="pre">src.cli.</span></span><span class="sig-name descname"><span class="pre">valid_terraform_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_supported_ver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#src.cli.valid_terraform_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate terraform version</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>min_supported_ver</strong> – v14</p>
+<dd class="field-odd"><p><strong>min_supported_ver</strong> (<em>str</em>) – Terraform workspace name</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Valid version installed status</p>
 </dd>
 </dl>
 </dd></dl>

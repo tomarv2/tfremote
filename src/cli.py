@@ -1,12 +1,12 @@
 """
-This package allows multiple teams to collaborate on Terraform deployments by maintaining centralized remote state.
+Package allows multiple teams to collaborate on Terraform deployments by maintaining centralized remote state.
 
 - aws
 - azure
 - gcloud
 - alicloud in-progress
 
-It needs three variables: teamid, prjid and workspace to structure files in backend storage
+Two variables: teamid, prjid are required to structure files in backend storage
 """
 import argparse
 import logging
@@ -17,19 +17,23 @@ from distutils.version import StrictVersion as V
 from src.common import pass_through_list
 from src.common import plugin as common_plugin
 from src.common import run_command
+from src.conf import MIN_TERRAFORM_V
 
 from .logging import configure_logging
 
 logger = logging.getLogger(__name__)
 configure_logging()
 
-MIN_TERRAFORM_V = "0.14.0"
 
-
-# verifying version of terraform installed
-def valid_terraform_version(min_supported_ver):
+def valid_terraform_version(min_supported_ver: str) -> bool:
     """
-    :param min_supported_ver: v14
+    Validate terraform version
+
+    :param min_supported_ver: Terraform workspace name
+    :type min_supported_ver: str
+
+    :rtype: bool
+    :return: Valid version installed status
     """
     cmd_output = subprocess.check_output("terraform version", shell=True)
     detected_ver = re.search(
@@ -50,12 +54,20 @@ def valid_terraform_version(min_supported_ver):
 
 
 class TerraformWrapper:
+    """
+    Class for TerraformWrapper
+    """
+
     var_data = {}
     args = None
     args_unknown = None
     logger = None
 
     def __init__(self) -> None:
+        """
+        The constructor for TerraformWrapper class.
+        """
+
         parser = argparse.ArgumentParser(
             description="Terraform wrapper script",
         )
@@ -63,7 +75,10 @@ class TerraformWrapper:
 
         self.args, self.args_unknown = parser.parse_known_args()
 
-    def main(self):
+    def main(self) -> None:
+        """
+        Function to verify commands
+        """
         if vars(self.args)["plan, apply, or destroy"] in pass_through_list.deny_list():
             logger.error(
                 "subcommand '{}' should not be used with this wrapper script as it may break things ".format(
@@ -91,7 +106,10 @@ class TerraformWrapper:
             common_plugin.configure_remotestate()
 
 
-def entrypoint():
+def entrypoint() -> None:
+    """
+    Entrypoint for the Wrapper
+    """
     if not valid_terraform_version(MIN_TERRAFORM_V):
         exit(1)
     else:
