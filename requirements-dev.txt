@@ -13,3 +13,4 @@ moto
 pytest-cov
 ruamel.yaml
 # flake8: noqa
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
